@@ -10,6 +10,10 @@ import Cart from '../Frontend/Cart';
 import Home from '../Frontend/Home';
 import Footer from '../Frontend/Footer/Footer';
 import Header from '../Frontend/Header/Header'
+import Refund from '../refund/refund'
+import RefundEdit from '../refund/refundEdit'
+import Footer from './components/footer1'
+import RefundPolicy from '../refund/refundPolicy';
 
 function App() {
   return (
