@@ -27,9 +27,6 @@ function App() {
           <Route path='/admin' element={<Admin />} />
           <Route path='/product/:id' element={<Product />} /> 
           <Route path='/cart' element={<Cart />} />
-          <Route path="/refund" element={<Refund />} />
-        <Route path="/refundedit/:orderId" element={<RefundEdit />} />
-        <Route path="/refundPolicy" element={<RefundPolicy />} />
 
 
 
