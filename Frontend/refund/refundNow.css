@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    font-family: 'Poppins', sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.rnmh {
+    margin-top: 30px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 35px;
+}
+
+.rnlp {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 23px;
+}
+
+.rnmbtns {
+    margin-top: 20px;
+    text-align: center;
+}
+
+
+
+
+/* Main header */
+.rnmh {
+    margin-top: 30px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 35px;
+}
+
+/* Breadcrumb */
+.rnlp {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 23px;
+}
+
+/* Button container */
+.rnmbtns {
+    margin-top: 20px;
+    text-align: center;
+}
+/* Form container */
+.rnmcont {
+    padding-top: 70px;
+    margin-top: 30px;
+    width: 800px;
+    border-radius: 30px;
+    height: 550px; /* Adjusted height */
+    margin-bottom: 50px;
+    padding: 50px; /* Added padding */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added box shadow */
+    background-color: #F1F1F1;
+  }
+  
+  .rnmcon {
+    margin-top: 70px;
+    width: 80%;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    padding: 30px; /* Added padding */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added box shadow */
+  }
+  
+  /* Form input fields */
+  .rnmconinp,
+  .rn2mconreastyp,
+  .rn2mconaddimg {
+    margin: 10px 0;
+    padding: 10px;
+    width: calc(100% - 20px); /* Take full width minus padding */
+    border: 1.5px solid #ccc;
+    border-radius: 25px;
+  }
+  
+  /* Hover effect */
+  .rnmconinp:hover,
+  .rn2mconreastyp:hover,
+  .rn2mconaddimg:hover {
+    border-color: rgb(153, 153, 153); /* Change border color on hover if desired */
+  }
+  
+  .transparent-button {
+    background: none;
+    text-decoration: none;
+    border: none;
+    color: #000000; /* Text color */
+    cursor: pointer;
+    font-size: 16px; /* Adjust font size as needed */
+    font-weight: bold; /* Optionally, adjust font weight */
+  }
+  
+  .transparent-button:hover {
+    opacity: 0.7; /* Adjust opacity on hover as desired */
+  }
+  
+  /* Add Image button */
+  .rn2mconaddimg-btn {
+    padding: 10px 20px; /* Adjust padding as needed */
+    margin-top: 10px; /* Add some top margin */
+    border: none;
+    background-color: #000000; /* Button background color */
+    color: white; /* Button text color */
+    border-radius: 25px; /* Add border radius for rounded corners */
+    cursor: pointer;
+    font-size: 11px; /* Adjust font size */
+  }
+  
+  .rn2mconaddimg-btn:hover {
+    background-color: #333333; /* Change background color on hover */
+  }
+  
+  /* Image preview */
+  .preview-image {
+    display: block;
+    margin-top: 10px;
+    max-width: 80px; /* Adjust the max-width to your desired smaller size */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Add border radius for rounded corners */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+  }
