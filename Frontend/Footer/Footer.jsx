@@ -1,5 +1,5 @@
 import React from 'react';
-import './footer1.css'; // Import your CSS for styling
+import './Footer.css'; // Import your CSS for styling
 import logoImage from './wellwornlogo2.png'; // Adjust the path accordingly
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
