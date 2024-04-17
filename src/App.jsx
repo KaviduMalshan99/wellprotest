@@ -14,7 +14,27 @@ import Header from '../Frontend/Header/Header'
 function App() {
   return (
     <div>
-     <Admin/>
+     <Router> {/* Changed to Router */}
+        <Routes>
+          <Route path='/' element={<Home />} /> 
+          <Route path='/men' element={<Men />} /> 
+          <Route path='/women' element={<Women />} /> 
+          <Route path='/best' element={<Best />} /> 
+          <Route path='/admin' element={<Admin />} />
+          <Route path='/product/:id' element={<Product />} /> 
+          <Route path='/cart' element={<Cart />} />
+          
+
+
+          {/* Header parts */}
+          <Route path='/header' element={<Header />} /> 
+
+
+          {/* Footer parts */}
+          <Route path='/footer' element={<Footer />} /> 
+
+        </Routes>
+      </Router>
     </div>
   );
 }
