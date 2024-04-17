@@ -1,0 +1,206 @@
+.ProductModelContainer {
+  background-color: #cfd2d2;
+}
+
+.ProductModelContainer h1{
+  text-align: center;
+}
+
+.ProductModelContainer .boxes{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-left: 30px;
+  padding-top: 15px;
+  padding-bottom: 25px; 
+  
+}
+
+.ProductModelContainer .boxes .mainbox{
+display: flex;
+gap: 10%;
+margin-bottom: 25px;
+}
+
+.ProductModelContainer .boxes .mainbox div{
+display: flex;
+flex-direction: column;
+gap: 5px;
+
+}
+
+.ProductModelContainer input{
+height: 35px;
+width: 400px;
+border: none;
+border-radius: 5px;
+padding-left: 10px;
+}
+
+.catdiv select{
+
+  width: 300px;
+  height: 40px;
+  border-radius: 5px;
+  border: none;
+  padding-left: 10px;
+  margin-top: 10px;
+  
+}
+
+.catdiv select option{
+padding-right: 10px; 
+}
+
+.catdiv .catbtn{
+width: 150px;
+height: 35px;
+margin-top: 10px;
+border: none;
+border-radius: 5px;
+background-color: #07223D;
+color: #fff;
+}
+
+.selectedclass{
+padding-left: 105px;
+padding-top: 05px;
+}
+
+
+
+.mainbox .dilevary input{
+height: 20px;
+margin-left: 55px;
+margin-top: -27px;
+
+}
+
+.mainbox .sd1 input{
+  margin-left: 25px;
+  margin-top: 10px;
+  width: 285px;
+}
+
+.mainbox .sd1 button{
+margin-left: 25px;
+width: 150px;
+height: 35px;
+margin-top: 10px;
+border: none;
+border-radius: 5px;
+background-color: #07223D;
+color: #fff;
+
+}
+
+.mainbox .sd2{
+padding-left: 105px;
+margin-top: 30px;
+padding-top: 05px;
+display: flex;
+flex-wrap: wrap;
+
+}
+
+
+.mainbox .sd2 button{
+margin-left: 80px;
+margin-top: -29px;
+}
+
+.mainbox .default{
+margin-left: 10px;
+margin-top: 10px;
+}
+
+.mainbox .fileselect{
+margin-top: 10px;
+}
+
+.mainbox .color-section{
+margin-left: 20px;
+}
+
+.mainbox .color-section .colorlable{
+margin-left: -20px;
+margin-bottom: 10px;
+}
+
+.mainbox  img{
+height: 100px;
+width: 100px;
+}
+
+.mainbox .color-section .addp{
+width: 150px;
+height: 35px;
+margin-top: 10px;
+border: none;
+border-radius: 5px;
+background-color: #07223D;
+color: #fff;
+
+}
+
+.mainbox .dremove{
+width: 150px;
+}
+
+.mainbox .dimg{
+margin-top: 20px;
+}
+
+.mainbox .dfile{
+margin-top: 25px;
+}
+
+.submitbtn{
+width: 200px;
+height: 50px;
+margin-top: 10px;
+border: none;
+border-radius: 5px;
+background-color: #07223D;
+color: #fff;
+font-size: large;
+font-weight: 500;
+margin-bottom: 25px;
+
+}
+
+.submitconntainer{
+display: flex;
+justify-content: center; /* Horizontally center the content */
+align-items: center; /* Vertically center the content */
+ 
+}
+
+.desc {
+display: flex;
+flex-direction: column;
+}
+
+.desc label {
+margin-bottom: 5px;
+}
+
+.desc textarea {
+margin-left: 20px;
+border-radius: 5px;
+resize: vertical;
+padding: 15px;
+}
+
+.dd1{
+margin-top: 10px;
+margin-left: 25px;
+}
+
+.dd2{
+margin-left: 25px;
+}
+
+
+
+

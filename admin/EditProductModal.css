@@ -1,0 +1,123 @@
+.editModelContainer{
+  display: flex;
+  flex-direction: column;
+}
+
+.editModelContainer h2{
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 50px;
+}
+
+.editModelContainer form{
+  margin-left: 25px;
+}
+
+
+.editModelContainer .boxes{
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.editModelContainer .boxes .mainbox input{
+  margin-left: 10px;
+  border: none;
+  border-radius: 5px;
+  height: 30px;
+  padding-left: 10px;
+  width: 400px;
+}
+
+.editModelContainer .boxes .mainbox .color-section{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editModelContainer .boxes .mainbox .image-container{
+  margin-left: 10%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.editModelContainer .boxes .mainbox .image-container .imh{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+  align-items: center;
+}
+
+.editModelContainer .boxes .mainbox .imagess input{
+  margin-left: 5%;
+  margin-top: 20px;
+}
+
+.editModelContainer .boxes .mainbox .image-container .imh {
+  display: flex;
+  margin-bottom: 25px;
+  align-items: center;
+}
+
+.editModelContainer .boxes .last{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.editModelContainer .boxes .last button{
+  width: auto;
+  height: 45px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #07223D;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 5px 20px 5px 20px;
+}
+
+.editModelContainer .boxes .last .EDTcancel{
+  background-color: red;
+  margin-left: 38%;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 5px 20px 5px 20px;
+}
+
+.editModelContainer .boxes .mainbox .sizes{
+  display: flex;
+}
+
+.editModelContainer .boxes .mainbox .size-item{
+  margin-top: 30px;
+  display: flex;
+  gap: -50px;
+  
+}
+
+
+
+.editModelContainer .boxes .mainbox .size-item button{
+  height: 30px;
+  margin-top: 0px;
+  
+}
+
+
+.editModelContainer .boxes button{
+  width: 100px;
+  height: 45px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #07223D;
+  color: #fff;
+  font-weight: bold;
+  padding: 5px 20px 5px 20px;
+}
+

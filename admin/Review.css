@@ -1,0 +1,32 @@
+.Review_main .Reviewtable{
+    width: 99%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #07223D;
+    border-radius: 10px;
+}
+
+.Review_main .Reviewtable th, .Review_main .Reviewtable td{
+    padding: 8px;
+    text-align: center;
+}
+
+.Review_main .Reviewtable th{
+    background-color: #07223D;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.Review_main .Reviewtable td{
+    background-color: #F7FBFE;
+    border: 1px solid #07223D;
+}
+
+.Review_main .Reviewtable .Review_viewmore{
+    padding: 5px 20px 5px 20px;
+    background-color: #07223D;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
