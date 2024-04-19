@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 
 function Footer() {
@@ -41,7 +42,7 @@ function Footer() {
           <h3>INFO</h3> <ul>
             <li><a href="#">About Us</a></li>
             <li><a href="#">Contact Us</a></li>
-            <li><a href="#">Refund and Returns</a></li>
+            <li><Link to='/refund'>Refund and Returns</Link></li>
             <li><a href="#">Privacy policy</a></li>
             <li><a href="#">Terms and Conditions</a></li>
           </ul>

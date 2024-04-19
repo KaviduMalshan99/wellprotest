@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Footer from '../Footer/Footer'
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -217,6 +218,7 @@ const RefundEdit = () => {
           
         
       </center>
+      <Footer/>
       <ToastContainer />
     </div>
   );

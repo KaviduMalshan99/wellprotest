@@ -13,15 +13,20 @@ const Men = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/products');
+        const response = await axios.get('http://localhost:3001/api/products', {
+          params: {
+            Categories: 'mens'
+          }
+        });
         setData(response.data.response);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
-
+  
     fetchProducts();
   }, []);
+  
 
   return (
     <div>

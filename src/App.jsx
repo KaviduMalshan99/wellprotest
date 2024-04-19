@@ -8,12 +8,11 @@ import Best from '../Frontend/Best';
 import Product from '../Frontend/Product';
 import Cart from '../Frontend/Cart';
 import Home from '../Frontend/Home';
-import Footer from '../Frontend/Footer/Footer';
 import Header from '../Frontend/Header/Header'
-import Refund from '../refund/refund'
-import RefundEdit from '../refund/refundEdit'
-import Footer from './components/footer1'
-import RefundPolicy from '../refund/refundPolicy';
+import Refund from '../Frontend/refund/refund'
+import RefundEdit from '../Frontend/refund/refundEdit'
+import RefundPolicy from '../Frontend/refund/refundPolicy';
+import Checkout from '../Frontend/Header/Checkout';
 
 function App() {
   return (
@@ -27,7 +26,8 @@ function App() {
           <Route path='/admin' element={<Admin />} />
           <Route path='/product/:id' element={<Product />} /> 
           <Route path='/cart' element={<Cart />} />
-
+          <Route path='/checkout' element={<Checkout />} />
+          
 
 
           {/* Header parts */}
@@ -35,7 +35,7 @@ function App() {
 
 
           {/* Footer parts */}
-          <Route path='/footer' element={<Footer />} /> 
+          
 
         </Routes>
       </Router>

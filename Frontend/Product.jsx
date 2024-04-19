@@ -62,6 +62,12 @@ const Product = () => {
     return <div>Loading...</div>;
   }
 
+  const handleBuyNow = () => {
+    const checkoutUrl = `/checkout?id=${id}&quantity=${quantity}&size=${selectedSize}&price=${product.price}`;
+    navigate(checkoutUrl);
+  };
+  
+
   // Render product details once loaded
   return (
     <div>
@@ -155,7 +161,7 @@ const Product = () => {
 
             {/* Buy Now Button */}
             <div className="buyNow">
-              <button>Buy Now</button>
+              <button onClick={handleBuyNow}>Buy Now</button>
             </div>
           </div>
 

@@ -102,7 +102,7 @@ const CategoryPage = () => {
 
   return (
     <div className='mainContainer'>
-      <h1>Category Section</h1>
+      <h1 className='CATMAINTITLE'>Category Section</h1>
       <div className="CATsearch-bar">
         <input
           type="text"
@@ -119,7 +119,7 @@ const CategoryPage = () => {
 
 
       <div className="addCategorySection">
-        <h2>Add Categories</h2>
+        <h2 className='Cath2title'>Add Categories</h2>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <form>
           <div className="boxes">
@@ -161,7 +161,7 @@ const CategoryPage = () => {
                 <tr key={category?.CatagoryId}>
                   <td>{category?.CatagoryId}</td>
                   <td>{category?.CatagoryName}</td>
-                  <td><button className='editbtn' onClick={() => handleEdit(category?.CatagoryId)}>Edit</button></td>
+                  <td><button className='CATeditbtn' onClick={() => handleEdit(category?.CatagoryId)}>Edit</button></td>
                   <td><button className='deletebtn' onClick={() => handleDelete(category?.CatagoryId)}>Delete</button></td>
                 </tr>
             ))}

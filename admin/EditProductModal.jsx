@@ -60,6 +60,19 @@ const EditProductModal = ({ closeModal, product }) => {
     const [selectedColorImages, setSelectedColorImages] = useState([]);
     const [sizeCount, setSizeCount] = useState('');
     const [selectedImages, setSelectedImages] = useState([]);
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+      axios
+          .get('http://localhost:3001/api/categories')
+          .then((response) => {
+              setCategories(response.data.response);
+          })
+          .catch((error) => {
+              console.error('Error fetching categories:', error);
+          });
+  }, []);
+
 
     useEffect(() => {
         if (product && product.ProductId) {
@@ -310,15 +323,15 @@ const handleSubmit = async (e) => {
         <div className="mainbox">
         <div>
         {/* Categories */}
-        <label>3) Categories:</label>
+        
         <div>
           <label>3) Categories:</label>
           <div className='catdiv'>
-            <select value={selectedCategory} onChange={handleCategoryChange} className='cat'>
-              {editedProduct.Categories.map((category, index) => (
-                <option key={index} value={category}>{category.CatagoryName}</option>
-              ))}
-            </select> 
+          <select value={selectedCategory} onChange={handleCategoryChange} className='cat'>
+            {editedProduct.Categories.map((category, index) => (
+              <option key={index} value={category.CatagoryName}>{category.CatagoryName}</option>
+            ))}
+          </select>
             <button className='catbtn' type="button" onClick={handleAddCategory}>Add Category</button>
           </div>
         </div>

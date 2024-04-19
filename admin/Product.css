@@ -12,6 +12,30 @@
   margin-bottom: 5px;
 }
 
+.ProductContainer .PRODUCTTITLE{
+  font-size: 25px;
+  margin-top: 15px;
+}
+
+.ProductContainer .search-bar{
+  display: flex;
+  align-items: center;
+
+}
+
+.ProductContainer .search-button{
+  margin-top: -10px;
+}
+
+.ProductContainer .search-button:hover{
+  background:#07223D;
+}
+
+.PRODUCTADDPRO:hover{
+  background: #07223D;
+}
+
+
 .addProductSection i{
   padding-right: 10px;
 }
@@ -89,4 +113,22 @@
 
 .product-count{
   margin-left: 5%;
+}
+
+.PRODUCTGenarate{
+  border: none;
+  width: 20%;
+  margin-top: 20px;
+  padding: 15px 0 15px 0;
+  border-radius: 10px;
+  background-color: #07223D;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+
+.PRODUCTGenarate:hover{
+  background: #07223D;
 }

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Footer from '../Footer/Footer'
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -129,13 +131,13 @@ const Refund = () => {
             <div className="rnmh">Refund</div>
             <div className="rnlp">Home &gt; Refund</div>
             <div className="rnmbtns">
-                <button className="transparent-button" onClick={() => navigate('/refundPolicy')}>
+                <Link to='/refundpolicy'><button className="transparent-button" >
                     Refund Policy
-                </button>
+                </button></Link>
                 {" | "}
-                <button className="transparent-button" onClick={() => {/* Add action for Refund Now */}}>
+                <Link to='/refund'><button className="transparent-button" >
                     Refund Now
-                </button>
+                </button></Link>
             </div>
             <center>
                 <div className="rnmcont">
@@ -200,6 +202,7 @@ const Refund = () => {
                 </div>
                 
             </center>
+            <Footer/>
             <ToastContainer />
         </div>
     );
