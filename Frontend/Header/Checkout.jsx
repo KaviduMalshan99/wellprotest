@@ -1,8 +1,12 @@
+import Footer from "../Footer/Footer"
 
 
 const Checkout = () => {
   return (
-    <div>Checkout</div>
+    <div>Checkout
+
+    <Footer/>
+    </div>
   )
 }
 

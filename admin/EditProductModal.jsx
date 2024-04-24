@@ -103,21 +103,29 @@ const EditProductModal = ({ closeModal, product }) => {
         });
       };
     
-      // Handle category selection change
-      const handleCategoryChange = (e) => {
-        setSelectedCategory(e.target.value);
-      };
+     
     
-      // Handle adding category
-      const handleAddCategory = () => {
-        if (selectedCategory) {
-          setEditedProduct({
-            ...editedProduct,
-            Categories: [...editedProduct.Categories, selectedCategory]
-          });
-          setSelectedCategory('');
+      const handleCategoryChange = (category) => {
+        // If the category is already selected, remove it
+        if (editedProduct.Categories.includes(category)) {
+          setEditedProduct((prevEditedProduct) => ({
+            ...prevEditedProduct,
+            Categories: prevEditedProduct.Categories.filter((cat) => cat !== category && cat !== ''),
+          }));
+        } else {
+          // If selecting a new category, check if it exceeds the limit of two categories
+          if (editedProduct.Categories.length < 2) {
+            setEditedProduct((prevEditedProduct) => ({
+              ...prevEditedProduct,
+              Categories: [...prevEditedProduct.Categories.filter(cat => cat !== ''), category],
+            }));
+          } else {
+            // If two categories are already selected, don't allow selecting more
+            alert("You can only select two categories.");
+          }
         }
       };
+      
     
       // Handle removing category
       const handleRemoveCategory = (categoryToRemove) => {
@@ -321,39 +329,51 @@ const handleSubmit = async (e) => {
 
 
         <div className="mainbox">
-        <div>
-        {/* Categories */}
-        
-        <div>
-          <label>3) Categories:</label>
-          <div className='catdiv'>
-          <select value={selectedCategory} onChange={handleCategoryChange} className='cat'>
-            {editedProduct.Categories.map((category, index) => (
-              <option key={index} value={category.CatagoryName}>{category.CatagoryName}</option>
-            ))}
-          </select>
-            <button className='catbtn' type="button" onClick={handleAddCategory}>Add Category</button>
+          <div>
+            <label>3) Categories:</label>
+            <div className="category-checkboxes">
+              <label>
+                <input
+                  type="checkbox"
+                  name="Men"
+                  checked={editedProduct.Categories.includes("Men")}
+                  onChange={() => handleCategoryChange("Men")}
+                  disabled={editedProduct.Categories.includes("Women")}
+                />
+                Men
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="Women"
+                  checked={editedProduct.Categories.includes("Women")}
+                  onChange={() => handleCategoryChange("Women")}
+                  disabled={editedProduct.Categories.includes("Men")}
+                />
+                Women
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="Bags"
+                  checked={editedProduct.Categories.includes("Bags")}
+                  onChange={() => handleCategoryChange("Bags")}
+                  disabled={editedProduct.Categories.includes("Shoes")}
+                />
+                Bags
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  name="Shoes"
+                  checked={editedProduct.Categories.includes("Shoes")}
+                  onChange={() => handleCategoryChange("Shoes")}
+                  disabled={editedProduct.Categories.includes("Bags")}
+                />
+                Shoes
+              </label>
+            </div>
           </div>
-        </div>
-
-        </div>
-        </div>
-        
-        <div className="mainbox">
-        <div>
-        {/* Display selected categories */}
-        <label> Selected Categories:</label>
-        <ul>
-        {editedProduct.Categories.map((category, index) => (
-            <li key={index}>
-                {category.CatagoryName} ( {category.CatagoryName})
-                <button type="button" onClick={() => handleRemoveCategory(category)}>Remove</button>
-            </li>
-        ))}
-
-
-        </ul>
-        </div>
         </div>
 
         

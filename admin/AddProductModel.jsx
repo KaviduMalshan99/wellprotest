@@ -71,19 +71,11 @@ const AddProductModel = ({onClose}) => {
   const [sizeCount, setSizeCount] = useState(0);
   const [priceError, setPriceError] = useState('');
 
-
-  // Fetch categories from the backend
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/api/categories')
-      .then((response) => {
-        
-        setCategories(response.data.response);
-      })
-      .catch((error) => {
-        console.error('Error fetching categories:', error);
-      });
-  }, []);
+    console.log("Selected Categories:", productData.Categories);
+  }, [productData.Categories]); // Log the selected categories whenever it changes
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -103,22 +95,8 @@ const AddProductModel = ({onClose}) => {
   };
   
 
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value); // Update the selected category
-  };
-
-  const handleAddCategory = () => {
-    if (selectedCategory) {
-      const categoryName = getCategoryNameById(selectedCategory);
-
-      setProductData({
-        ...productData,
-        Categories: [...productData.Categories, selectedCategory],
-      });
-      setSelectedCategory('');
-      console.log("Selected Categories:", categoryName);
-    }
-  };
+  
+  
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
@@ -128,18 +106,6 @@ const AddProductModel = ({onClose}) => {
     });
   };
 
-  const handleRemoveCategory = (categoryToRemove) => {
-    const updatedCategories = productData.Categories.filter((category) => category !== categoryToRemove);
-    setProductData({
-      ...productData,
-      Categories: updatedCategories,
-    });
-  };
-
-  const getCategoryNameById = (categoryId) => {
-    const category = categories.find((category) => category._id === categoryId);
-    return category ? category.CatagoryName : '';
-  };
 
   const getAvailableCount = () => {
     // Calculate total available count based on sizes and colors
@@ -164,17 +130,39 @@ const AddProductModel = ({onClose}) => {
     return `P${randomNumber}`;
   };
 
+  const handleCategoryChange = (category) => {
+    // If the category is already selected, remove it
+    if (productData.Categories.includes(category)) {
+      setProductData((prevProductData) => ({
+        ...prevProductData,
+        Categories: prevProductData.Categories.filter((cat) => cat !== category && cat !== ''),
+      }));
+    } else {
+      // If selecting a new category, check if it exceeds the limit of two categories
+      if (productData.Categories.length < 2) {
+        setProductData((prevProductData) => ({
+          ...prevProductData,
+          Categories: [...prevProductData.Categories.filter(cat => cat !== ''), category],
+        }));
+      } else {
+        // If two categories are already selected, don't allow selecting more
+        alert("You can only select two categories.");
+      }
+    }
+  };
+  
+  
+
   const handleAddProduct = async () => {
     const productId = generateProductId();
 
-    const categoryName = getCategoryNameById(selectedCategory);
-  
-    // Set the generated product ID in the productData state
-    setProductData(prevProductData => ({
-      ...prevProductData,
-      ProductId: productId,
-      Categories: [...prevProductData.Categories, categoryName]
-    }));
+      // Set the generated product ID in the productData state
+      setProductData(prevProductData => ({
+        ...prevProductData,
+        ProductId: productId,
+        Categories: [...prevProductData.Categories, selectedCategory]
+      }));
+
   
     const updatedProductData = {
       ...productData,
@@ -183,6 +171,7 @@ const AddProductModel = ({onClose}) => {
       AvailableCount: getAvailableCount(),
       Areas: getAreas(),
       Description: productData.Description,
+      Categories: productData.Categories,
     };
   
     updatedProductData.Description = productData.Description;
@@ -194,16 +183,16 @@ const AddProductModel = ({onClose}) => {
       .then((response) => {
         setProducts((prevProducts) => [...prevProducts, response.data]);
         setProductData({
-          ProductId: '',
-          ProductName: '',
-          Categories: [],
-          Price: '',
-          Areas: [],
-          Sizes: [],
-          Colors: [],
-          QuickDeliveryAvailable: false,
-          ImgUrls: [],
-          Description: '',
+        ProductId: '',
+        ProductName: '',
+        Categories: [], 
+        Price: '',
+        Areas: [],
+        Sizes: [],
+        Colors: [],
+        QuickDeliveryAvailable: false,
+        ImgUrls: [],
+        Description: '',
         });
         setDefaultImages([]); // Clear default images after adding product
         toast.success('Product Added Successfully');
@@ -344,35 +333,55 @@ const AddProductModel = ({onClose}) => {
             </div>
           </div>
 
-          <div className="mainbox">
 
+          <div className="mainbox">
             <div>
               <label>3) Categories:</label>
-              <div className='catdiv'>
-              <select value={selectedCategory} onChange={handleCategoryChange} >
-                <option value="" className='optcat'>Select Category</option>
-                {categories.map(category => (
-                  <option key={category._id} value={category._id}>{category.CatagoryName}</option>
-                ))}
-              </select> 
-              <button className='catbtn' type="button" onClick={handleAddCategory}>Add Category</button>
+              <div className="category-checkboxes">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="Men"
+                    checked={productData.Categories.includes("Men")}
+                    onChange={() => handleCategoryChange("Men")}
+                    disabled={productData.Categories.includes("Women")}
+                  />
+                  Men
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="Women"
+                    checked={productData.Categories.includes("Women")}
+                    onChange={() => handleCategoryChange("Women")}
+                    disabled={productData.Categories.includes("Men")}
+                  />
+                  Women
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="Bags"
+                    checked={productData.Categories.includes("Bags")}
+                    onChange={() => handleCategoryChange("Bags")}
+                    disabled={productData.Categories.includes("Shoes")}
+                  />
+                  Bags
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="Shoes"
+                    checked={productData.Categories.includes("Shoes")}
+                    onChange={() => handleCategoryChange("Shoes")}
+                    disabled={productData.Categories.includes("Bags")}
+                  />
+                  Shoes
+                </label>
               </div>
             </div>
-
-            <div className='selectedclass'>
-              {/* Display selected categories */}
-              
-              <ul>
-                {productData.Categories.map((categoryId, index) => (
-                  <li key={index}>
-                    {getCategoryNameById(categoryId)}
-                    <button type="button" onClick={() => handleRemoveCategory(categoryId)}>Remove</button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
           </div>
+
           
 
           <div className="mainbox">

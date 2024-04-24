@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Product.css';
 import { Link } from 'react-router-dom';
+import Footer from './Footer/Footer';
 
 const Product = () => {
   const { id } = useParams(); // Get the 'id' from URL params
@@ -10,11 +11,10 @@ const Product = () => {
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
   const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-
-    console.log(id);
     const fetchProductById = async (productId) => {
       try {
         const response = await axios.get(`http://localhost:3001/api/products/${productId}`);
@@ -26,6 +26,8 @@ const Product = () => {
 
         setProduct(productData); // Update the state with fetched product data
         console.log('Product Details:', productData); // Log product details to console
+        console.log('Available Sizes:', productData.Sizes);
+        console.log('Available Colors:', productData.Colors);
       } catch (error) {
         console.error('Error fetching product:', error);
         // Handle the error as needed, e.g., display an error message
@@ -37,10 +39,6 @@ const Product = () => {
 
   const handleImageClick = (image) => {
     setSelectedImage(image);
-  };
-
-  const handleSizeSelect = (size) => {
-    setSelectedSize(size);
   };
 
   const decrementQuantity = () => {
@@ -63,20 +61,19 @@ const Product = () => {
   }
 
   const handleBuyNow = () => {
-    const checkoutUrl = `/checkout?id=${id}&quantity=${quantity}&size=${selectedSize}&price=${product.price}`;
+    const checkoutUrl = `/checkout?id=${id}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${product.ImgUrls[0]}`;
     navigate(checkoutUrl);
   };
-  
 
   // Render product details once loaded
   return (
     <div>
-      
-      <p className='main1'><Link to='/'>HOME</Link>  <i className="fas fa-angle-right" /> <Link to="/men">MEN  </Link><i className="fas fa-angle-right" />  <Link to="/product/:id">{product.ProductName} </Link></p>
+      <p className='main1'>
+        <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link>
+        <i className="fas fa-angle-right" /> <Link to="/product/:id">{product.ProductName} </Link>
+      </p>
 
       <div className="product-container">
-        
-        
         {/* Left Section */}
         <div className="left-section">
           <div className="main-image">
@@ -96,10 +93,10 @@ const Product = () => {
           )}
         </div>
 
-
         {/* Right Section */}
         <div className="right-section">
           <p className='product_title'>{product.ProductName}</p>
+          <p className='product_price'>LKR.{Number(product.Price).toFixed(2)}</p>
           <div className="ratings1">
             <div className="stars1">
               {/* Render stars based on product rating */}
@@ -112,38 +109,49 @@ const Product = () => {
             </div>
             <span>({product.reviews} Reviews)</span>
           </div>
-          <div className="price1">{product.price}</div>
 
-
-
-          {/* Size Selector (Add your sizes here) */}
-          <label>Select Size: {selectedSize && <span>({selectedSize})</span>}</label>
           <div className="sizebutton">
-            <button
-              className={selectedSize === 'S' ? 'selected' : ''}
-              onClick={() => handleSizeSelect('S')}
-            >
-              S
-            </button>
-            <button
-              className={selectedSize === 'M' ? 'selected' : ''}
-              onClick={() => handleSizeSelect('M')}
-            >
-              M
-            </button>
-            <button
-              className={selectedSize === 'L' ? 'selected' : ''}
-              onClick={() => handleSizeSelect('L')}
-            >
-              L
-            </button>
-            <button
-              className={selectedSize === 'XL' ? 'selected' : ''}
-              onClick={() => handleSizeSelect('XL')}
-            >
-              XL
-            </button>
+            <p>Sizes</p>
+            {product.Sizes.map((sizeObj, index) => (
+              <button
+                key={index}
+                className={selectedSize === sizeObj.size ? 'selected' : ''}
+                onClick={() => setSelectedSize(sizeObj.size)}
+              >
+                {sizeObj.size}
+              </button>
+            ))}
           </div>
+          
+
+          <div className="colorbutton">
+            <p>Colors</p>
+            {product.Colors.map((colorObj, index) => (
+              <button
+                key={index}
+                className={selectedColor === colorObj.name ? 'selected' : ''}
+                onClick={() => {
+                  setSelectedColor(colorObj.name);
+                  // Update the selected image with the image associated with the selected color
+                  setSelectedImage(colorObj.images[0]); // Assuming the image is stored at index 0
+                }}
+              >
+                {colorObj.name}
+              </button>
+            ))}
+          </div>
+          {selectedColor && (
+            <p>Available count for color {selectedColor}: {product.Colors.find(colorObj => colorObj.name === selectedColor).count}</p>
+          )}
+
+
+
+
+
+
+          
+          
+
 
           {/* Quantity */}
           <label>Quantity:</label>
@@ -164,12 +172,10 @@ const Product = () => {
               <button onClick={handleBuyNow}>Buy Now</button>
             </div>
           </div>
-
-          
-
         </div>
       </div>
 
+      <Footer/>
     </div>
   );
 };
