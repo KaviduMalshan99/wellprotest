@@ -3,7 +3,6 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import './EditProductModal.css';
 
-// Define the resizeAndConvertToBase64 function
 const resizeAndConvertToBase64 = (file, maxWidth, maxHeight) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -30,15 +29,11 @@ const resizeAndConvertToBase64 = (file, maxWidth, maxHeight) => {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL('image/jpeg')); // Convert to base64
+        resolve(canvas.toDataURL('image/jpeg'));
       };
-      img.onerror = function (error) {
-        reject(error);
-      };
+      img.onerror = reject;
     };
-    reader.onerror = function (error) {
-      reject(error);
-    };
+    reader.onerror = reject;
   });
 };
 
@@ -81,11 +76,7 @@ const EditProductModal = ({ closeModal, product }) => {
       [name]: value
     }));
   };
-  
-  
-  
 
-  // Handle variant type change
   const handleVariantChange = (e) => {
     const selectedVariant = e.target.value;
     setProductData((prevProductData) => ({
@@ -99,84 +90,74 @@ const EditProductModal = ({ closeModal, product }) => {
     try {
       const updatedProduct = {
         ...editedProduct,
-        ImgUrls: selectedImages, // Include selectedImages in the updated product data
-        Areas: selectedOptions // Include selectedOptions in the Areas field
+        ImgUrls: selectedImages,
+        Areas: selectedOptions,
+        Variations: [...localVariations, ...productData.Sizes, ...productData.Colors],  // Combining existing variations with new sizes and colors
+        Sizes: productData.Sizes,
+        Colors: productData.Colors
       };
-  
-      // Log updatedProduct to verify that Areas data is included
-      console.log("Updated Product:", updatedProduct);
-  
-      // Send the updated product data to the backend
+
+      console.log("Submitting Updated Product:", updatedProduct);
+
       const response = await axios.put(`http://localhost:3001/api/updateproduct/${editedProduct.ProductId}`, updatedProduct);
-  
-      // Check if the update was successful
       if (response.status === 200) {
-        toast.success('Product Update Successfully');
+        toast.success('Product updated successfully');
         closeModal();
       } else {
-        toast.error('Failed to Update the Product');
-        console.error('Error updating product:', response.statusText);
+        toast.error('Failed to update the product');
       }
     } catch (error) {
-      toast.error('Failed to Update the Product');
-      console.error('Error updating product:', error);
+      console.error('Failed to update product:', error);
+      toast.error('Failed to update the product');
     }
   };
-  
 
   const handleAddImage = async (e) => {
     const file = e.target.files[0];
-    const resizedBase64Image = await resizeAndConvertToBase64(file, 300, 300); // Adjust maxWidth and maxHeight as needed
-    console.log("Resized Base64 Encoded Image:", resizedBase64Image);
-    // Now you can use the resizedBase64Image for further processing, such as uploading to the server
+    const resizedBase64Image = await resizeAndConvertToBase64(file, 300, 300);
     setSelectedColorImages((prevImages) => [...prevImages, resizedBase64Image]);
-};
+    console.log("Resized Base64 Encoded Image:", resizedBase64Image);
+  };
 
-const handleRemoveImage = (index) => {
-  const newImages = [...selectedImages];
-  // Remove the image at the specified index
-  newImages.splice(index, 1);
-  // Update the state with the new array
-  setSelectedImages(newImages);
-};
+  const handleRemoveImage = (index) => {
+    const newImages = [...selectedImages];
+    newImages.splice(index, 1);
+    setSelectedImages(newImages);
+  };
 
+  const handleAddSize = (e) => {
+    e.preventDefault();
+    if (sizeInput.trim() !== '' && selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
+      const newSize = {
+        size: sizeInput.trim(),
+        colors: [{
+          name: selectedColorName,
+          count: selectedColorCount,
+          price: selectedColorPrice,
+          images: selectedColorImages
+        }]
+      };
 
-const handleAddSize = () => {
-  if (sizeInput.trim() !== '' && selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
-    const newSize = {
-      size: sizeInput.trim(),
-      colors: [{ // This assumes each size can have multiple colors
-        name: selectedColorName,
-        count: selectedColorCount,
-        price: selectedColorPrice,
-        images: selectedColorImages
-      }]
-    };
+      setProductData(prevData => ({
+        ...prevData,
+        Sizes: [...prevData.Sizes, newSize]
+      }));
 
-    setProductData(prevData => ({
-      ...prevData,
-      Sizes: [...prevData.Sizes, newSize]
-    }));
+      console.log("New Size Data:", newSize);
 
-    // Reset fields after adding a new size
-    setSizeInput('');
-    setSelectedColorName('');
-    setSelectedColorCount(0);
-    setSelectedColorPrice('');
-    setSelectedColorImages([]);
-    console.log("New Size Data:", newSize); // Log for debugging
-  } else {
-    console.error("All fields must be filled.");
-  }
-};
+      setSizeInput('');
+      setSelectedColorName('');
+      setSelectedColorCount(0);
+      setSelectedColorPrice('');
+      setSelectedColorImages([]);
+    } else {
+      console.error("All fields must be filled.");
+    }
+  };
 
-  
-
-  
-
-  const handleAddColor = () => {
+  const handleAddColor = (e) => {
+    e.preventDefault();
     if (selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
-      // Create a new color object including name, count, price, and images
       const newColor = {
         name: selectedColorName,
         count: selectedColorCount,
@@ -184,13 +165,13 @@ const handleAddSize = () => {
         images: selectedColorImages
       };
 
-      // Update the product data state with the new color
       setProductData(prevProductData => ({
         ...prevProductData,
-        Colors: [...prevProductData.Colors, newColor],
+        Colors: [...prevProductData.Colors, newColor]
       }));
 
-      // Clear the input fields after adding color
+      console.log("New Color Data:", newColor);
+
       setSelectedColorName('');
       setSelectedColorCount(0);
       setSelectedColorPrice('');
@@ -217,12 +198,10 @@ const handleAddSize = () => {
     });
   };
 
-  // Handle option selection change
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
-  // Handle adding option
   const handleAddOption = () => {
     if (selectedOption) {
       setSelectedOptions([...selectedOptions, selectedOption]);
@@ -231,14 +210,12 @@ const handleAddSize = () => {
     }
   };
 
-  // Handle removing option
   const handleRemoveOption = (index) => {
     const newOptions = [...selectedOptions];
     newOptions.splice(index, 1);
     setSelectedOptions(newOptions);
   };
 
-  // Handle description change
   const handleDescriptionChange = (e) => {
     const { name, value } = e.target;
     setEditedProduct({
@@ -252,9 +229,7 @@ const handleAddSize = () => {
     if (files && files.length > 0) {
       const file = files[0];
       try {
-        // Resize and convert the image to base64
         const base64String = await resizeAndConvertToBase64(file, 400, 400);
-        // Update the selectedImages state with the base64 string
         setSelectedImages((prevImages) => [...prevImages, base64String]);
       } catch (error) {
         console.error('Error resizing and converting image:', error);
@@ -269,10 +244,9 @@ const handleAddSize = () => {
       ...prevData,
       Sizes: newSizes
     }));
-    console.log("Updated Sizes after removal:", newSizes); // Debugging log
+    console.log("Updated Sizes after removal:", newSizes);
   };
-  
-  
+
   const handleSave = () => {
     if (editedVariation && localVariations) {
       const updatedVariations = localVariations.map(variation =>
@@ -289,24 +263,18 @@ const handleAddSize = () => {
       setEditedVariation(null);
     }
   };
-  
-  
-  
 
   const handleCancel = () => {
-    setEditedVariation(null); // Clear the edited variation state on cancel
+    setEditedVariation(null);
   };
 
   const handleEdit = (variation, e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-  
-    // Initialize the editing with image data if available
+    e.preventDefault();
     setEditedVariation({
       ...variation,
       image: variation.images.length > 0 ? variation.images[0] : null
     });
   };
-  
 
   return (
     <div className="editModelContainer">
