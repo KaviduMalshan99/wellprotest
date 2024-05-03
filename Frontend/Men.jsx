@@ -7,6 +7,7 @@ import Koko from '../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from './Header/Header';
+
 import Footer from './Footer/Footer';
 
 const Men = () => {
@@ -289,6 +290,7 @@ useEffect(() => {
           ))}
         </div>
       </div>
+
 
       <Footer/>
     </div>
