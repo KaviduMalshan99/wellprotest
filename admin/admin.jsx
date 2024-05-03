@@ -14,6 +14,8 @@ import './admin.css'
 import UserDetails from './UserDetails';
 import Logo from '../src/assets/logo.png'
 import RefundOrders from './refundOrders';
+import RefundEmail from './refundEmail'
+
 
 const Admin = () => {
   const [selectedSection, setSelectedSection] = useState('dashboard');
@@ -81,6 +83,7 @@ const Admin = () => {
             <Route path='/supplier' element={<Suppliers/>}/>
             <Route path='/warehouse' element={<Warehouse/>}/>
             <Route path="/refundorder" element={<RefundOrders />} />
+            <Route path="/refundemail" element={<RefundEmail/>} />
 
           </Routes>
         </div>

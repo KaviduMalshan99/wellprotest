@@ -1,0 +1,92 @@
+/* Global styles */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* RefundForm container */
+  
+  .refund-form-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F7FAFC;
+  }
+  
+  /* RefundForm inner container */
+  
+  .refund-form-inner {
+    max-width: 400px;
+    padding: 48px;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header styles */
+  
+  .refund-form-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  .refund-form-header h1 {
+    font-size: 32px;
+    margin-bottom: 24px;
+  }
+  
+  .refund-form-header p {
+    font-size: 18px;
+    color: #718096;
+  }
+  
+  /* Form field styles */
+  
+  .form-field {
+    margin-bottom: 24px;
+
+  }
+  
+  .form-field label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .form-field input,.form-field textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #CBD5E0;
+  }
+  
+  /* Button styles */
+  
+  .send-button {
+    background-color: #4299E1;
+    color: #FFFFFF;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    border-radius: 25px;
+
+  }
+  
+  .send-button:hover {
+    background-color: #2A7AE4;
+  }
+  
+  /* Toast container styles */
+  
+  .toast-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+  }

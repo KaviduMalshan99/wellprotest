@@ -3,7 +3,8 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './refundNow.css';
-import { useNavigate } from 'react-router-dom'; // Importing useNavigate hook
+import { useNavigate, Link } from 'react-router-dom'; // Importing useNavigate hook
+import Footer from '../Footer/Footer';
 
 
 
@@ -193,11 +194,11 @@ const Refund = () => {
             <div className="rnmh">Refund</div>
             <div className="rnlp">Home &gt; Refund</div>
             <div className="rnmbtns">
-                <Link to='/refundpolicy'><button className="transparent-button" >
+                <Link to='/refundpolicy'><button id="transparent-buttonr" >
                     Refund Policy
                 </button></Link>
                 {" | "}
-                <Link to='/refund'><button className="transparent-button" >
+                <Link to='/refund'><button id="transparent-buttonr" >
                     Refund Now
                 </button></Link>
             </div>
@@ -267,6 +268,7 @@ const Refund = () => {
                 </div>
                 
             </center>
+            <Footer/>
             <ToastContainer />
         </div>
     );

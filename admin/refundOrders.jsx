@@ -5,12 +5,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import './refundOrders.css';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { Link, useNavigate } from 'react-router-dom'; // Importing useNavigate hook
 
 
 const RefundOrders = () => {
   const [refunds, setRefunds] = useState([]);
   const [filteredRefunds, setFilteredRefunds] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate(); // Initializing navigate function
+
 
   useEffect(() => {
     axios.get('http://localhost:3001/api/refunds')
@@ -146,7 +149,7 @@ const RefundOrders = () => {
                 </td>
                 <td>
                   <button className='deletebtn' onClick={() => handleDelete(refund?.orderId)}>Delete</button>
-                  <button className='send-email-btn' onClick={() => handleSendEmail(refund?.orderId, refund?.customerEmail)}>Send Email</button>
+                  <button className='send-email-btn' onClick={() => navigate('/refundemail')}>Send Email</button>
 
                 </td>
               </tr>

@@ -13,9 +13,9 @@ const Orders = () => {
   return (
     <div className='mainContainer'>
       {/* Button triggering the refund */}
-      <button type="button" className='rbutton' onClick={handleRefundClick}>Refund Orders</button>
-      <button type="button" className='rbutton' >Orders</button>
-      <button type="button" className='rbutton' >Cancel Orders</button>
+      <button type="button" className='obutton' onClick={handleRefundClick}>Refund Orders</button>
+      <button type="button" className='obutton' >Orders</button>
+      <button type="button" className='obutton' >Cancel Orders</button>
 
     </div>
   );

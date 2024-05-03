@@ -44,8 +44,10 @@
 
 /* Button container */
 .rnmbtns {
-    margin-top: 20px;
-    text-align: center;
+  margin-top: 20px;
+  display: flex; /* Change to flex */
+  justify-content: center; /* Center align horizontally */
+  gap: 10px; /* Add gap between buttons */
 }
 /* Form container */
 .rnmcont {
@@ -87,7 +89,7 @@
     border-color: rgb(153, 153, 153); /* Change border color on hover if desired */
   }
   
-  .transparent-buttonr {
+  #transparent-buttonr {
     background: none;
     text-decoration: none;
     border: none;
@@ -95,9 +97,12 @@
     cursor: pointer;
     font-size: 16px; /* Adjust font size as needed */
     font-weight: bold; /* Optionally, adjust font weight */
+    width: 150px; /* Increase button width */
+    margin-top: -10%;
+
   }
   
-  .transparent-buttonr:hover {
+  #transparent-buttonr:hover {
     opacity: 0.7; /* Adjust opacity on hover as desired */
   }
   
