@@ -1,0 +1,42 @@
+.mainNotification {
+    margin-top: 20px;
+    height: 50px;
+    background-color: white;
+    width: 98%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+  }
+
+  .mainNotification .minnotofititle{
+    font-size: 10px;
+    margin-left: 15px;
+  }
+  
+  .mainNotification ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .mainNotification ul li {
+    margin-left: 10px; 
+  }
+  
+  .mainNotification ul li i {
+    font-size: 20px; 
+    color: #07223D;
+  }
+
+  .mainNotification .mainname p{
+    font-size: 20px;
+    margin-top: 8px;
+    font-weight: bold;
+  }
+  

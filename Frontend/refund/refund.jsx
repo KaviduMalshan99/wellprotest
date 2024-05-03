@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Footer from '../Footer/Footer'
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -91,11 +93,13 @@ const Refund = () => {
             <div className="rnmh">Refund</div>
             <div className="rnlp">Home &gt; Refund</div>
             <div className="rnmbtns">
+
                 <Link to='/refundpolicy'><button id="transparent-buttonr" >
                     Refund Policy
                 </button></Link>
                 <div className='ira'>{" | "}</div>
                 <Link to='/refund'><button id="transparent-buttonr" >
+
                     Refund Now
                 </button></Link>
             </div>

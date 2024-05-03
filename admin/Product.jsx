@@ -6,6 +6,9 @@ import { toast,ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EditProductModal from '../admin/EditProductModal';
 import { Modal } from '@mui/material';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import Notification from './Notification';
 
 
 const Product = () => {
@@ -73,12 +76,59 @@ const Product = () => {
   };
 
   
+  const generateReport = () => {
+    const doc = new jsPDF();
+  
+    // Define table headers
+    const headers = ['ID', 'Product Name', 'Price'];
+  
+    // Define table data
+    const data = filteredProducts.map(product => [
+      product.ProductId,
+      product.ProductName,
+      product.Price
+    ]);
+  
+    // Set table styles
+    const tableProps = {
+      startY: 20,
+      margin: { top: 20 },
+      styles: {
+        cellPadding: 0.5,
+        fontSize: 10,
+        valign: 'middle',
+        halign: 'center',
+      },
+      headStyles: {
+        fillColor: [41, 128, 185],
+        textColor: 255,
+        fontStyle: 'bold',
+      },
+      theme: 'striped',
+      head: [headers],
+      body: data,
+    };
+  
+    // Add table to the document
+    doc.autoTable(tableProps);
+  
+    // Save the PDF
+    doc.save('product_report.pdf');
+  };
+  
+  
 
+  
 
   return (
     <div className='ProductContainer'>
+      
 
-      <h1>Products Section</h1>
+      <Notification/>
+
+      <div className="productsecondiv">
+
+      <h1 className='PRODUCTTITLE'>Products Section</h1>
 
 
       <div className="search-bar">
@@ -93,9 +143,12 @@ const Product = () => {
           <i className="fas fa-search" />
         </button>
       </div>
-
+      
       <div className="addProductSection" > 
-        <button type='button' onClick={toggleAddModal}>
+      <button className='PRODUCTGenarate' onClick={generateReport}>Generate Report</button>
+
+
+        <button type='button' className='PRODUCTADDPRO' onClick={toggleAddModal}>
           <i className="fas fa-plus"></i>Add Products
         </button>
         <Modal open={isAddModalOpen} onClose={toggleAddModal} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -140,7 +193,7 @@ const Product = () => {
                     )}
                 </td>
                 <td>{product.ProductName}</td>
-                <td>{product.Price}</td>
+                <td>{`${Math.min(...product.Variations.map(variation => variation.price))} - ${Math.max(...product.Variations.map(variation => variation.price))}`}</td>
                 <td>
                   <button className="edit-btn" onClick={() => toggleEditModal(product.ProductId)}>Edit</button>
                 </td>
@@ -156,12 +209,13 @@ const Product = () => {
       {isEditModalOpen && (
         <Modal open={isEditModalOpen} onClose={toggleEditModal} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <div style={{justifyContent:'center', width: '80%', maxWidth: '1000px', borderRadius:'10px',maxHeight: '85vh', overflowY: 'auto', backgroundColor: '#cfd2d2', padding: '20px',  }}>
-            <EditProductModal closeModal={toggleEditModal} product={selectedProduct} />
+          <EditProductModal closeModal={toggleEditModal} product={selectedProduct} />
           </div>
         </Modal>
       )}
 
       <ToastContainer/>
+      </div>
     </div>
   )
 }

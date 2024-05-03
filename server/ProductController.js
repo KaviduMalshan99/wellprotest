@@ -16,11 +16,8 @@ const addProduct = (req, res, next) => {
         ProductId,
         ProductName,
         Categories, 
-        Price,
         Areas,
-        Ratings,
-        Sizes,
-        Colors,
+        Variations,
         ImgUrls,
         Description,
         QuickDeliveryAvailable
@@ -31,11 +28,8 @@ const addProduct = (req, res, next) => {
         ProductId: ProductId,
         ProductName: ProductName,
         Categories: Categories,
-        Price: Price,
         Areas:Areas,
-        Ratings: Ratings,
-        Sizes: Sizes,
-        Colors: Colors,
+        Variations:Variations,
         ImgUrls: ImgUrls,
         Description:Description,
         QuickDeliveryAvailable: QuickDeliveryAvailable
@@ -52,11 +46,12 @@ const addProduct = (req, res, next) => {
 };
 
 const updateProduct = (req, res, next) => {
-    const { ProductId,ProductName,Categories,Price,Areas,Ratings,Sizes,Colors,ImgUrls,Description,QuickDeliveryAvailable } = req.body;
+    const { ProductId, ProductName, Categories, Areas, Variations, ImgUrls, Description, QuickDeliveryAvailable } = req.body;
 
+    // Corrected the parameter name to match the route parameter
     Product.findOneAndUpdate(
-        { ProductId: req.params.ProductId }, // Corrected here
-        { $set: { ProductName, Categories, Price, Areas, Ratings, Sizes, Colors, ImgUrls, Description, QuickDeliveryAvailable } },
+        { ProductId: req.params.productId }, // Corrected here
+        { $set: { ProductName, Categories, Areas, Variations, ImgUrls, Description, QuickDeliveryAvailable } },
         { new: true }
     )
         .then(response => {
@@ -65,7 +60,8 @@ const updateProduct = (req, res, next) => {
         .catch(error => {
             res.json({ error });
         });
-};  
+};
+
 
 
 

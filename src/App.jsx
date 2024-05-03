@@ -12,35 +12,15 @@ import Header from '../Frontend/Header/Header'
 import Refund from '../Frontend/refund/refund'
 import RefundEdit from '../Frontend/refund/refundEdit'
 import RefundPolicy from '../Frontend/refund/refundPolicy';
+import Checkout from '../Frontend/Header/Checkout';
+import MenBag from '../Frontend/Header/MenBag';
+import MenShoes from '../Frontend/Header/MenShoes';
 
 function App() {
   return (
     <div>
-     <Router> {/* Changed to Router */}
-        <Routes>
-          <Route path='/' element={<Home />} /> 
-          <Route path='/men' element={<Men />} /> 
-          <Route path='/women' element={<Women />} /> 
-          <Route path='/best' element={<Best />} /> 
-          <Route path='/admin' element={<Admin />} />
-          <Route path='/product/:id' element={<Product />} /> 
-          <Route path='/cart' element={<Cart />} />
-          {/* <Route path='/checkout' element={<Checkout />} /> */}
-          <Route path='/refund' element={<Refund />} />
-          <Route path='/refundedit/:orderId' element={<RefundEdit />} />
-          <Route path='/refundPolicy' element={<RefundPolicy />} />
+     <Admin/>
 
-
-
-          {/* Header parts */}
-          <Route path='/header' element={<Header />} /> 
-
-
-          {/* Footer parts */}
-          
-
-        </Routes>
-      </Router> 
     </div>
 
    

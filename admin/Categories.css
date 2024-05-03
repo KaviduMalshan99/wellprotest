@@ -1,4 +1,7 @@
-
+.mainContainer .CATMAINTITLE{
+  font-size: 22px;
+  margin-top: 10px;
+}
 
 .CATsearch-bar{
   padding-bottom: 20px;
@@ -25,7 +28,7 @@
     
 }
   
-.addCategorySection h2 {
+.addCategorySection .Cath2title {
  font-size: 18px;
  font-weight: bold;
 }
@@ -104,7 +107,7 @@
     cursor: pointer;
   }
 
-  .categorytable .editbtn {
+  .categorytable .CATeditbtn {
     padding: 5px 20px 5px 20px;
     background-color: #07223D;
     color: #fff;
@@ -134,6 +137,10 @@
   .categorytable .CATedittext{
     width: 300px;
     margin-bottom: 0px;
+  }
+
+  .subtitle{
+    margin-top: 20px;
   }
 
   
