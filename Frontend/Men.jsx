@@ -6,6 +6,7 @@ import Mint from '../src/assets/int.png'
 import Koko from '../src/assets/koko.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faHeart } from '@fortawesome/free-solid-svg-icons';
+import Footer from './Footer/Footer';
 
 const Men = () => {
   const [data, setData] = useState([]);
@@ -64,6 +65,7 @@ const Men = () => {
           </div>
         ))}
       </div>
+      <Footer/>
     </div>
   );
 };

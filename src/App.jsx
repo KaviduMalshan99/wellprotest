@@ -27,7 +27,8 @@ function App() {
           <Route path='/admin' element={<Admin />} />
           <Route path='/product/:id' element={<Product />} /> 
           <Route path='/cart' element={<Cart />} />
-
+          <Route path='/checkout' element={<Checkout />} />
+          
 
 
           {/* Header parts */}

@@ -9,6 +9,8 @@ const orderContraller = require('./OrderController');
 const productContraller = require('./ProductController'); 
 const reviewcontroller = require('./ReviewController');
 const faqcontroller = require('./FaqController');
+const RefundController = require('./RefundController');
+
 
 router.get('/users',contraller.getUsers);
 router.post('/createuser',contraller.addUser);
@@ -52,5 +54,12 @@ router.delete('/deletereview',reviewcontroller.deleteReview);
 //faq
 router.get('/faqs',faqcontroller.getFaq);
 router.post('/addfaqs',faqcontroller.addFaq);
+
+//refund
+router.post('/addrefund', RefundController.addRefund);
+router.get('/refunds', RefundController.getRefunds);
+router.delete('/deleterefund/:id', RefundController.deleteRefund);
+router.put('/updaterefund/:orderId', RefundController.updateRefund);
+router.get('/refund/:orderId', RefundController.getRefundById);
 
 module.exports = router;

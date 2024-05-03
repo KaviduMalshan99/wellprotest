@@ -124,11 +124,11 @@ const RefundEdit = () => {
       <div className="rnmh">Refund</div>
       <div className="rnlp">Home &gt; Refund</div>
       <div className="rnmbtns">
-        <button className="transparent-button" onClick={() => navigate('/refundPolicy')}>
+        <button className="transparent-buttonr" onClick={() => navigate('/refundPolicy')}>
           Refund Policy
         </button>
         {" | "}
-        <button className="transparent-button" onClick={() => navigate(`/`)}>
+        <button className="transparent-buttonr" onClick={() => navigate(`/`)}>
           Refund Now
         </button>
       </div> 
@@ -196,7 +196,7 @@ const RefundEdit = () => {
                       {newRefund.imgUrls.map((imageUrl, index) => (
                         <div key={index} className="image-wrapper">
                           <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100px', height: '100px' }} />
-                          <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+                          <button type="buttonr" onClick={() => handleRemoveImage(index)}>Remove</button>
                         </div>
                       ))}
                     </div>
