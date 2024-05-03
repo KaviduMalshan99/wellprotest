@@ -1,0 +1,20 @@
+.obutton {
+    border: none;
+    width: 20%;
+    padding: 10px 0 10px 0;
+    border-radius: 10px;
+    background-color: #07223D;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    margin-left:35% ;
+    margin-bottom: 5px;
+    margin-top: 10%;
+    cursor: pointer;
+  }
+  
+  .obutton :hover {
+    background: rgb(2, 0, 36);
+    background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+    
+}
