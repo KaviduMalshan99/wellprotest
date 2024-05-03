@@ -1,10 +1,13 @@
 import React from 'react';
 import './refundPolicy.css'
-import { useNavigate } from 'react-router-dom'; // Importing useNavigate hook
+// import { useNavigate } from 'react-router-dom'; // Importing useNavigate hook
+import Footer from '../Footer/Footer'
+
+import { Link, useNavigate } from 'react-router-dom'; // Importing useNavigate hook
 
 
 const RefundPolicy = () => {
-    const navigate = useNavigate();
+    
 
     return (
         <div>
@@ -19,6 +22,8 @@ const RefundPolicy = () => {
                     Refund Now
                 </button>
             </div> 
+
+            <Footer/>
         </div>
     );
 };

@@ -1,6 +1,8 @@
 // RefundController.js
 const { response } = require('./app');
 const Refund = require('./RefundModel');
+const Order = require('./OrdersModel'); // Import the Order model
+
 //const fs = require('fs');
 
 
@@ -31,33 +33,31 @@ const getRefundById = async (req, res, next) => {
 };
 
 
-const addRefund = (req, res, next) => {
+const addRefund = async (req, res, next) => {
     const { orderId, customerName, customerEmail, reason, refundDate, imgUrls } = req.body;
-    // const image = req.file;
 
-    // const imageStream = fs.createReadStream(image.path);
+    try {
+        // Check if the orderId exists in the orders table
+        const orderExists = await Order.exists({ orderId: orderId });
+        if (!orderExists) {
+            return res.status(400).json({ error: 'Order ID does not exist' });
+        }
 
-
-    const NewRefund = new Refund({
-        orderId:orderId,
-        customerName:customerName,
-        customerEmail:customerEmail,
-        reason:reason,
-        refundDate:refundDate,
-        imgUrls:imgUrls,
-        // image: {
-        //     data: imageStream,
-        //     contentType: image.mimetype
-        // }
-    });
-
-    NewRefund.save()
-        .then(response => {
-            res.json({ response });
-        })
-        .catch(error => {
-            res.json({ error });
+        // If the orderId exists, proceed to add the refund
+        const newRefund = new Refund({
+            orderId: orderId,
+            customerName: customerName,
+            customerEmail: customerEmail,
+            reason: reason,
+            refundDate: refundDate,
+            imgUrls: imgUrls
         });
+
+        const savedRefund = await newRefund.save();
+        res.json({ response: savedRefund });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 const updateRefund = (req, res, next) => {
