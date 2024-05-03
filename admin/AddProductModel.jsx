@@ -59,7 +59,6 @@ const AddProductModel = ({onClose}) => {
 
 
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [selectedColorCount, setSelectedColorCount] = useState(0);
   const [selectedColorImages, setSelectedColorImages] = useState([]); // Images for selected color
   const [defaultImages, setDefaultImages] = useState([]); // Default images
@@ -68,8 +67,8 @@ const AddProductModel = ({onClose}) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [sizeCount, setSizeCount] = useState(0);
   const [priceError, setPriceError] = useState('');
+  const [selectedColorPrice,setSelectedColorPrice]=useState([]);
 
   useEffect(() => {
     console.log("Selected Categories:", productData.Categories);
@@ -154,15 +153,48 @@ const AddProductModel = ({onClose}) => {
   
 
   const handleAddProduct = async () => {
+
+    if (
+      productData.ProductName.trim() === '' ||
+      productData.Categories.length === 0 ||
+      selectedOptions.length === 0
+    ) {
+      // Display an error message if any required field is empty
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+
     const productId = generateProductId();
-
-      // Set the generated product ID in the productData state
-      setProductData(prevProductData => ({
-        ...prevProductData,
-        ProductId: productId,
-        Categories: [...prevProductData.Categories, selectedCategory]
+  
+    // Set the generated product ID in the productData state
+    setProductData(prevProductData => ({
+      ...prevProductData,
+      ProductId: productId,
+      Categories: [...prevProductData.Categories, selectedCategory]
+    }));
+  
+    // Prepare variations array based on the selected variant type
+    let Variations = [];
+    if (productData.VariantType === "Many Sizes with Many Colors") {
+      // Prepare variations based on sizes and colors
+      Variations = productData.Sizes.map(size => ({
+        size: size.size,
+        name: size.color.name,
+        count: size.color.count,
+        images: size.color.images,
+        price: size.color.price
       }));
-
+    } else if (productData.VariantType === "Only Colors") {
+      // Prepare variations based on colors only
+      Variations = productData.Colors.map(color => ({
+        size: '', // No size for colors-only variant
+        name: color.name,
+        count: color.count,
+        images: color.images,
+        price: color.price
+      }));
+    }
   
     const updatedProductData = {
       ...productData,
@@ -172,27 +204,22 @@ const AddProductModel = ({onClose}) => {
       Areas: getAreas(),
       Description: productData.Description,
       Categories: productData.Categories,
+      Variations: Variations 
     };
   
-    updatedProductData.Description = productData.Description;
-    console.log('Description:', updatedProductData.Description);
-
-    
     axios
       .post('http://localhost:3001/api/addproduct', updatedProductData)
       .then((response) => {
         setProducts((prevProducts) => [...prevProducts, response.data]);
         setProductData({
-        ProductId: '',
-        ProductName: '',
-        Categories: [], 
-        Price: '',
-        Areas: [],
-        Sizes: [],
-        Colors: [],
-        QuickDeliveryAvailable: false,
-        ImgUrls: [],
-        Description: '',
+          ProductId: '',
+          ProductName: '',
+          Categories: [],
+          Variations: [],
+          Areas: [],
+          QuickDeliveryAvailable: false,
+          ImgUrls: [],
+          Description: '',
         });
         setDefaultImages([]); // Clear default images after adding product
         toast.success('Product Added Successfully');
@@ -206,45 +233,83 @@ const AddProductModel = ({onClose}) => {
   };
   
   
-
-  const handleAddColor = () => {
-    if (selectedColorName && selectedColorImages.length > 0 && selectedColorCount > 0) { // Check if all required fields are filled
-      setProductData({
-        ...productData,
-        Colors: [
-          ...productData.Colors,
-          { name: selectedColorName, count: selectedColorCount, images: selectedColorImages } // Include count in the color object
-        ],
-      });
-      setSelectedColorName(''); // Reset selected color name after adding
-      setSelectedColorImages([]); // Reset selected color images after adding
-      setSelectedColorCount(0); // Reset selected color count after adding
-    } else {
-      // Display an error message or take appropriate action if any required field is missing
-      console.error("Please select a color name, enter available count, and select at least one image.");
-    }
-  };
   
 
-  const handleRemoveColor = (index) => {
-    const newColors = [...productData.Colors];
-    newColors.splice(index, 1);
-    setProductData({
-      ...productData,
-      Colors: newColors,
-    });
-  };
+  
 
   const handleAddSize = () => {
-    if (sizeInput.trim() !== '' && sizeCount > 0) {
+    if (sizeInput.trim() !== '' && selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
+      // Log the size before updating the state
+      console.log("Size added:", sizeInput.trim());
+      
+      // Create a new size object including color name, count, price, and images
+      const newSize = {
+        size: sizeInput.trim(),
+        color: {
+          name: selectedColorName,
+          count: selectedColorCount,
+          price: selectedColorPrice,
+          images: selectedColorImages
+        }
+      };
+  
+      // Log the new size data
+      console.log("New Size Data:", newSize);
+  
+      // Update the product data state with the new size
       setProductData({
         ...productData,
-        Sizes: [...productData.Sizes, { size: sizeInput.trim(), count: sizeCount }], // Include count for each size
+        Sizes: [...productData.Sizes, newSize],
       });
-      setSizeInput(''); // Clear the size input field
-      setSizeCount(0); // Clear the count input field
+  
+      // Clear the input fields after adding size
+      setSizeInput('');
+      setSelectedColorName('');
+      setSelectedColorCount(0);
+      setSelectedColorPrice('');
+      setSelectedColorImages([]);
+    } else {
+      // Log an error if any of the required fields is missing
+      console.error("Please fill in all the required fields.");
     }
   };
+
+    const handleAddColor = () => {
+      if (selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
+        // Create a new color object including name, count, price, and images
+        const newColor = {
+          name: selectedColorName,
+          count: selectedColorCount,
+          price: selectedColorPrice,
+          images: selectedColorImages
+        };
+    
+        // Update the product data state with the new color
+        setProductData(prevProductData => ({
+          ...prevProductData,
+          Colors: [...prevProductData.Colors, newColor],
+        }));
+    
+        // Clear the input fields after adding color
+        setSelectedColorName('');
+        setSelectedColorCount(0);
+        setSelectedColorPrice('');
+        setSelectedColorImages([]);
+      } else {
+        // Log an error if any of the required fields is missing
+        console.error("Please fill in all the required fields.");
+      }
+    };
+  
+    const handleRemoveColor = (index) => {
+      const newColors = [...productData.Colors];
+      newColors.splice(index, 1);
+      setProductData({
+        ...productData,
+        Colors: newColors,
+      });
+    };
+    
 
   const handleRemoveSize = (index) => {
     const newSizes = [...productData.Sizes];
@@ -316,6 +381,16 @@ const AddProductModel = ({onClose}) => {
   };
 
 
+  const handleVariantChange = (e) => {
+    const selectedVariant = e.target.value;
+    // Update the product data state based on the selected variant
+    setProductData((prevProductData) => ({
+      ...prevProductData,
+      VariantType: selectedVariant,
+    }));
+  };
+
+
   return (
     <div className="ProductModelContainer">
       <h1>Add Product</h1>
@@ -328,15 +403,15 @@ const AddProductModel = ({onClose}) => {
               <input type="text" className='pid' name="ProductId" value={productData.ProductId || generateProductId()} onChange={handleChange} readOnly/>
             </div>
             <div>
-              <label>2 ) Product Name:</label>
-              <input type="text" className='pname' name="ProductName" value={productData.ProductName} onChange={handleChange} />
+              <label>2 ) Product Name:(*)</label>
+              <input required type="text" className='pname' name="ProductName" value={productData.ProductName} onChange={handleChange} />
             </div>
           </div>
 
 
           <div className="mainbox">
             <div>
-              <label>3) Categories:</label>
+              <label>3) Categories:(*)</label>
               <div className="category-checkboxes">
                 <label>
                   <input
@@ -382,81 +457,151 @@ const AddProductModel = ({onClose}) => {
             </div>
           </div>
 
-          
-
           <div className="mainbox">
             <div>
-              <label>4) Price:</label>
-              <input type="text" className='pprice' name="Price" value={productData.Price} onChange={handleChange} />
-              {priceError && <p className="error-message" style={{ color: 'red' }}>{priceError}</p>}
-
-            </div>
-            
-          </div>
-
-
-          
-          <div className="mainbox">
-            <div className='dilevary'>
-              <label>5) Quick Delivery Available:</label>
-              <input
-                type="checkbox"
-                name="QuickDeliveryAvailable"
-                checked={productData.QuickDeliveryAvailable}
-                onChange={handleCheckboxChange}
-              />
+              <label>4) Select Variant Type:</label>
+              <select value={productData.VariantType} onChange={handleVariantChange}>
+                <option value="">Select Variant Type</option>
+                <option value="Many Sizes with Many Colors">Many Sizes with Many Colors</option>
+                <option value="Only Colors">Only Colors</option>
+              </select>
             </div>
           </div>
-          
 
-
-
-          <div className="mainbox">
-            <div className='sd1'>
-            <label>6) Sizes:</label>
-            <div className='dd1'>
-              <label htmlFor="">Add Size : </label>
-              <input
-                type="text"
-                value={sizeInput}
-                onChange={(e) => setSizeInput(e.target.value)}
-                placeholder="Enter size"
-              />
-            </div>
-
-            <div className='dd2'>
-              <label htmlFor="">Add Count :</label>
-              <input
-                type="number"
-                value={sizeCount}
-                onChange={(e) => setSizeCount(e.target.value)}
-                placeholder="Enter count"
-              />
-            </div>
-              
-              
-              <button type="button" className='sizeaddbtn' onClick={handleAddSize}>Add Size</button>
-            </div>
-
-            <div className='sd2'>
-                {productData.Sizes.map((size, index) => (
-                  <div key={index} className='size-item'>
-                    <span>{size.size}</span>
-                    <span>{size.count}</span>
-                    <button type="button" onClick={() => handleRemoveSize(index)}>Remove</button>
+          {productData.VariantType && (
+            <div className="mainbox">
+              {/* Render sections dynamically based on selected variant */}
+              {productData.VariantType === "Many Sizes with Many Colors" && (
+                <div>
+                  <label>4) Many Sizes with Many Colors:</label>
+                  <div>
+                    <label>Add Size:</label>
+                    <input
+                      type="text"
+                      value={sizeInput}
+                      onChange={(e) => setSizeInput(e.target.value)}
+                      placeholder="Enter size"
+                    />
+                    <label>Color Name:</label>
+                    <input
+                      type="text"
+                      value={selectedColorName}
+                      onChange={(e) => setSelectedColorName(e.target.value)}
+                      placeholder="Enter color name"
+                    />
+                    <label>Available Count:</label>
+                    <input
+                      type="number"
+                      value={selectedColorCount}
+                      onChange={(e) => setSelectedColorCount(e.target.value)}
+                      placeholder="Enter available count"
+                    />
+                    <label>Price:</label>
+                    <input
+                      type="number"
+                      value={selectedColorPrice}
+                      onChange={(e) => setSelectedColorPrice(e.target.value)}
+                      placeholder="Enter price"
+                    />
+                    <input type="file" onChange={handleAddImage} accept="image/*" />
+                    {/* Display selected images for the current color */}
+                    <div>
+                      {selectedColorImages.map((image, index) => (
+                        <div key={index}>
+                          <img src={image} alt={`Color Image ${index}`} />
+                          <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+                        </div>
+                      ))}
+                    </div>
+                    <button type="button" onClick={handleAddSize}>Add Details</button>
                   </div>
-                ))}
-            </div> 
 
-          </div>
+                  {/* Display added sizes */}
+                    <div className='sd2'>
+                      {productData.Sizes.map((size, index) => (
+                        <div key={index} className='size-item'>
+                          <span>Size:{size.size}</span>
+                          <span>Color Name:{size.color.name}</span>
+                          <span>Count: {size.color.count}</span>
+                          <span>Price:{size.color.price}</span>
+                          <div>
+                            {size.color.images.map((image, imgIndex) => (
+                              <img key={imgIndex} src={image} alt={`Color Image ${index}-${imgIndex}`} />
+                            ))}
+                          </div>
+                          <button type="button" onClick={() => handleRemoveSize(index)}>Remove</button>
+                        </div>
+                      ))}
+                    </div>
 
 
+                  
+                </div>
+              )}
+              {productData.VariantType === "Only Colors" && (
+                <div>
+                  <label>4) Only Colors:</label>
+                  <div>
+                    <label>Color Name:</label>
+                    <input
+                      type="text"
+                      value={selectedColorName}
+                      onChange={(e) => setSelectedColorName(e.target.value)}
+                      placeholder="Enter color name"
+                    />
+                    <label>Available Count:</label>
+                    <input
+                      type="number"
+                      value={selectedColorCount}
+                      onChange={(e) => setSelectedColorCount(e.target.value)}
+                      placeholder="Enter available count"
+                    />
+                    <label>Price:</label>
+                    <input
+                      type="number"
+                      value={selectedColorPrice}
+                      onChange={(e) => setSelectedColorPrice(e.target.value)}
+                      placeholder="Enter price"
+                    />
+                    <input type="file" onChange={handleAddImage} accept="image/*" />
+                    {/* Display selected images for the current color */}
+                    <div>
+                      {selectedColorImages.map((image, index) => (
+                        <div key={index}>
+                          <img src={image} alt={`Color Image ${index}`} />
+                          <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+                        </div>
+                      ))}
+                    </div>
+                    <button type="button" onClick={handleAddColor}>Add Color</button>
+                  </div>
 
+                  {/* Display added colors */}
+                  <div className='sd2'>
+                    {productData.Colors.map((color, index) => (
+                      <div key={index} className='size-item'>
+                        <span>Color Name:{color.name}</span>
+                        <span>Count: {color.count}</span>
+                        <span>Price:{color.price}</span>
+                        <div>
+                          {color.images.map((image, imgIndex) => (
+                            <img key={imgIndex} src={image} alt={`Color Image ${index}-${imgIndex}`} />
+                          ))}
+                        </div>
+                        <button type="button" onClick={() => handleRemoveColor(index)}>Remove</button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
+            </div>
+          )}
 
+          
           <div className="mainbox">
             <div>
-              <label>7) Areas:</label>
+              <label>5) Areas:(*)</label>
               <div className='catdiv'>
                 <select value={selectedOption} onChange={handleOptionChange} >
                   <option value="" className='optcat'>Select Areas</option>
@@ -481,63 +626,26 @@ const AddProductModel = ({onClose}) => {
             </div>
           </div>
 
+
           
           <div className="mainbox">
-            
-            
-              <div className="color-section">
-              <label className='colorlable' >8) Color Section</label>
-              <div>
-                <label>Color Name:</label>
-                <input type="text" value={selectedColorName} onChange={(e) => setSelectedColorName(e.target.value)} />
-              </div>
-              <div>
-                <label>Available Count:</label>
-                <input
-                  type="number"
-                  value={selectedColorCount}
-                  onChange={(e) => setSelectedColorCount(e.target.value)}
-                  placeholder="Enter available count"
-                />
-              </div>
-              <div>
-                <input type="file" className='fileselect' onChange={handleAddImage} multiple accept="image/*" />
-              </div>
-              {/* Display selected images for the current color */}
-              <div className="selected-images">
-                {selectedColorImages.map((image, index) => (
-                  <div key={index}>
-                    <img src={image} alt={`Color Image ${index}`} />
-                    <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
-                  </div>
-                ))}
-              </div>
-              <button type="button" className='addp' onClick={handleAddColor}>Add Color</button>
+            <div className='dilevary'>
+              <label>6) Quick Delivery Available:</label>
+              <input
+                type="checkbox"
+                name="QuickDeliveryAvailable"
+                checked={productData.QuickDeliveryAvailable}
+                onChange={handleCheckboxChange}
+              />
             </div>
-            
-            
-            {productData.Colors.map((color, index) => (
-              <div key={index} className="color-section">
-                <div>
-                  <label>Color Name: {color.name}</label> {/* Display the color name */}
-                  <label>Available Count: {color.count}</label> {/* Display the available count */}
-                </div>
-                <div className="selected-images">
-                  {color.images.map((image, idx) => (
-                    <div key={idx}>
-                      <img src={image} alt={`Color Image ${idx}`} />
-                    </div>
-                  ))}
-                </div>
-                <button type="button" onClick={() => handleRemoveColor(index)}>Remove Color</button>
-              </div>
-            ))}
-      
-        </div>
+          </div>
+
+          
+
 
         <div className="mainnbox">
           <div className="desc">
-            <label htmlFor="">9) Description</label>
+            <label htmlFor="">7) Description</label>
             <textarea name="description" value={productData.Description} onChange={handleDescriptionChange} id=""  rows="10"></textarea>
           </div>    
 
@@ -547,7 +655,7 @@ const AddProductModel = ({onClose}) => {
           <div className="mainbox">
             <div className='default'>
 
-              <label>10) Default Images:</label>
+              <label>8) Default Images:</label>
                 <div>
                   {defaultImages.map((image, index) => (
                     <div key={index}>

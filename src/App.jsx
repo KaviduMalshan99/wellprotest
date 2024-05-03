@@ -8,11 +8,12 @@ import Best from '../Frontend/Best';
 import Product from '../Frontend/Product';
 import Cart from '../Frontend/Cart';
 import Home from '../Frontend/Home';
-import Header from '../Frontend/Header/Header'
 import Refund from '../Frontend/refund/refund'
 import RefundEdit from '../Frontend/refund/refundEdit'
 import RefundPolicy from '../Frontend/refund/refundPolicy';
 import Checkout from '../Frontend/Header/Checkout';
+import MenBag from '../Frontend/Header/MenBag';
+import MenShoes from '../Frontend/Header/MenShoes';
 
 function App() {
   return (
@@ -27,18 +28,19 @@ function App() {
           <Route path='/product/:id' element={<Product />} /> 
           <Route path='/cart' element={<Cart />} />
           <Route path='/checkout' element={<Checkout />} />
+          <Route path='/refund' element={<Refund />} />
+          <Route path='/refundedit' element={<RefundEdit />} />
+          <Route path='/refundpolicy' element={<RefundPolicy />} />
           
+          
+          <Route path='/menbag' element={<MenBag />} />
+          <Route path='/menshoes' element={<MenShoes />} />
 
-
-          {/* Header parts */}
-          <Route path='/header' element={<Header />} /> 
-
-
-          {/* Footer parts */}
           
 
         </Routes>
       </Router> 
+
     </div>
   );
 }

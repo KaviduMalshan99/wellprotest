@@ -1,3 +1,4 @@
+
 .addProductSection button {
   border: none;
   width: 20%;
@@ -12,15 +13,18 @@
   margin-bottom: 5px;
 }
 
-.ProductContainer .PRODUCTTITLE{
-  font-size: 25px;
-  margin-top: 15px;
+.productsecondiv .PRODUCTTITLE{
+  font-size: 22px;
+  margin-left: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+  
 }
 
 .ProductContainer .search-bar{
   display: flex;
   align-items: center;
-
+  margin-right: 15px;
 }
 
 .ProductContainer .search-button{

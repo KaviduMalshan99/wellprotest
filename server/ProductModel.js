@@ -5,19 +5,16 @@ const ProductSchema = new Schema({
     ProductId: String,
     ProductName: String,
     Categories: [{ type: String }],
-    Price: Number,
-    Areas:[],
-    Sizes: [{
-        size:String,
-        count:Number,
+    Areas: [],
+    Variations: [{
+        size: String, 
+        name: String, 
+        count: Number, 
+        images: [String], 
+        price: Number 
     }],
-    Colors: [{
-        name: String,
-        count:Number,
-        images: [String] // Array of image URLs for this color
-    }],
-    ImgUrls: [String], 
-    Description:String,
+    ImgUrls: [String],
+    Description: String,
     QuickDeliveryAvailable: { type: Boolean, default: false },
 });
 

@@ -10,12 +10,16 @@ import Ratings from '../admin/Ratings';
 import Overview from '../admin/Overview';
 import Suppliers from '../admin/Suppliers';
 import Warehouse from '../admin/Warehouse';
+import Notification from './Notification';
 import './admin.css'
 import UserDetails from './UserDetails';
 import Logo from '../src/assets/logo.png'
 
 const Admin = () => {
   const [selectedSection, setSelectedSection] = useState('dashboard');
+  
+
+  
 
   const handleSectionChange = (section) => {
     setSelectedSection(section);
@@ -24,12 +28,13 @@ const Admin = () => {
   return (
     <Router>
       <div className="admin-container">
+        
         <div className="nav-bar">
           {/* Your company logo and name */}
           <div className="company-logo">
             <img src={Logo} alt="wellworn logo" />
           </div>
-          
+
 
           <div className="navlinks">
             <Link to="/dashboard" className={`nav-link ${selectedSection === 'dashboard' && 'active'}`} onClick={() => handleSectionChange('dashboard')}>
@@ -38,9 +43,9 @@ const Admin = () => {
             <Link to="/profile" className={`nav-link ${selectedSection === 'profile' && 'active'}`} onClick={() => handleSectionChange('profile')}>
               <i className='fas fa-user'/>Profile  
             </Link>
-            <Link to="/categories" className={`nav-link ${selectedSection === 'categories' && 'active'}`} onClick={() => handleSectionChange('categories')}>
+            {/* <Link to="/categories" className={`nav-link ${selectedSection === 'categories' && 'active'}`} onClick={() => handleSectionChange('categories')}>
               <i className='fas fa-list-alt'/>Categories
-            </Link>
+            </Link> */}
             <Link to="/products" className={`nav-link ${selectedSection === 'products' && 'active'}`} onClick={() => handleSectionChange('products')}>
               <i className='fas fa-shopping-bag' />Products
             </Link>
@@ -79,6 +84,7 @@ const Admin = () => {
             <Route path='/overview' element={<Overview/>}/>
             <Route path='/supplier' element={<Suppliers/>}/>
             <Route path='/warehouse' element={<Warehouse/>}/>
+            <Route path='/notificationn' element={<Notification/>}/>
           </Routes>
         </div>
       </div>

@@ -1,6 +1,6 @@
-import React from 'react';
 import './Header.css'; // Importing the CSS file
 import Logo from '../../src/assets/logo.png'
+import { Link } from 'react-router-dom';
 
 
 const Header = () => {
@@ -11,10 +11,10 @@ const Header = () => {
       </div>
       <div className="hcenter-section">
         <ul>
-          <li><a href="url" className="hhui2">Home</a></li>
-          <li><a href="url" className="hhui2">Men</a></li>
-          <li><a href="url" className="hhui2">Women</a></li>
-          <li><a href="url" className="hhex">Exclusive</a></li>
+          <li><Link to='/' className="hhui2">Home</Link></li>
+          <li><Link to='/men' className="hhui2">Men</Link></li>
+          <li><Link href="url" className="hhui2">Women</Link></li>
+          <li><Link href="url" className="hhex">Exclusive</Link></li>
         </ul>
       </div>
       <div className="hright-section">
