@@ -18,29 +18,7 @@ import MenShoes from '../Frontend/Header/MenShoes';
 function App() {
   return (
     <div>
-     <Router> {/* Changed to Router */}
-        <Routes>
-          <Route path='/' element={<Home />} /> 
-          <Route path='/men' element={<Men />} /> 
-          <Route path='/women' element={<Women />} /> 
-          <Route path='/best' element={<Best />} /> 
-          <Route path='/admin' element={<Admin />} />
-          <Route path='/product/:id' element={<Product />} /> 
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/checkout' element={<Checkout />} />
-          <Route path='/refund' element={<Refund />} />
-          <Route path='/refundedit' element={<RefundEdit />} />
-          <Route path='/refundpolicy' element={<RefundPolicy />} />
-          
-          
-          <Route path='/menbag' element={<MenBag />} />
-          <Route path='/menshoes' element={<MenShoes />} />
-
-          
-
-        </Routes>
-      </Router> 
-
+     <Admin/>
     </div>
   );
 }

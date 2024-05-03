@@ -57,11 +57,14 @@ const EditProductModal = ({ closeModal, product }) => {
   const [selectedColorImages, setSelectedColorImages] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [editedVariation, setEditedVariation] = useState(null);
+  const [localVariations, setLocalVariations] = useState(product.Variations || []);
 
   useEffect(() => {
     if (product && product.ProductId) {
       setEditedProduct(product);
       setSelectedImages(product.ImgUrls || []);
+      setLocalVariations(product.Variations||[]);
     }
   }, [product]);
 
@@ -73,11 +76,14 @@ const EditProductModal = ({ closeModal, product }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedProduct({
-      ...editedProduct,
+    setEditedVariation((prevEditedVariation) => ({
+      ...prevEditedVariation,
       [name]: value
-    });
+    }));
   };
+  
+  
+  
 
   // Handle variant type change
   const handleVariantChange = (e) => {
@@ -93,17 +99,16 @@ const EditProductModal = ({ closeModal, product }) => {
     try {
       const updatedProduct = {
         ...editedProduct,
-        ImgUrls: selectedImages,
-        Areas: selectedOptions,
-        Variations: productData.Sizes
+        ImgUrls: selectedImages, // Include selectedImages in the updated product data
+        Areas: selectedOptions // Include selectedOptions in the Areas field
       };
-
-      // Log updatedProduct to verify that VariantType data is included
+  
+      // Log updatedProduct to verify that Areas data is included
       console.log("Updated Product:", updatedProduct);
-
+  
       // Send the updated product data to the backend
       const response = await axios.put(`http://localhost:3001/api/updateproduct/${editedProduct.ProductId}`, updatedProduct);
-
+  
       // Check if the update was successful
       if (response.status === 200) {
         toast.success('Product Update Successfully');
@@ -117,6 +122,7 @@ const EditProductModal = ({ closeModal, product }) => {
       console.error('Error updating product:', error);
     }
   };
+  
 
   const handleAddImage = async (e) => {
     const file = e.target.files[0];
@@ -128,59 +134,45 @@ const EditProductModal = ({ closeModal, product }) => {
 
 const handleRemoveImage = (index) => {
   const newImages = [...selectedImages];
+  // Remove the image at the specified index
   newImages.splice(index, 1);
+  // Update the state with the new array
   setSelectedImages(newImages);
 };
 
 
 const handleAddSize = () => {
   if (sizeInput.trim() !== '' && selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
-    // Log the size before updating the state
-    console.log("Size added:", sizeInput.trim());
-    
-    // Create a new size object including color name, count, price, and images
     const newSize = {
       size: sizeInput.trim(),
-      color: {
+      colors: [{ // This assumes each size can have multiple colors
         name: selectedColorName,
         count: selectedColorCount,
         price: selectedColorPrice,
         images: selectedColorImages
-      }
+      }]
     };
 
-    // Log the new size data
-    console.log("New Size Data:", newSize);
+    setProductData(prevData => ({
+      ...prevData,
+      Sizes: [...prevData.Sizes, newSize]
+    }));
 
-    // Update the product data state with the new size
-   
-      setProductData({
-        ...productData,
-        Sizes: [...productData.Sizes, newSize],
-      });
-
-
-    // Clear the input fields after adding size
+    // Reset fields after adding a new size
     setSizeInput('');
     setSelectedColorName('');
     setSelectedColorCount(0);
     setSelectedColorPrice('');
     setSelectedColorImages([]);
+    console.log("New Size Data:", newSize); // Log for debugging
   } else {
-    // Log an error if any of the required fields is missing
-    console.error("Please fill in all the required fields.");
+    console.error("All fields must be filled.");
   }
 };
+
   
 
-  const handleRemoveSize = (index) => {
-    const newSizes = [...productData.Sizes];
-    newSizes.splice(index, 1);
-    setProductData({
-      ...productData,
-      Sizes: newSizes,
-    });
-  };
+  
 
   const handleAddColor = () => {
     if (selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
@@ -270,7 +262,50 @@ const handleAddSize = () => {
     }
   };
 
+  const handleRemoveSize = (index) => {
+    const newSizes = [...productData.Sizes];
+    newSizes.splice(index, 1);
+    setProductData(prevData => ({
+      ...prevData,
+      Sizes: newSizes
+    }));
+    console.log("Updated Sizes after removal:", newSizes); // Debugging log
+  };
   
+  
+  const handleSave = () => {
+    if (editedVariation && localVariations) {
+      const updatedVariations = localVariations.map(variation =>
+        variation.name === editedVariation.name ? {
+          ...variation,
+          name: editedVariation.name,
+          count: editedVariation.count,
+          price: editedVariation.price,
+          images: editedVariation.image ? [URL.createObjectURL(editedVariation.image)] : variation.images
+        } : variation
+      );
+      setLocalVariations(updatedVariations);
+      console.log("Updated Variations Details:", updatedVariations);
+      setEditedVariation(null);
+    }
+  };
+  
+  
+  
+
+  const handleCancel = () => {
+    setEditedVariation(null); // Clear the edited variation state on cancel
+  };
+
+  const handleEdit = (variation, e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+  
+    // Initialize the editing with image data if available
+    setEditedVariation({
+      ...variation,
+      image: variation.images.length > 0 ? variation.images[0] : null
+    });
+  };
   
 
   return (
@@ -311,63 +346,52 @@ const handleAddSize = () => {
                   <label>6) Many Sizes with Many Colors:</label>
                   <div>
                     <label>Add Size:</label>
-                    <input
-                      type="text"
-                      value={sizeInput}
-                      onChange={(e) => setSizeInput(e.target.value)}
-                      placeholder="Enter size"
-                    />
+                    <input type="text" value={sizeInput} onChange={(e) => setSizeInput(e.target.value)} placeholder="Enter size" />
                     <label>Color Name:</label>
-                    <input
-                      type="text"
-                      value={selectedColorName}
-                      onChange={(e) => setSelectedColorName(e.target.value)}
-                      placeholder="Enter color name"
-                    />
+                    <input type="text" value={selectedColorName} onChange={(e) => setSelectedColorName(e.target.value)} placeholder="Enter color name" />
                     <label>Available Count:</label>
-                    <input
-                      type="number"
-                      value={selectedColorCount}
-                      onChange={(e) => setSelectedColorCount(e.target.value)}
-                      placeholder="Enter available count"
-                    />
+                    <input type="number" value={selectedColorCount} onChange={(e) => setSelectedColorCount(parseInt(e.target.value, 10))} placeholder="Enter available count" />
                     <label>Price:</label>
-                    <input
-                      type="number"
-                      value={selectedColorPrice}
-                      onChange={(e) => setSelectedColorPrice(e.target.value)}
-                      placeholder="Enter price"
-                    />
-                    <input type="file" onChange={handleAddImage} accept="image/*" />
-                    {/* Display selected images for the current color */}
+                    <input type="number" value={selectedColorPrice} onChange={(e) => setSelectedColorPrice(parseFloat(e.target.value))} placeholder="Enter price" />
+                    <input type="file" onChange={handleAddImage} accept="image/*" multiple />
                     <div>
                       {selectedColorImages.map((image, index) => (
                         <div key={index}>
                           <img src={image} alt={`Color Image ${index}`} />
-                          <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+                          <button onClick={() => handleRemoveImage(index)}>Remove Image</button>
                         </div>
                       ))}
                     </div>
-                    <button type="button" onClick={handleAddSize}>Add Details</button>
+                    <button onClick={handleAddSize}>Add Size and Color Details</button>
                   </div>
+
 
                   {/* Display added sizes */}
                   <div className='sd2'>
-                    {productData.Sizes.map((size, index) => (
-                      <div key={index} className='size-item'>
+                    {productData.Sizes.map((size, sizeIndex) => (
+                      <div key={sizeIndex} className="size-item">
                         <span>Size: {size.size}</span>
-                        <span>Color Name: {size.color.name}</span>
-                        <span>Count: {size.color.count}</span>
-                        <span>Price: {size.color.price}</span>
-                        <div>
-                          {size.color.images.map((image, imgIndex) => (
-                            <img key={imgIndex} src={image} alt={`Size Image ${index}-${imgIndex}`} />
-                          ))}
-                        </div>
-                        <button type="button" onClick={() => handleRemoveSize(index)}>Remove</button>
+                        {size.colors.map((color, colorIndex) => (
+                          <div key={colorIndex} className="color-item">
+                            <span>Color Name: {color.name}</span>
+                            <span>Count: {color.count}</span>
+                            <span>Price: {color.price}</span>
+                            <div>
+                              {color.images.map((image, imgIndex) => (
+                                <img key={imgIndex} src={image} alt={`Color Image ${sizeIndex}-${colorIndex}-${imgIndex}`} />
+                              ))}
+                            </div>
+                            <button onClick={() => handleRemoveColor(sizeIndex, colorIndex)}>Remove Color</button>
+                          </div>
+                        ))}
+                        <button onClick={() => handleRemoveSize(sizeIndex)}>Remove Size</button>
                       </div>
                     ))}
                   </div>
+
+
+
+
                   
                 </div>
               )}
@@ -430,29 +454,71 @@ const handleAddSize = () => {
 
 
               {/* Display Variations */}
-              <div>
-                <h3>Variations:</h3>
-                {product.Variations && product.Variations.map((variation, index) => (
-                  <div key={index}>
-                    <h4>Variation {index + 1}</h4>
-                    <p>Size: {variation.size}</p>
-                    <p>Name: {variation.name}</p>
-                    <p>Count: {variation.count}</p>
-                    <p>Price: {variation.price}</p>
-                    <p>Images:</p>
-                    <div>
-                      {variation.images.map((image, imgIndex) => (
-                        <img key={imgIndex} src={image} alt={`Variation Image ${index}-${imgIndex}`} />
-                      ))}
-                    </div>
-                    {/* Add remove button for each variation */}
-                    <button type="button" onClick={() => handleRemoveSize(index)}>Remove Variation</button>
-                  </div>
-                ))}
-              </div>
-
+              
             </div>
           )}
+
+
+
+
+
+
+      <div>
+      <h3>Variations:</h3>
+      {localVariations.map((variation, index) => (
+        <div key={index}>
+          <h4>Variation {index + 1}</h4>
+          <p>Name: {variation.name}</p>
+          <p>Count: {variation.count}</p>
+          <p>Price: {variation.price}</p>
+          <p>Images:</p>
+          <div>
+            {variation.images.map((image, imgIndex) => (
+              <div key={imgIndex}>
+                <img 
+                  src={image} 
+                  alt={`Variation Image ${index}-${imgIndex}`} 
+                  style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjust the max width and height as needed
+                />
+              </div>
+            ))}
+          </div>
+          {/* Edit button */}
+          <button onClick={(e) => handleEdit(variation, e)}>Edit</button>
+        </div>
+      ))}
+      {/* Render editable fields if an edit is in progress */}
+      {editedVariation && (
+  <div>
+    <h4>Edit Variation</h4>
+    <label>Name:</label>
+    <input type="text" name="name" value={editedVariation.name} onChange={handleChange} />
+    <label>Count:</label>
+    <input type="text" name='count' value={editedVariation.count} onChange={(e) => handleChange(e)} />
+    <label>Price:</label>
+    <input type="text" name='price' value={editedVariation.price} onChange={(e) => handleChange(e)} />
+    <label>Image:</label>
+    <input type="file" onChange={(e) => setEditedVariation({...editedVariation, image: e.target.files[0]})} />
+    
+    {/* Display the current image and remove button if there is already an image */}
+    {editedVariation.image && (
+      <div>
+        <img 
+          src={editedVariation.image instanceof File ? URL.createObjectURL(editedVariation.image) : editedVariation.image} 
+          alt="Edited Variation Image"
+          style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjust the max width and height as needed
+        />
+        <button onClick={() => setEditedVariation({...editedVariation, image: null})}>Remove Image</button>
+      </div>
+    )}
+    {/* Save and cancel buttons */}
+    <button onClick={handleSave}>Save</button>
+    <button onClick={handleCancel}>Cancel</button>
+  </div>
+      )}
+        </div>
+
+
 
           <div className="mainbox">
             <div>

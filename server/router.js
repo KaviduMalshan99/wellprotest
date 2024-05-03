@@ -39,7 +39,7 @@ router.post('/deleteorders',orderContraller.deleteOrder);
 router.get('/products',productContraller.getProducts);
 router.get('/products/:productId', productContraller.getProductById);
 router.post('/addproduct', productContraller.addProduct);
-router.put('/updateproduct/:ProductId', productContraller.updateProduct);
+router.put('/updateproduct/:productId', productContraller.updateProduct);
 router.delete('/deleteproduct/:ProductId',productContraller.deleteProduct);
 
 
