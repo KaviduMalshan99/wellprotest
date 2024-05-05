@@ -1,0 +1,388 @@
+*{
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.main2{
+    height: 100vh;
+}
+
+.container1{
+    margin-top: 100px;
+}
+
+.container1 > h1{
+    line-height: 110%;
+    font-size: 60px;
+    font-weight: lighter;
+    color:white;
+    background-color: black;
+    text-align: center;
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.imgcontainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.imgcontainer img {
+    width: 300px; 
+    height: auto; 
+    margin: 0 10px; 
+}
+
+.imgcontainer .img1{
+    margin-top: 40px;
+    margin-bottom: 50px;
+    margin-left: 80px;
+    height: 420px;
+    width: 425px;
+    cursor: pointer;
+}
+
+.imgtext1{
+    position: absolute;
+    margin-top: 60px;
+    top: 30%;
+    left: 18%; 
+    transform: translate(-50%, -50%); 
+    text-align: center;
+  }
+  
+  .imgtext1 h2,.imgtext2 h2, .imgtext3 h2 {
+    color: white; 
+    font-size: 35px; 
+  }
+  
+  .imgbtn1, .imgbtn2, .imgbtn3 {
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-left: 80px;
+    margin-top: 30px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .imgbtn1:hover, .imgbtn2:hover, .imgbtn3:hover {
+    background-color: #000000;
+    color: white;
+  }
+
+.imgcontainer .img2{
+    margin-top: 40px;
+    margin-bottom: 50px;
+    margin-left: 40px;
+    height: 420px;
+    width: 425px;
+    cursor: pointer;
+}
+
+.imgtext2{
+    position: absolute;
+    margin-top: 60px;
+    top: 30%;
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    text-align: center;
+  }
+
+.imgcontainer .img3{
+    margin-top: 40px;
+    margin-bottom: 50px;
+    margin-left: 40px;
+    height: 420px;
+    width: 425px;
+    cursor: pointer;
+}
+
+.imgtext3{
+    position: absolute;
+    margin-top: 60px;
+    top: 30%;
+    left: 80%; 
+    transform: translate(-50%, -50%); 
+    text-align: center;
+  }
+
+
+.container2 button{
+    position: absolute;
+    top: 65%;
+    background-color: white; 
+    color: black;  
+    font-size: 15px;
+    font-weight:bolder;
+    padding: 12px 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50px;
+    text-align: center;
+    transition: color 0.8s linear;
+}
+
+.container2 .btn1{
+    left: 10.5%;
+}
+
+.container2 .btn2{
+    left: 42%;
+}
+
+.container2 .btn3{
+    left: 74%;
+}
+
+.container2 .btn1:hover, .btn2:hover, .btn3:hover{
+    background-color: black;
+    color: white;
+}
+
+.container2 button::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 0%;
+    background-color: black;
+    z-index: -1;
+    transition: 0.8s;
+    bottom: 0;
+    border-radius: 50% 50% 0 0;
+    transition: transform 0.5s;
+    transform-origin: 0 0;
+    transition-timing-function: cubic-bezier(0.5, 1., 0.4, 0.7);
+    transform: scaleY(0);
+}
+
+.container2 button:hover::before{
+    transform: scaleY(1);
+}
+
+.container2 h1{
+    font-size: 30px;
+    font-weight: lighter;
+    position: absolute;
+    top: 40%; 
+    color: white; 
+    cursor: pointer;
+}
+
+.head1{
+    left: 10%;
+}
+
+.head2{
+    left: 42%;
+}
+
+.head3{
+    left: 74%;
+}
+
+a{
+    color: white;
+    text-decoration:none ;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.accordion{
+    margin-top: 70px;
+    font-family: 'Quicksand', sans-serif;
+    background-color: white;
+    color: black;
+    text-align: center;
+    width: 100%;
+    padding-left: 100px;
+    padding-right: 100px;
+    
+}
+
+.accordion .p{
+   font-weight: lighter;
+   font-size: 20px;
+
+}
+
+.accordion .accordion-text{
+    letter-spacing: 0.2px;
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    font-size: 50px;
+    font-weight: bolder;
+}
+
+ul.faq-text{
+    margin-top: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
+    /*text-align: center;*/
+    letter-spacing: 0.2px;
+}
+
+ul.faq-text li{
+    list-style: none;
+}
+
+ul .question-arrow .question{
+    cursor: pointer;
+    font-size: 20px;
+}
+
+ul.faq-text li .question-arrow{
+    display: flex;
+    align-items: Center;
+    justify-content:space-between;
+}
+
+.question-arrow .bx {
+    cursor: pointer;
+    font-size: 20px;
+    color: #595959;
+    margin-left: 950px
+}
+.line{
+    display: block;
+    height: 0.1px;
+    width: 100%;
+    background-color: rgb(0, 0, 0, 0.2);
+    margin: 10px 0;
+}
+
+ul .question-arrow .hover-bold:hover{
+    font-weight: bold;
+
+}
+
+.showAnswer .question{
+    font-weight: bold;
+}
+
+ul p{
+    margin-top: 20px;
+    width: 90%;
+    text-align: justify;
+    font-size: 15px;
+    font-weight: lighter;
+
+}
+
+ul .showAnswer p{
+    display: block;
+}
+
+.trade{
+    margin-top: 50px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: white;
+    color: black;
+    /*text-align: center;*/
+    width: auto;
+    padding-left: 100px;
+    padding-right: 100px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.trade .accordion-text{
+    letter-spacing: 0.2px;
+    text-align: center;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    font-size: 50px;
+    font-weight: bolder;
+}
+
+.trade .section1 label{
+    display: flex;
+    margin: 20px 0;
+}
+
+.trade .section1 input,textarea{
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    outline: none;
+    resize: none;
+    border: none;
+    border-bottom: 1px solid #D3D3D3;
+}
+
+.trade .section1 .section2 .btn1{
+    margin: 50px 0;
+    float: right;
+    padding: 5px 30px;
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.trade .section1 .section2 .btn1:hover{
+    color: white;
+    background-color: black;
+}
+
+.sniper{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sniper .branch1{
+    margin-top: 50px;
+    height: 300px;
+    width: 500px;
+    background-color:white;
+    margin-bottom: 80px;
+}
+
+.sniper .branch1 .bx{
+    margin-top: 10px;
+    font-size: 60px;
+    text-align: center;
+    margin-left: 250px;
+    margin-bottom: -50px;
+
+}
+
+.sniper .branch1 h3{
+    margin-bottom: 10px;
+    text-align:left;
+    margin-left: 200px;
+
+}
+
+.sniper .branch1 p{
+    line-height: 25px;
+    text-align: center;
+}
+
+.sniper .branch1 p {
+    color: black;
+    text-decoration: none;
+}
+
+.error-message {
+    color: red;
+   
+}
+
