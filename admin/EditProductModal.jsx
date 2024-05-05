@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
-import './EditProductModal.css';
+import './EditProductModel.scss';
 
 const resizeAndConvertToBase64 = (file, maxWidth, maxHeight) => {
   return new Promise((resolve, reject) => {
@@ -42,7 +42,8 @@ const EditProductModal = ({ closeModal, product }) => {
   const [productData, setProductData] = useState({
     VariantType: '',
     Sizes: [],
-    Colors: []
+    Colors: [],
+    Categories:editedProduct.Categories || []
   });
   const [selectedImages, setSelectedImages] = useState([]);
   const [sizeInput, setSizeInput] = useState('');
@@ -54,12 +55,14 @@ const EditProductModal = ({ closeModal, product }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [editedVariation, setEditedVariation] = useState(null);
   const [localVariations, setLocalVariations] = useState(product.Variations || []);
+  
 
   useEffect(() => {
     if (product && product.ProductId) {
       setEditedProduct(product);
       setSelectedImages(product.ImgUrls || []);
       setLocalVariations(product.Variations||[]);
+      setProductData({...productData,Categories:product.Categories || []});
     }
   }, [product]);
 
@@ -71,11 +74,25 @@ const EditProductModal = ({ closeModal, product }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedVariation((prevEditedVariation) => ({
+    setEditedProduct((prevEditedVariation) => ({
       ...prevEditedVariation,
       [name]: value
     }));
   };
+
+  const handleCategoryChange = (category) => {
+    setProductData((prevProductData) => {
+      const newCategories = prevProductData.Categories.includes(category)
+        ? prevProductData.Categories.filter((cat) => cat !== category)
+        : [...prevProductData.Categories, category];
+      return {
+        ...prevProductData,
+        Categories: newCategories
+      };
+    });
+  };
+
+  
 
   const handleVariantChange = (e) => {
     const selectedVariant = e.target.value;
@@ -83,6 +100,10 @@ const EditProductModal = ({ closeModal, product }) => {
       ...prevProductData,
       VariantType: selectedVariant,
     }));
+  };
+
+  const handleRemoveVariation = (index) => {
+    setLocalVariations((currentVariations) => currentVariations.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -94,7 +115,8 @@ const EditProductModal = ({ closeModal, product }) => {
         Areas: selectedOptions,
         Variations: [...localVariations, ...productData.Sizes, ...productData.Colors],  // Combining existing variations with new sizes and colors
         Sizes: productData.Sizes,
-        Colors: productData.Colors
+        Colors: productData.Colors,
+        Categories:productData.Categories,
       };
 
       console.log("Submitting Updated Product:", updatedProduct);
@@ -247,26 +269,7 @@ const EditProductModal = ({ closeModal, product }) => {
     console.log("Updated Sizes after removal:", newSizes);
   };
 
-  const handleSave = () => {
-    if (editedVariation && localVariations) {
-      const updatedVariations = localVariations.map(variation =>
-        variation.name === editedVariation.name ? {
-          ...variation,
-          name: editedVariation.name,
-          count: editedVariation.count,
-          price: editedVariation.price,
-          images: editedVariation.image ? [URL.createObjectURL(editedVariation.image)] : variation.images
-        } : variation
-      );
-      setLocalVariations(updatedVariations);
-      console.log("Updated Variations Details:", updatedVariations);
-      setEditedVariation(null);
-    }
-  };
-
-  const handleCancel = () => {
-    setEditedVariation(null);
-  };
+  
 
   const handleEdit = (variation, e) => {
     e.preventDefault();
@@ -297,8 +300,56 @@ const EditProductModal = ({ closeModal, product }) => {
           </div>
 
           <div className="mainbox">
+            <div className='editcategory'>
+              <label>3) Categories:(*)</label>
+              <div className="category-checkboxes">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="Men"
+                    checked={productData.Categories.includes("Men")}
+                    onChange={() => handleCategoryChange("Men")}
+                    disabled={productData.Categories.includes("Women")}
+                  />
+                  Men
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="Women"
+                    checked={productData.Categories.includes("Women")}
+                    onChange={() => handleCategoryChange("Women")}
+                    disabled={productData.Categories.includes("Men")}
+                  />
+                  Women
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="Bags"
+                    checked={productData.Categories.includes("Bags")}
+                    onChange={() => handleCategoryChange("Bags")}
+                    disabled={productData.Categories.includes("Shoes")}
+                  />
+                  Bags
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    name="Shoes"
+                    checked={productData.Categories.includes("Shoes")}
+                    onChange={() => handleCategoryChange("Shoes")}
+                    disabled={productData.Categories.includes("Bags")}
+                  />
+                  Shoes
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="mainbox">
             <div>
-              <label>5) Select Variant Type:</label>
+              <label>4) Select Variant Type:</label>
               <select value={productData.VariantType} onChange={handleVariantChange}>
                 <option value="">Select Variant Type</option>
                 <option value="Many Sizes with Many Colors">Many Sizes with Many Colors</option>
@@ -311,7 +362,7 @@ const EditProductModal = ({ closeModal, product }) => {
             <div className="mainbox">
               {productData.VariantType === "Many Sizes with Many Colors" && (
                 <div>
-                  <label>6) Many Sizes with Many Colors:</label>
+                  <label>5) Many Sizes with Many Colors:</label>
                   <div>
                     <label>Add Size:</label>
                     <input type="text" value={sizeInput} onChange={(e) => setSizeInput(e.target.value)} placeholder="Enter size" />
@@ -359,13 +410,12 @@ const EditProductModal = ({ closeModal, product }) => {
 
 
 
-
                   
                 </div>
               )}
               {productData.VariantType === "Only Colors" && (
                 <div>
-                  <label>6) Only Colors:</label>
+                  <label>5) Only Colors:</label>
                   <div>
                     <label>Color Name:</label>
                     <input
@@ -419,78 +469,43 @@ const EditProductModal = ({ closeModal, product }) => {
                   </div>
                 </div>
               )}
-
-
-              {/* Display Variations */}
               
             </div>
           )}
 
 
 
-
-
-
-      <div>
-      <h3>Variations:</h3>
-      {localVariations.map((variation, index) => (
-        <div key={index}>
-          <h4>Variation {index + 1}</h4>
-          <p>Name: {variation.name}</p>
-          <p>Count: {variation.count}</p>
-          <p>Price: {variation.price}</p>
-          <p>Images:</p>
-          <div>
-            {variation.images.map((image, imgIndex) => (
-              <div key={imgIndex}>
-                <img 
-                  src={image} 
-                  alt={`Variation Image ${index}-${imgIndex}`} 
-                  style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjust the max width and height as needed
-                />
-              </div>
-            ))}
+      <div className='variants'>
+        <h3>Variations:</h3>
+        {localVariations.map((variation, index) => (
+          <div className='variant' key={index}>
+            <h4>Variation {index + 1}</h4>
+            <p>Name: {variation.name}</p>
+            <p>Count: {variation.count}</p>
+            <p>Price: {variation.price}</p>
+            <p>Images:</p>
+            <div>
+              {variation.images.map((image, imgIndex) => (
+                <div key={imgIndex}>
+                  <img 
+                    src={image} 
+                    alt={`Variation Image ${index}-${imgIndex}`} 
+                    style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjust the max width and height as needed
+                  />
+                </div>
+              ))}
+            </div>
+            {/* Edit button */}
+            <button onClick={() => handleRemoveVariation(index)}>Remove</button>
           </div>
-          {/* Edit button */}
-          <button onClick={(e) => handleEdit(variation, e)}>Edit</button>
-        </div>
-      ))}
-      {/* Render editable fields if an edit is in progress */}
-      {editedVariation && (
-  <div>
-    <h4>Edit Variation</h4>
-    <label>Name:</label>
-    <input type="text" name="name" value={editedVariation.name} onChange={handleChange} />
-    <label>Count:</label>
-    <input type="text" name='count' value={editedVariation.count} onChange={(e) => handleChange(e)} />
-    <label>Price:</label>
-    <input type="text" name='price' value={editedVariation.price} onChange={(e) => handleChange(e)} />
-    <label>Image:</label>
-    <input type="file" onChange={(e) => setEditedVariation({...editedVariation, image: e.target.files[0]})} />
-    
-    {/* Display the current image and remove button if there is already an image */}
-    {editedVariation.image && (
-      <div>
-        <img 
-          src={editedVariation.image instanceof File ? URL.createObjectURL(editedVariation.image) : editedVariation.image} 
-          alt="Edited Variation Image"
-          style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjust the max width and height as needed
-        />
-        <button onClick={() => setEditedVariation({...editedVariation, image: null})}>Remove Image</button>
-      </div>
-    )}
-    {/* Save and cancel buttons */}
-    <button onClick={handleSave}>Save</button>
-    <button onClick={handleCancel}>Cancel</button>
-  </div>
-      )}
-        </div>
+        ))}
+     </div>
 
 
 
           <div className="mainbox">
             <div>
-              <label>5) Quick Delivery Available:</label>
+              <label>6) Quick Delivery Available:</label>
               <input type="checkbox" name="QuickDeliveryAvailable" checked={editedProduct.QuickDeliveryAvailable} onChange={handleCheckboxChange} />
             </div>
           </div>
@@ -524,7 +539,7 @@ const EditProductModal = ({ closeModal, product }) => {
 
           <div className="mainnbox">
             <div className="desc">
-              <label htmlFor="">9) Description</label>
+              <label htmlFor="">8) Description</label>
               <textarea name="Description" value={editedProduct.Description} onChange={handleDescriptionChange} rows="10"></textarea>
             </div>
           </div>
@@ -548,7 +563,7 @@ const EditProductModal = ({ closeModal, product }) => {
             </div>
           </div>
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" className='editsave'>Submit</button>
       </form>
       <ToastContainer />
     </div>

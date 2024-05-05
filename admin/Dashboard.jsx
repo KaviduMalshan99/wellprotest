@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Dashboard.css';
+import './Dashboard.scss'
 import Notification from './Notification';
 import moment from 'moment';
 import Calendar from 'react-calendar';

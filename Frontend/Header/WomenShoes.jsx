@@ -10,7 +10,7 @@ import Header from '../Header/Header';
 
 import Footer from '../Footer/Footer';
 
-const MenShoes = () => {
+const WomenShoes = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedCategory] = useState('');
@@ -29,7 +29,7 @@ const MenShoes = () => {
         
         // Filter products with category names "Men" and "Bags"
         const filteredData = response.data.response.filter(product =>
-          product.Categories.includes("Men") && product.Categories.includes("Shoes")
+          product.Categories.includes("Women") && product.Categories.includes("Shoes")
         );
         console.log('Filtered Data:', filteredData); // Log filtered data
         
@@ -107,9 +107,9 @@ useEffect(() => {
   return (
     <div>
       <Header/>
-      <p className='menmain'>SHOP MENS SHOES</p>
+      <p className='menmain'>SHOP WOMENS SHOES</p>
       <p className='menmain1'>
-        <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" /><Link to="/menshoes"> SHOES </Link><i className="fas fa-angle-right" />
+        <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/women">WOMEN </Link><i className="fas fa-angle-right" /><Link to="/womenshoes"> SHOES </Link><i className="fas fa-angle-right" />
       </p>
 
       <div className="menmid">
@@ -263,4 +263,4 @@ useEffect(() => {
   );
 };
 
-export default MenShoes;
+export default WomenShoes;
