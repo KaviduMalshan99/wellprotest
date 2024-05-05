@@ -10,16 +10,11 @@ const nodemailer = require('nodemailer')
 // const dotenv = require('dotenv');
 // dotenv.config();
 
-
-
 const upload = multer({ dest: 'uploads/', limits: { fileSize: 20 * 1024 * 1024 } }); // Limit set to 10MB
 
 
 app.use(bodyParser.json({limit:'50mb'}));
 app.use(bodyParser.urlencoded({limit:'50mb',extended:true}));
-
-  
-  
 
 
 app.post('/api/upload', upload.single('image'), (req, res) => {
@@ -74,6 +69,45 @@ const server = app.listen(port,host,() => {
 });
 
 
+
+app.post('/send-email', async (req, res) => {
+    const { email, subject, message, productId, sizes, colors, quantity, price } = req.body;
+  
+    // Create a Nodemailer transporter
+    let transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'chebuddy2002@gmail.com',
+        pass: 'djgs yqth tuia erdh'
+      }
+    });
+  
+    // Email content
+    let mailOptions = {
+      from: 'your-email@gmail.com',
+      to: email,
+      subject: subject,
+      text: `
+        Product ID: ${productId}
+        Sizes: ${sizes}
+        Colors: ${colors}
+        Quantity: ${quantity}
+        Price: ${price}
+        Message: ${message}
+      `
+    };
+  
+    // Send email
+    try {
+      await transporter.sendMail(mailOptions);
+      res.status(200).json({ message: 'Email sent successfully' });
+    } catch (error) {
+      console.error('Error sending email:', error);
+      res.status(500).json({ error: 'Error sending email' });
+    }
+  });
+
+
 app.post('/sendemail', async (req, res) => {
     const { email, subject, message } = req.body;
 
@@ -102,7 +136,6 @@ app.post('/sendemail', async (req, res) => {
     }
 
 });
-
 
 
 
