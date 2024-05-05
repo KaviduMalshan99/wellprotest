@@ -280,6 +280,12 @@ const Product = () => {
         </div>
       </div>
 
+      <hr/>
+
+      <br/><br/><br/>
+
+  
+
       <Footer/>
     </div>
   );

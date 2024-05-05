@@ -45,12 +45,15 @@ router.delete('/deleteproduct/:ProductId',productContraller.deleteProduct);
 
 //review
 router.get('/reviews',reviewcontroller.getReview);
+router.get('/review/:ReviewID',reviewcontroller.getReviewById)
 router.post('/addreviews',reviewcontroller.addReview);
-router.post('/updatereview',reviewcontroller.updateReview);
-router.delete('/deletereview',reviewcontroller.deleteReview);
+router.post('/updatereview/:ReviewID',reviewcontroller.updateReview);
+router.delete('/deletereview/:ReviewID',reviewcontroller.deleteReview);
 
 //faq
 router.get('/faqs',faqcontroller.getFaq);
 router.post('/addfaqs',faqcontroller.addFaq);
+router.delete('/deletefaq/:FaqID',faqcontroller.deleteFaq);
+router.get('/faq/:FaqID', faqcontroller.getFaqById);
 
 module.exports = router;

@@ -1,0 +1,157 @@
+.ProductReviews_main {
+  position: relative;
+}
+
+.ProductReviews_table {
+  width: 99%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #07223D;
+  border-radius: 10px;
+}
+
+.ProductReviews_table th,
+.ProductReviews_table td {
+  padding: 8px;
+  text-align: center;
+}
+
+.ProductReviews_table th {
+  background-color: #07223D;
+  color: white;
+  border-radius: 10px 10px 0 0;
+}
+
+.ProductReviews_table td {
+  background-color: #F7FBFE;
+  border: 1px solid #07223D;
+}
+
+.Review_viewmore {
+  padding: 5px 20px;
+  background-color: red;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.checkbox-custom {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border: 1px solid #373737;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.popupform {
+    position: absolute;
+    top: 130%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 30px; /* Add padding around the form content */
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-width: 80%;
+    max-height: 250%; /* Set maximum height for the form */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+
+.popupform h2 {
+  text-align: center;
+}
+
+.popupform h3 {
+  margin: 10px 10px 10px 20px;
+}
+
+.popupform form {
+  max-width: 100%;
+}
+
+.popupform .form-element {
+  margin: 25px 0px 10px;
+}
+
+.popupform .form-element label {
+  font-size: 15px;
+  font-weight: lighter;
+  color: black;
+  margin: 0px 0px 0px 30px;
+}
+
+.popupform .stars {
+  display: flex;
+  align-items: center;
+  grid-gap: .2rem;
+  font-size: 1.25rem;
+  color: black;
+  margin-bottom: 2rem;
+  margin-left: 30px;
+}
+
+.popupform .form-element input,
+.popupform textarea {
+  margin: 0px 0px 0px 30px;
+  margin-top: 10px;
+  display: block;
+  width: calc(100% - 60px); /* Adjust width for input and textarea */
+  padding: 10px;
+  outline: none;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+.popupform .form-element img {
+  display: block;
+  margin: 10px 30px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.review-btn-container {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Accept-btn .btn2,
+.Remove-btn .btn3 {
+  border: 1px solid;
+  border-radius: 15px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  color: black;
+  background-color: white;
+}
+
+
+
+.Accept-btn .btn2:hover,
+.Remove-btn .btn3:hover {
+  background-color: black;
+  color: white;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 16px;
+  height: 16px;
+  background-color: white;
+  color: black;
+  text-align: center;
+  line-height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+}

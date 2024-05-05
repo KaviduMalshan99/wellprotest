@@ -6,11 +6,14 @@ import Categories from '../admin/Categories';
 import Products from '../admin/Product';
 import Users from '../admin/Users';
 import Orders from '../admin/Orders';
-import Ratings from '../admin/Ratings';
+import Ratings from '../admin/Reviews';
+import Faq from '../admin/faq';
 import Overview from '../admin/Overview';
 import Suppliers from '../admin/Suppliers';
 import Warehouse from '../admin/Warehouse';
 import Notification from './Notification';
+import ProductReviews from './ProductReviews';
+import Faqemail from './Faqemail'
 import './admin.css'
 import UserDetails from './UserDetails';
 import Logo from '../src/assets/logo.png'
@@ -58,6 +61,9 @@ const Admin = () => {
             <Link to="/rating" className={`nav-link ${selectedSection === 'rating' && 'active'}`} onClick={() => handleSectionChange('rating')}>
               <i className='fas fa-star'/>Ratings
             </Link>
+            <Link to="/faq" className={`nav-link ${selectedSection === 'faq' && 'active'}`} onClick={() => handleSectionChange('faq')}>
+              <i className='fas fa-truck'/>FAQ
+            </Link>
             <Link to="/supplier" className={`nav-link ${selectedSection === 'supplier' && 'active'}`} onClick={() => handleSectionChange('supplier')}>
               <i className='fas fa-truck'/>Suppliers
             </Link>
@@ -81,10 +87,13 @@ const Admin = () => {
             <Route path="/orders" element={<Orders />} />
             <Route path='/user/:id' element={<UserDetails/>}/>
             <Route path='/rating' element={<Ratings/>}/>
+            <Route path='/faq' element={<Faq/>}/>
             <Route path='/overview' element={<Overview/>}/>
             <Route path='/supplier' element={<Suppliers/>}/>
             <Route path='/warehouse' element={<Warehouse/>}/>
             <Route path='/notificationn' element={<Notification/>}/>
+            <Route path='/productreviews' element={<ProductReviews/>}/>
+            <Route path='/faqemail/:faqId' element={<Faqemail/>}/>
           </Routes>
         </div>
       </div>
