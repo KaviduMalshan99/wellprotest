@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-import './Product.css';
+import './Product.scss'
 import axios from 'axios';
 import AddProductModel from '../admin/AddProductModel';
 import { toast,ToastContainer } from 'react-toastify';
@@ -173,7 +173,7 @@ const Product = () => {
               <th>Image</th>
               <th>Product Name</th>
               <th>Price</th>
-              <th>Actions</th>
+              <th colSpan={2}>Actions</th>
             </tr>
           </thead>
           <tbody>

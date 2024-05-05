@@ -44,8 +44,10 @@
 
 /* Button container */
 .rnmbtns {
-    margin-top: 20px;
-    text-align: center;
+  margin-top: 20px;
+  display: flex; /* Change to flex */
+  justify-content: center; /* Center align horizontally */
+  gap: 10px; /* Add gap between buttons */
 }
 /* Form container */
 .rnmcont {
@@ -87,7 +89,7 @@
     border-color: rgb(153, 153, 153); /* Change border color on hover if desired */
   }
   
-  .transparent-button {
+  #transparent-buttonr {
     background: none;
     text-decoration: none;
     border: none;
@@ -95,9 +97,12 @@
     cursor: pointer;
     font-size: 16px; /* Adjust font size as needed */
     font-weight: bold; /* Optionally, adjust font weight */
+    width: 150px; /* Increase button width */
+    margin-top: -10%;
+
   }
   
-  .transparent-button:hover {
+  #transparent-buttonr:hover {
     opacity: 0.7; /* Adjust opacity on hover as desired */
   }
   
@@ -126,3 +131,29 @@
     border-radius: 5px; /* Add border radius for rounded corners */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
   }
+
+
+  .error-messager{
+    color: red;
+    font-size: small;
+  }
+
+  .regbtnr{
+    color: white;
+    border-radius: 28px;
+    width: 25%; /* Set button width */
+    padding: 8px 16px; /* Adjust padding for smaller buttons */
+    border: transparent;
+    background-color: #000000;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+    font-size: 15px;
+    margin: 0;
+    cursor: pointer;
+
+  }
+
+  .regbtnr:hover{
+    background: rgb(2,0,36);
+    background: linear-gradient(176deg, rgba(2,0,36,1) 0%, rgba(6,6,121,1) 75%);
+       }

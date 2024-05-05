@@ -5,9 +5,11 @@ import './Product.css';
 import { Link } from 'react-router-dom';
 import Footer from './Footer/Footer';
 import Header from './Header/Header';
+import { useCart } from './CartContext';
 
 const Product = () => {
-  const { id } = useParams(); // Get the 'id' from URL params
+  const { id } = useParams(); 
+  const {dispatch} =useCart();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
@@ -53,10 +55,7 @@ const Product = () => {
     setQuantity(quantity + 1);
   };
 
-  const handleAddToCart = () => {
-    // Implement your addToCart logic here
-    navigate('/cart');
-  };
+  
 
   const handleSizeClick = (size) => {
     setSelectedSize(size);
@@ -132,6 +131,40 @@ const Product = () => {
       return `${Math.min(...variationsWithSelectedColor.map(variation => variation.price))} `;
     }
   };
+
+
+
+  const handleAddToCart = () => {
+    if (!selectedColor) {
+      alert("Please select a color.");
+      return;
+    }
+    // Find the variation that matches the selected color and size (if size is provided).
+    const selectedVariation = product.Variations.find(variation =>
+      variation.name === selectedColor && (selectedSize ? variation.size === selectedSize : true)
+    );
+
+    if (!selectedVariation) {
+      alert("Selected variation not available.");
+      return;
+    }
+
+    dispatch({
+      type: 'ADD_ITEM',
+      item: {
+        id: product.ProductId,
+        name: product.ProductName,
+        price: parseFloat(selectedVariation.price),
+        image: selectedVariation.images[0],  
+        size: selectedVariation.size || "Free Size",  
+        color: selectedColor,
+        quantity: quantity,
+        availableCount: selectedVariation.count
+      }
+    });
+    navigate('/cart');
+  };
+
   
   
 
@@ -173,8 +206,6 @@ const Product = () => {
 
           <div className="ratings1">
             <div className="stars1">
-              {/* Render stars based on product rating */}
-              {/* Example: Assuming product.rating contains the rating value */}
               {Array.from({ length: product.rating }, (_, index) => (
                 <i key={index} className="fas fa-star"></i>
               ))}
