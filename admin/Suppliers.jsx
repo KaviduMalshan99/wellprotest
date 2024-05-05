@@ -16,7 +16,7 @@ function Suppliers() {
   const [showConfirm, setShowConfirm] = useState(false);           // State variable to control confirmation dialog
   const [supplierToDelete, setSupplierToDelete] = useState(null); // State variable to store details of supplier to delete
   const navigate = useNavigate();
-  const handleclick7 = () => { navigate('/supplierEmail') };
+  const handleclick7 = () => { navigate('/admin/supplierEmail') };
 
   useEffect(() => {
     axios.get('http://localhost:3001/api/suppliers')
@@ -161,7 +161,7 @@ function Suppliers() {
   return (
     <div className="STbWi">
       <div className="supheadtxt">SUPPLIERS SECTION</div>
-      <button className="supregister-btnsup" onClick={() => navigate('/supplierreg')}> + Add New Supplier</button>
+      <button className="supregister-btnsup" onClick={() => navigate('/admin/supplierreg')}> + Add New Supplier</button>
       <button className="Supreport" onClick={generateReport}>Generate Report</button>
       <button className="Supemail-btn" onClick={handleclick7}>Email Section</button> 
       <input type="text" className="search-bar" placeholder="Search Supplier" value={searchTerm} onChange={handleSearchTermChange} />

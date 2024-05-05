@@ -28,7 +28,10 @@ const Header = () => {
                             <i className="fa fa-search"></i>
                         </form>
                     </li>
-                    <li><div className="hhui22"><Link to='/login'><i className="far fa-user-circle fa-xl" style={{ color: '#ffffff' }}></i></Link></div></li>
+                    <li><div className="hhui22"><Link to="/login" onClick={() => console.log('Login link clicked')}>
+                                <i className="far fa-user-circle fa-xl" style={{ color: '#ffffff' }}></i>
+                            </Link>
+                            </div></li>
                     <li>
                         <div className="hhui22">
                             <Link to='/cart'>

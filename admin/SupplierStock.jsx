@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function StockForm() {
 
   const [stocks, setStocks] = useState([]);
-  const handleclick6 = () => { navigate('/SupplierReg') };
+  const handleclick6 = () => { navigate('/admin/SupplierReg') };
 
   const [formData, setFormData] = useState({
     StocksupplierName: '',

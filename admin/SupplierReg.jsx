@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './SupplierReg.css';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 function SupplierReg() {
     const navigate = useNavigate();
-    const handleclick2 = () => { navigate('/supplier') }; 
-    const handleclick4 = () => { navigate('/supplierstock') }; 
+    const handleclick2 = () => { navigate('/admin/supplier') }; 
+    const handleclick4 = () => { navigate('/admin/supplierstock') }; 
 
     const [formData, setFormData] = useState({
         fullName: '',
