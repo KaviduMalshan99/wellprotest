@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.error-messagesup{
+color: red;
+font-size: 15px;
+}
+
+.goback-btn {
+    margin-left: 150px; 
+    margin-top: 20px; 
+    margin-bottom: 50px;
+    font-size: 18px;
+    padding: 12px 26px;
+    background-color: #07223D;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight:400;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.goback-btn:hover {
+    background: linear-gradient(176deg, rgb(8, 8, 11) 0%, rgba(6, 6, 121, 1) 75%);
+}
+
+.goback-btn:active {
+    transform: translate(0em, 0.2em);
+}
+
+
+
+.goback-btn2 {
+    margin-left: 570px; 
+    margin-top: 20px; 
+    margin-bottom: 50px;
+    font-size: 18px;
+    padding: 12px 45px;
+    background-color: #07223D;
+    color: white;
+    border: none;
+    
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight:400;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.goback-btn2:hover {
+    background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+}
+
+.goback-btn2:active {
+    transform: translate(0em, 0.2em);
+}
+
+
+
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: Poppins;
+    background-color: F7FBFE;
+    
+}
+.table10{
+    width: 500px;
+    
+}
+
+.regmh{
+    padding-top: 40px;
+    font-size: 40px;
+    margin-left: 92px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.regpath{
+    padding-top: 40px;
+    margin-left: 100px;
+    font-weight: 600;
+    font-size: 22px;
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+.rgfcon{
+    padding-bottom: 30px;
+    padding-top: 20px;
+    width: 400px;
+
+}
+
+.supdetails{
+margin-left: 105px;
+font-size: 30px;
+border-bottom: 2px solid rgb(0, 0, 0);
+}
+
+.regf{
+margin-left:5px;
+font-size: 30px;
+font-weight: 600;
+padding-top: 20px;
+
+}
+
+.reginp{
+background-color: #EBF5FB;
+margin-top: 30px;
+font-size: 15px;
+padding: 10px;
+width:100%;
+border-radius: 10px;
+}
+
+.reginp2{
+    background-color: #EBF5FB;
+margin-top: 30px;
+font-size: 15px;
+padding: 10px;
+width:100%;
+border-radius: 10px;
+}
+
+.reginp3{
+    background-color: #EBF5FB;
+    margin-top: 30px;
+    font-size: 15px;
+    padding: 10px;
+    width:100%;
+    border-radius: 10px;
+}
+.reginp4{
+    background-color: #EBF5FB;
+    margin-top: 30px;
+    font-size: 15px;
+    padding: 10px;
+    width:100%;
+    border-radius: 10px;
+}
+.reginp5{
+    background-color: #EBF5FB;
+padding: 10px;
+width:478px;
+border: 1.61px solid black;
+border-radius: 10px;
+font-size: 15px;
+
+}
+
+.regacc{
+    font-size: 14px;
+    font-weight:500;
+
+}
+
+.regbtn{
+    color: white;
+    border-radius: 10px;
+    margin-top: 30px;
+    margin-left: 52px;
+    width:100%;
+    padding-top: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 10px;
+    border: transparent;
+    background-color:#07223D;
+ box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+ font-weight: 500;
+ font-size: 18px;
+}
+.regbtn:hover {
+    background: rgb(2,0,36);
+background: linear-gradient(176deg, rgba(2,0,36,1) 0%, rgba(6,6,121,1) 75%);
+   }
+   
+   .regbtn:active {
+    transform: translate(0em, 0.2em);
+   }
+
+.reginpcheckt{
+margin-top: 30px;
+margin-left: 10px;
+margin-right: 10px;
+padding: 30px;
+font-size: 18px;
+font-weight: 500;
+}
+
+.reginpcheckt2{
+    margin-top: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-left: 30px;
+    padding-top: 30px;
+    font-size: 18px;
+    font-weight: 500;
+}
+.reginpcheckt3{
+font-weight: 400;
+font-size: 18px;
+margin-bottom: 20px;
+font-weight: 500;
+}
+
+.reginpcheck{
+    text-align: center;
+
+}
+
+.drop1{
+    width: 100%;
+    background-color: #EBF5FB;
+    
+}
+
+.regmconn{
+  background-color: #d9d9d9;
+  width: 800px;
+  margin-top: 10px;
+  margin-left:10%;
+  padding-right: 100px;
+  border-radius: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 15px 20px #bbb7b7;
+  
+}
+
+
+

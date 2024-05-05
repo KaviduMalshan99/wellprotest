@@ -10,6 +10,8 @@ const productContraller = require('./ProductController');
 const reviewcontroller = require('./ReviewController');
 const faqcontroller = require('./FaqController');
 const RefundController = require('./RefundController');
+const SupplierRegController = require('./SupplierRegController');
+const SupplierStockController = require('./SupplierStockController');
 
 
 router.get('/users',contraller.getUsers);
@@ -67,5 +69,19 @@ router.get('/refund/:orderId', RefundController.getRefundById);
 // const { sendEmail } = require("../controllers/emailControllers");
 
 // router.post("/sendEmail", sendEmail);
+
+//supplierReg
+
+router.post('/addsupplier', SupplierRegController.addSupplierReg);
+router.get('/suppliers', SupplierRegController.getSuppliers);
+//router.get('/supplierdetails/:userId',SupplierRegController.getSuppliersdetails);
+router.put('/suppliers/:id', SupplierRegController.updateSupplier);
+router.delete('/suppliers/:id', SupplierRegController.deleteSupplier);
+
+//suplierstock
+router.post('/addstock', SupplierStockController.addSupplierStock);
+router.get('/getstock', SupplierStockController.getStock);
+
+
 
 module.exports = router;
