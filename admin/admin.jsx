@@ -15,7 +15,10 @@ import './admin.css'
 import UserDetails from './UserDetails';
 import Logo from '../src/assets/logo.png'
 import RefundOrders from './refundOrders';
-import RefundEmail from './refundEmail'
+import RefundEmail from './refundEmail';
+import SupplierReg from '../admin/SupplierReg';
+import SupplierStock from '../admin/SupplierStock';
+import SupplierEmail from '../admin/SupplierEmail';
 
 
 const Admin = () => {
@@ -90,7 +93,10 @@ const Admin = () => {
             <Route path="/refundorder" element={<RefundOrders />} />
             <Route path="/refundemail" element={<RefundEmail/>} />
             <Route path='/notificationn' element={<Notification/>}/>
-
+            <Route path='/supplierreg' element={<SupplierReg/>}/>
+            <Route path='/supplierstock' element={<SupplierStock/>}/>
+            <Route path='/supplierEmail' element={<SupplierEmail/>}/>
+          
           </Routes>
         </div>
       </div>
