@@ -4,7 +4,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './refundEdit.css';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useParams hook to extract route parameters
+import { useParams, useNavigate, Link } from 'react-router-dom'; // Import useParams hook to extract route parameters
 
 const RefundEdit = () => {
   const [newRefund, setNewRefund] = useState(null);
@@ -125,11 +125,11 @@ const RefundEdit = () => {
       <div className="rnmh">Refund</div>
       <div className="rnlp">Home &gt; Refund</div>
       <div className="rnmbtns">
-        <button className="transparent-button" onClick={() => navigate('/refundPolicy')}>
+        <button id="transparent-buttonr" onClick={() => navigate('/refundPolicy')}>
           Refund Policy
         </button>
         {" | "}
-        <button className="transparent-button" onClick={() => navigate(`/`)}>
+        <button id="transparent-buttonr" onClick={() => navigate(`/`)}>
           Refund Now
         </button>
       </div> 
@@ -197,7 +197,7 @@ const RefundEdit = () => {
                       {newRefund.imgUrls.map((imageUrl, index) => (
                         <div key={index} className="image-wrapper">
                           <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100px', height: '100px' }} />
-                          <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+                          <button type="buttonr" onClick={() => handleRemoveImage(index)}>Remove</button>
                         </div>
                       ))}
                     </div>

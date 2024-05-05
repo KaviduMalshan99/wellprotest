@@ -1,4 +1,8 @@
 import React from 'react';
+
+import './refundPolicy.css'
+// import { useNavigate } from 'react-router-dom'; // Importing useNavigate hook
+
 import Footer from '../Footer/Footer'
 
 import { Link, useNavigate } from 'react-router-dom'; // Importing useNavigate hook
@@ -10,15 +14,17 @@ const RefundPolicy = () => {
     return (
         <div>
             <div className="rnmh">Refund</div>
-        <div className="rnlp">Home &gt; Refund</div>
-        <div className="rnmbtns">
-        <Link to='/refundpolicy'><button className="transparent-button" >
+            <div className="rnlp">Home &gt; Refund</div>
+
+        <div className="rnmbtnss">
+                <button id="transparent-buttonrr" onClick={() => navigate(`/refundPolicy`)}>
                     Refund Policy
-                </button></Link>
-                {" | "}
-                <Link to='/refund'> <button className="transparent-button" >
+                </button>
+                <div className='iraa'>{" | "}</div>
+                <button id="transparent-buttonrr" onClick={() => navigate(`/refund`)}>
+
                     Refund Now
-                </button></Link >
+                </button>
             </div> 
 
             <Footer/>

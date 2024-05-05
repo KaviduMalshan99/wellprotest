@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-import './Product.css';
+import './Product.scss'
 import axios from 'axios';
 import AddProductModel from '../admin/AddProductModel';
 import { toast,ToastContainer } from 'react-toastify';
@@ -8,6 +8,7 @@ import EditProductModal from '../admin/EditProductModal';
 import { Modal } from '@mui/material';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import Notification from './Notification';
 
 
 const Product = () => {
@@ -121,6 +122,11 @@ const Product = () => {
 
   return (
     <div className='ProductContainer'>
+      
+
+      <Notification/>
+
+      <div className="productsecondiv">
 
       <h1 className='PRODUCTTITLE'>Products Section</h1>
 
@@ -167,7 +173,7 @@ const Product = () => {
               <th>Image</th>
               <th>Product Name</th>
               <th>Price</th>
-              <th>Actions</th>
+              <th colSpan={2}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -187,7 +193,7 @@ const Product = () => {
                     )}
                 </td>
                 <td>{product.ProductName}</td>
-                <td>{product.Price}</td>
+                <td>{`${Math.min(...product.Variations.map(variation => variation.price))} - ${Math.max(...product.Variations.map(variation => variation.price))}`}</td>
                 <td>
                   <button className="edit-btn" onClick={() => toggleEditModal(product.ProductId)}>Edit</button>
                 </td>
@@ -203,12 +209,13 @@ const Product = () => {
       {isEditModalOpen && (
         <Modal open={isEditModalOpen} onClose={toggleEditModal} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
           <div style={{justifyContent:'center', width: '80%', maxWidth: '1000px', borderRadius:'10px',maxHeight: '85vh', overflowY: 'auto', backgroundColor: '#cfd2d2', padding: '20px',  }}>
-            <EditProductModal closeModal={toggleEditModal} product={selectedProduct} />
+          <EditProductModal closeModal={toggleEditModal} product={selectedProduct} />
           </div>
         </Modal>
       )}
 
       <ToastContainer/>
+      </div>
     </div>
   )
 }

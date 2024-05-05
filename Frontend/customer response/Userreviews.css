@@ -1,0 +1,90 @@
+.ReviewUser_main .ReviewUsertable{
+    width: 99%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: 10px;
+    background-color: #07223D;
+    border-radius: 10px;
+}
+
+.revmsavbtn{
+    display: flex;
+    justify-content: center;
+}
+
+.ReviewUser_main .ReviewUsertable th, .ReviewUser_main .ReviewUsertable td{
+    padding: 8px;
+    text-align: center;
+}
+
+.ReviewUser_main .ReviewUsertable th{
+    background-color: #07223D;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.ReviewUser_main .ReviewUsertable td{
+    background-color: #F7FBFE;
+    border: 1px solid #07223D;
+}
+
+.ReviewUser_main .ReviewUsertable .usetheader1{
+    width: 30px;
+}
+.ReviewUser_main .ReviewUsertable .usetheader2{
+    width: 100px;
+}
+.ReviewUser_main .ReviewUsertable .usetheader3{
+    width: 150px;
+}
+.ReviewUser_main .ReviewUsertable .usetheader4{
+    width:50px;
+}
+.ReviewUser_main .ReviewUsertable .usetheader5{
+    width: 100px;
+}
+.ReviewUser_main .ReviewUsertable .usetheader6{
+    width: 70px;
+}
+
+.ReviewUser_main .ReviewUsertable .ReviewUser_Edit{
+    padding: 5px 20px 5px 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+    background-color: #07223D;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+ td .urembtncon{
+    display: flex;
+    justify-content:center ;
+
+}
+
+
+.star {
+    font-size: 24px;
+  }
+  
+  .star.filled {
+    color: orange; 
+  }
+
+.ReviewUser_main .ReviewUsertable .ReviewUser_Delete{
+    padding: 5px 20px 5px 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: #cc3636;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.ReviewUser_main .ReviewUsertable .review-image{
+    height: 100px;
+    width: 100px;
+}

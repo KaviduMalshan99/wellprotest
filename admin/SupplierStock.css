@@ -1,0 +1,165 @@
+
+.newstocksection{
+    padding-top: 40px;
+    font-size: 40px;
+    margin-left: 35%;
+    font-weight: 600;
+  }
+  
+  .supplierstock-form {
+      background-color: #e3dddd; /* Change the color to your desired background color */
+      padding: 45px; /* Add some padding for better appearance */
+      border-radius: 10px; /* Add rounded corners to the form */
+      margin-top: 0.7%;
+      margin-left: 30%;
+      width: 550px;
+    }
+    
+    
+    .divvvcolor button {
+      margin-left: 15px;
+    }
+  
+    .divvvcolor .sd1 input[type="text"] {
+      margin-right: 10px; 
+    }
+    
+    .StocksupplierName {
+      background-color: #EBF5FB;
+      margin-top: 10px;
+      font-size: 15px;
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+    }
+    
+    .error {
+      color: red;
+      font-size: 14px;
+    }
+    
+    .supproductId {
+      background-color: #EBF5FB;
+      margin-top: 10px;
+      font-size: 15px;
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+    }
+    
+  
+    .supstockId {
+      background-color: #EBF5FB;
+      margin-top: 10px;
+      font-size: 15px;
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+    }
+    
+  
+    .stockPrice {
+      background-color: #EBF5FB;
+      margin-top: 10px;
+      font-size: 15px;
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+    }
+    
+  
+    .stockPrice.error {
+      color: red;
+      font-size: 14px;
+    }
+    
+   
+    .supplyDate {
+      background-color: #EBF5FB;
+      margin-top: 10px;
+      font-size: 15px;
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+    }
+    
+    .stockquantity {
+      background-color: #EBF5FB;
+      margin-top: 10px;
+      font-size: 15px;
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+    }
+    
+  
+    .stockquantity.error {
+      color: red;
+      font-size: 14px;
+    }
+  
+    .warehousenameid {
+      background-color: #EBF5FB;
+      margin-top: 10px;
+      font-size: 15px;
+      padding: 10px;
+      width: 100%;
+      border-radius: 10px;
+    }
+  
+    .stocksubmit {
+      color: white;
+      border-radius: 10px;
+      margin-top: 30px;
+      margin-left: 0px;
+      width: 100%;
+      padding: 10px 25px;
+      border: transparent;
+      background-color: #07223D;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+      font-weight: 500;
+      font-size: 18px;
+    }
+    
+  
+    .stocksubmit:hover {
+      background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+    }
+    
+    .stocksubmit:active {
+      transform: translate(0em, 0.2em);
+    }
+    
+  
+  .stockTopic{
+    font-size: 200px;
+    margin-left: 40%;
+    margin-top: 8%;
+  
+  }
+  
+  
+  
+  
+  .gobackregis-btn {
+    margin-left: 38px; 
+    margin-top: 20px; 
+    margin-bottom: 50px;
+    font-size: 18px;
+    padding: 12px 26px;
+    background-color: #07223D;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight:400;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  
+  .gobackregis-btn:hover {
+    background: linear-gradient(176deg, rgb(8, 8, 11) 0%, rgba(6, 6, 121, 1) 75%);
+  }
+  
+  .gobackregis-btn:active {
+    transform: translate(0em, 0.2em);
+  }
