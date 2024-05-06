@@ -55,24 +55,21 @@ useEffect(() => {
 
   // Apply price range filter
   if (minPrice && maxPrice) {
-    filteredProducts = filteredProducts.filter(
-      (product) =>
-        product.Price >= parseInt(minPrice) && product.Price <= parseInt(maxPrice)
-    );
+    filteredProducts = filteredProducts.filter(product => {
+      const minProductPrice = Math.min(...product.Variations.map(variation => variation.price));
+      return minProductPrice >= parseFloat(minPrice) && minProductPrice <= parseFloat(maxPrice);
+    });
   }
 
   // Apply ratings filter
   if (selectedRatings.length > 0) {
-    filteredProducts = filteredProducts.filter((product) =>
-      selectedRatings.includes(product.Rating.toString())
-    );
+    filteredProducts = filteredProducts.filter(product => selectedRatings.includes(product.Rating.toString()));
   }
 
-  // Apply sorting
   if (sortOrder === 'minToMax') {
-    filteredProducts = filteredProducts.slice().sort((a, b) => a.Price - b.Price);
+    filteredProducts.sort((a, b) => Math.min(...a.Variations.map(variation => variation.price)) - Math.min(...b.Variations.map(variation => variation.price)));
   } else if (sortOrder === 'maxToMin') {
-    filteredProducts = filteredProducts.slice().sort((a, b) => b.Price - a.Price);
+    filteredProducts.sort((a, b) => Math.min(...b.Variations.map(variation => variation.price)) - Math.min(...a.Variations.map(variation => variation.price)));
   }
 
   setFilteredData(filteredProducts);
@@ -115,7 +112,7 @@ useEffect(() => {
       <Header/>
       <p className='menmain'>SHOP MENS</p>
       <p className='menmain1'>
-        <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link>
+        <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" />
       </p>
 
       <div className="menmid">
@@ -174,8 +171,8 @@ useEffect(() => {
                 {/* Sorting */}
                 <p className='fittertitles'>Sort By:</p>
                 <div className='sortminmax'>
-                  <button className='btnsortminmax' onClick={() => handleSortChange('minToMax')}>Price: Low to High</button>
-                  <button className='btnsortminmax' onClick={() => handleSortChange('maxToMin')}>Price: High to Low</button>
+                  <button className='btnsortminmax' onClick={() => handleSortChange('maxToMin')}>Price: Low to High</button>
+                  <button className='btnsortminmax' onClick={() => handleSortChange('minToMax')}>Price: High to Low</button>
                 </div>
               </div>
           </div>
@@ -277,10 +274,10 @@ useEffect(() => {
                 <div className="ratings">
                   <div className="paymentsimg">
                     <div className='p01'>
-                      or 3 X {(record.Price / 3.00).toFixed(2)} with <img src={Mint} className='intpay' />
+                      or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with <img src={Mint} className='intpay' />
                     </div>
                     <div className='p02'>
-                      or 3 X {(record.Price / 3.00).toFixed(2)} with<img src={Koko} className='kokopay' />
+                      or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with<img src={Koko} className='kokopay' />
                     </div>
                   </div>
                 </div>

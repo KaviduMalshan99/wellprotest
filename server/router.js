@@ -3,6 +3,8 @@ const router = express.Router();
 const contraller = require('./contraller');
 const { route } = require('./app');
 
+
+
 const catagoryContraller = require('./CatagoryController');
 const customerContraller = require('./CustomerController');
 const orderContraller = require('./OrderController');
@@ -10,6 +12,12 @@ const productContraller = require('./ProductController');
 const reviewcontroller = require('./ReviewController');
 const faqcontroller = require('./FaqController');
 const RefundController = require('./RefundController');
+const SupplierRegController = require('./SupplierRegController');
+const SupplierStockController = require('./SupplierStockController');
+
+
+const authMiddleware = require("../server/middleware/authMiddleware");
+const USER_ROLES = require("../server/constants/roles");
 
 
 router.get('/users',contraller.getUsers);
@@ -25,11 +33,19 @@ router.post('/deletecategories/:id',catagoryContraller.deleteCategory);
 router.post('/updatecategory/:id', catagoryContraller.updateCategory);
 
 //customer
-router.get('/customer',customerContraller.getCustomer);
-router.post('/addcustomer',customerContraller.addCustomer);
-router.post('/updatecustomer',customerContraller.updateCustomer);
-router.post('/deletecustomer',customerContraller.deleteCustomer);
-router.get('/customer/:userId', customerContraller.getCustomerById);
+router.get(
+    "/customer",
+    authMiddleware([USER_ROLES.ADMIN]),
+    customerContraller.getCustomer
+);
+
+router.post("/addcustomer", customerContraller.addCustomer);
+router.post("/updatecustomer/:UserId", customerContraller.updateCustomer);
+router.delete("/deletecustomer/:UserId", customerContraller.deleteCustomer);
+router.post("/login", customerContraller.login); // Ensure this is a POST, not GET
+router.post("/register", customerContraller.register);
+router.get("/customer/:userId", customerContraller.getCustomerById);
+router.get("/customer/email/:email", customerContraller.getCustomerByEmail);
 
 //order
 router.get('/orders',orderContraller.getOrders);
@@ -67,5 +83,19 @@ router.get('/refund/:orderId', RefundController.getRefundById);
 // const { sendEmail } = require("../controllers/emailControllers");
 
 // router.post("/sendEmail", sendEmail);
+
+//supplierReg
+
+router.post('/addsupplier', SupplierRegController.addSupplierReg);
+router.get('/suppliers', SupplierRegController.getSuppliers);
+//router.get('/supplierdetails/:userId',SupplierRegController.getSuppliersdetails);
+router.put('/suppliers/:id', SupplierRegController.updateSupplier);
+router.delete('/suppliers/:id', SupplierRegController.deleteSupplier);
+
+//suplierstock
+router.post('/addstock', SupplierStockController.addSupplierStock);
+router.get('/getstock', SupplierStockController.getStock);
+
+
 
 module.exports = router;

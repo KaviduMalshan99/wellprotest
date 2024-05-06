@@ -14,7 +14,7 @@ const RefundPolicy = () => {
     return (
         <div>
             <div className="rnmh">Refund</div>
-        <div className="rnlp">Home &gt; Refund</div>
+            <div className="rnlp">Home &gt; Refund</div>
 
         <div className="rnmbtnss">
                 <button id="transparent-buttonrr" onClick={() => navigate(`/refundPolicy`)}>
@@ -24,7 +24,7 @@ const RefundPolicy = () => {
                 <button id="transparent-buttonrr" onClick={() => navigate(`/refund`)}>
 
                     Refund Now
-                </button></Link >
+                </button>
             </div> 
 
             <Footer/>
