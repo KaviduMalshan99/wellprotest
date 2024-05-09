@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+.rnmh {
+  margin-top: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 35px;
+}
+
+.rnlp {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 23px;
+}
+
+/* Button container */
+
+.rnmbtns {
+  margin-top: 20px;
+  display: flex;
+
+  /* Change to flex */
+  justify-content: center;
+
+  /* Center align horizontally */
+  gap: 10px;
+
+  /* Add gap between buttons */
+}
+
+/* refundNow.css */
+
+/* Main header */
+
+.rnmh {
+  margin-top: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 35px;
+}
+
+/* Breadcrumb */
+
+.rnlp {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 23px;
+}
+
+/* Button container */
+
+.rnmbtns {
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Form container */
+
+.rnmcont {
+  padding-top: 70px;
+  margin-top: 20px;
+  background-color: #F1F1F1;
+  width: 800px;
+  border-radius: 30px;
+  height: 850px;
+  margin-bottom: 20px;
+  padding: 50px 50px 0px 50px;
+
+  /* Added padding */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+
+  /* Added box shadow */
+}
+
+/* Form input fields */
+
+.rnmconinp, .rn2mconreastyp, .rn2mconaddimg {
+  margin: 10px 0;
+  padding: 10px;
+  width: calc(100% - 20px);
+
+  /* Take full width minus padding */
+  border: 1.5px solid #ccc;
+  border-radius: 25px;
+}
+
+/* Submit button */
+
+.regbtn {
+  color: white;
+  border-radius: 68px;
+  margin-top: 30px;
+  width: 200px;
+  padding: 10px 20px;
+  border: transparent;
+  background-color: #000000;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+
+  /* Add pointer cursor */
+
+  &:hover {
+    background: rgb(2, 0, 36);
+    background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+  }
+
+  &:active {
+    transform: translate(0em, 0.2em);
+  }
+}
+
+/* Text inputs and text areas border */
+
+.rnmconinp, .rn2mconreastyp, .rn2mconaddimg {
+  margin: 10px 0;
+  padding: 10px;
+  width: calc(100% - 20px);
+
+  /* Take full width minus padding */
+  border: 1.5px solid rgb(0, 0, 0);
+
+  /* Adjust border width as needed */
+  border-radius: 5px;
+}
+
+/* Hover effect */
+
+.rnmconinp:hover, .rn2mconreastyp:hover, .rn2mconaddimg:hover {
+  border-color: rgb(153, 153, 153);
+
+  /* Change border color on hover if desired */
+}
+
+/* Add a container for the buttons */
+
+.rbutton-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+
+  /* Adjust margin as needed */
+  gap: 100px;
+}
+
+/* Style for the buttons */
+
+.editbtn, .dltbtn {
+  color: white;
+  border-radius: 28px;
+  width: 25%;
+
+  /* Set button width */
+  padding: 8px 16px;
+
+  /* Adjust padding for smaller buttons */
+  border: transparent;
+  background-color: #000000;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  font-weight: 500;
+  font-size: 15px;
+  margin: 0;
+}
+
+/* Style for the buttons on hover and active states */
+
+.editbtn:hover, .dltbtn:hover {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+}
+
+.editbtn:active, .dltbtn:active {
+  transform: translate(0em, 0.2em);
+}
+
+/* Add Image button */
+
+.rn2mconaddimg-btn {
+  padding: 10px 20px;
+
+  /* Adjust padding as needed */
+  margin-top: 10px;
+
+  /* Add some top margin */
+  border: none;
+  background-color: #000000;
+
+  /* Button background color */
+  color: white;
+
+  /* Button text color */
+  border-radius: 25px;
+
+  /* Add border radius for rounded corners */
+  cursor: pointer;
+  font-size: 11px;
+
+  /* Adjust font size */
+
+  &:hover {
+    background-color: #333333;
+
+    /* Change background color on hover */
+  }
+}
+
+/* Image preview */
+
+.preview-image {
+  display: block;
+  margin-top: 10px;
+  max-width: 80px;
+
+  /* Adjust the max-width to your desired smaller size */
+  height: auto;
+
+  /* Maintain aspect ratio */
+  border-radius: 5px;
+
+  /* Add border radius for rounded corners */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+
+  /* Add shadow for depth */
+}
+
+/* Save Details button */
+
+.save-details-button {
+  color: white;
+  border-radius: 28px;
+  width: 25%;
+
+  /* Set button width */
+  padding: 8px 16px;
+
+  /* Adjust padding for smaller buttons */
+  border: transparent;
+  background-color: #000000;
+
+  /* Button background color */
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  font-weight: 500;
+  font-size: 15px;
+  margin-top: 5%;
+
+  &:hover {
+    background-color: #047f25;
+
+    /* Change background color on hover */
+  }
+
+  &:active {
+    transform: translate(0em, 0.2em);
+  }
+}
+
+/* Save Details button hover and active states */
+
+#transparent-buttonr {
+  background: none;
+  text-decoration: none;
+  border: none;
+  color: #000000;
+
+  /* Text color */
+  cursor: pointer;
+  font-size: 16px;
+
+  /* Adjust font size as needed */
+  font-weight: bold;
+
+  /* Optionally, adjust font weight */
+  width: 150px;
+
+  /* Increase button width */
+  margin-top: -1%;
+
+  &:hover {
+    opacity: 0.7;
+
+    /* Adjust opacity on hover as desired */
+  }
+}

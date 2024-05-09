@@ -31,6 +31,7 @@ import Suppliers from '../admin/Suppliers';
 import Warehouse from '../admin/Warehouse';
 import RefundOrders from '../admin/refundOrders';
 import RefundEmail from '../admin/refundEmail';
+import RefundApprove from '../admin/refundApproves';
 import Notification from '../admin/Notification';
 import SupplierEmail from '../admin/SupplierEmail';
 import SupplierReg from '../admin/SupplierReg';
@@ -59,6 +60,8 @@ function App() {
       <CartProvider>
         <Router>
           <Routes>
+          <Route path='/men' element={<Men />} />
+
 
             <Route element={<CheckLoginStatus/>}>
               <Route path='/login' element={<ULog />} />
@@ -100,7 +103,7 @@ function App() {
               <Route path='/cart' element={<Cart />} />
               <Route path='/checkout' element={<Checkout />} />
               <Route path='/refund' element={<Refund />} />
-              <Route path='/refundedit' element={<RefundEdit />} />
+              <Route path='/refundedit/:orderId' element={<RefundEdit />} />
               <Route path='/refundpolicy' element={<RefundPolicy />} />
 
             <Route path='/menbag' element={<MenBag />} />
@@ -127,6 +130,7 @@ function App() {
               <Route path='overview' element={<Overview />} />
               <Route path='refundorder' element={<RefundOrders />} />
               <Route path='refundemail' element={<RefundEmail />} />
+              <Route path='refundapprove' element={<RefundApprove />} />
               <Route path='notification' element={<Notification />} />
               <Route path='supplierEmail' element={<SupplierEmail />} />
               <Route path='supplierreg' element={<SupplierReg />} />

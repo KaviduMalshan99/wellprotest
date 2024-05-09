@@ -13,6 +13,8 @@ const RefundOrders = () => {
   const [filteredRefunds, setFilteredRefunds] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate(); // Initializing navigate function
+  const [showConfirm, setShowConfirm] = useState(false); // Confirmation dialog state
+  const [refundToDelete, setRefundToDelete] = useState(null); // State variable to store refund to delete
 
 
   useEffect(() => {
@@ -29,23 +31,36 @@ const RefundOrders = () => {
     // Filter refunds based on the search term
     const filtered = refunds.filter(refund => {
       const orderId = refund?.orderId || '';
+      const productId = refund?.productId || '';
       const customerName = refund?.customerName || '';
+      const refundDate = formatDate(refund?.refundDate); // Format refund date
+
       // Check if orderId or customerName includes the search term
-      return orderId.toLowerCase().includes(searchTerm.toLowerCase()) || customerName.toLowerCase().includes(searchTerm.toLowerCase());
+      return orderId.toLowerCase().includes(searchTerm.toLowerCase()) || customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      refundDate.toLowerCase().includes(searchTerm.toLowerCase()) || productId.toLowerCase().includes(searchTerm.toLowerCase()) ;
     });
 
     setFilteredRefunds(filtered);
   }, [searchTerm, refunds]);
 
   const handleDelete = (orderId) => {
-    axios.delete(`http://localhost:3001/api/deleterefund/${orderId}`)
+    setRefundToDelete(orderId);
+    setShowConfirm(true); // Show confirmation dialog
+  };
+
+  const confirmDelete = () => {
+    axios.delete(`http://localhost:3001/api/deleterefund/${refundToDelete}`)
       .then(res => {
-        setRefunds(prevRefunds => prevRefunds.filter(refund => refund.orderId !== orderId));
+        setRefunds(prevRefunds => prevRefunds.filter(refund => refund.orderId !== refundToDelete));
         toast.success('Refund deleted successfully!');
       })
       .catch(err => {
         console.error('Error deleting refund:', err);
         toast.error('Error deleting refund.');
+      })
+      .finally(() => {
+        // Close the confirmation dialog
+        setShowConfirm(false);
       });
   };
 
@@ -53,27 +68,39 @@ const RefundOrders = () => {
     return new Date(dateString).toLocaleDateString('en-US');
   };
 
-  const handleSendEmail = (orderId, customerEmail) => {
-    // Set up your email service credentials
-    const serviceId = 'service_c2pv3dy';
-    const templateId = 'template_iwdczfq';
-    const userId = 'jUnSeVe-U6hv47YYW';
+  // const handleSendEmail = (orderId, customerEmail) => {
+  //   // Set up your email service credentials
+  //   const serviceId = 'service_c2pv3dy';
+  //   const templateId = 'template_iwdczfq';
+  //   const userId = 'jUnSeVe-U6hv47YYW';
 
-    // Prepare the email parameters
-    const templateParams = {
-      orderId: orderId,
-      customerEmail: customerEmail,
-    };
+  //   // Prepare the email parameters
+  //   const templateParams = {
+  //     orderId: orderId,
+  //     customerEmail: customerEmail,
+  //   };
 
-    // Send the email
-    emailjs.send(serviceId, templateId, templateParams, userId)
-      .then((response) => {
-        console.log('Email sent successfully!', response);
-        toast.success('Email sent successfully!');
+  //   // Send the email
+  //   emailjs.send(serviceId, templateId, templateParams, userId)
+  //     .then((response) => {
+  //       console.log('Email sent successfully!', response);
+  //       toast.success('Email sent successfully!');
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error sending email:', error);
+  //       toast.error('Error sending email.');
+  //     });
+  // };
+
+  const handleApprove = (orderId) => {
+    axios.put(`http://localhost:3001/api/approverefund/${orderId}`)
+      .then(res => {
+        // Optionally update UI or show success message
+        toast.success('Approve the refund');
       })
-      .catch((error) => {
-        console.error('Error sending email:', error);
-        toast.error('Error sending email.');
+      .catch(err => {
+        console.error('Error approving refund:', err);
+        toast.error('Error approving refund.');
       });
   };
 
@@ -81,9 +108,10 @@ const RefundOrders = () => {
     const doc = new jsPDF();
     doc.text('Refund Report', 10, 10);
     doc.autoTable({
-      head: [['Order Id', 'Customer Name', 'Customer Email', 'Reason', 'Refund Initiate Date']],
+      head: [['Order Id','Product Id', 'Customer Name', 'Customer Email', 'Reason', 'Refund Initiate Date']],
       body: filteredRefunds.map(refund => [
         refund?.orderId,
+        refund?.productId,
         refund?.customerName,
         refund?.customerEmail,
         refund?.reason,
@@ -97,7 +125,7 @@ const RefundOrders = () => {
   return (
     <div className='mainContainer'>
       <h1>Refund Section</h1>
-      <div className="search-bar">
+      <div id="search-barr">
         <input
           type="text"
           placeholder="Search Refund..."
@@ -105,12 +133,15 @@ const RefundOrders = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
         />
-        <button className="search-button">
+        <button id="search-buttonrrr">
           <i className="fas fa-search" />
         </button>
 
       </div>
-      <button className="generate-reports-button" onClick={generateReport}>Generate Report</button>
+     
+     <div className="twobtnr"> <button className="generate-reports-buttonr" onClick={generateReport}>Generate Report</button>
+      <Link to="/admin/refundapprove"><button className="generate-reports-buttonr">View Approve Refunds</button></Link>
+    </div>
 
 
       <div>
@@ -121,6 +152,7 @@ const RefundOrders = () => {
           <tbody>
             <tr>
               <th>Order Id</th>
+              <th>Product Id</th>
               <th>Customer Name</th>
               <th>Customer Email</th>
               <th>Reason</th>
@@ -131,6 +163,7 @@ const RefundOrders = () => {
             {filteredRefunds.map(refund => (
               <tr key={refund?.orderId}>
                 <td>{refund?.orderId}</td>
+                <td>{refund?.productId}</td>
                 <td>{refund?.customerName}</td>
                 <td>{refund?.customerEmail}</td>
                 <td>{refund?.reason}</td>
@@ -148,8 +181,9 @@ const RefundOrders = () => {
                   )}
                 </td>
                 <td>
-                  <button className='deletebtn' onClick={() => handleDelete(refund?.orderId)}>Delete</button>
-                  <button className='send-email-btn' onClick={() => navigate('/refundemail')}>Send Email</button>
+                <button className='approvebtn' onClick={() => handleApprove(refund?.orderId)}>Approve</button>
+                  <button className='deletebtn' onClick={() => handleDelete(refund?.orderId)}>Decline</button>
+                  <button className='send-email-btn' onClick={() => navigate('/admin/refundemail')}>Send Email</button>
 
                 </td>
               </tr>
@@ -158,6 +192,15 @@ const RefundOrders = () => {
         </table>
       </div>
 
+      {showConfirm && (
+        <div className="confirm-dialog">
+          <p>Are you sure you want to delete this refund?</p>
+          <div>
+            <button onClick={confirmDelete}>Yes</button>
+            <button onClick={() => setShowConfirm(false)}>No</button>
+          </div>
+        </div>
+      )}
       <ToastContainer />
     </div>
   );

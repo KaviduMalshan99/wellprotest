@@ -1,0 +1,366 @@
+.welcomeAdmin{
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    width: 105%;
+    height: 30%;
+    border-radius: 10px;
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.welcomeAdmin .adminImage img{
+    
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    padding: 15px;
+    object-fit: cover;
+}
+
+.welcomeAdmin .adminDetails{
+    display: flex;
+    flex-direction: column;
+    gap: -10px;
+}
+
+.welcomeAdmin .adminDetails .p1{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.welcomeAdmin .adminDetails .p2{
+    font-size: 13px;
+}
+
+.conversionRates {
+    margin-top: 20px;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 10px;
+    width: 95%;
+    height: 53%;
+}
+
+.conversionRates h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.conversionRates ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+    margin-left: 20px;
+}
+
+.conversionRates ul div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    margin-bottom: 10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.conversionRates ul div li {
+    font-size: 16px;
+    color: #f0f0f0;
+    
+}
+
+.conversionRates ul div li:first-child {
+    font-weight: bold;
+}
+
+.conversionRates ul div:nth-child(1) {
+    background-color: #07223D; /* Blue color */
+}
+
+.conversionRates ul div:nth-child(2) {
+    background-color: #555; /* Green color */
+}
+
+.conversionRates ul div:nth-child(3) {
+    background-color: #777; /* Red color */
+}
+
+.pp1{
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+
+
+
+.calendertime {
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    margin-top: 20px;
+    border-radius: 10px;
+    width: 30%;
+    align-items: center;
+    height: fit-content;
+
+}
+
+.calendertime .timenow{
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.calendertime .calendertoday{
+    border-radius: 10px;
+    margin-bottom: 23px;
+}
+
+/* Calendar */
+.react-calendar {
+    width: 100%;
+    max-width: 300px; /* Adjust width as needed */
+    background-color: #f5f5f5; /* Calendar background color */
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    
+}
+
+.react-calendar__tile--active {
+    background-color: #07223D;
+    color: #fff; 
+    
+}
+
+.react-calendar__tile--now {
+    background-color: #28a745; /* Current date background color */
+    color: #fff; /* Current date text color */
+}
+
+.react-calendar__tile--hover {
+    background-color: #dc3545; /* Hovered date background color */
+    color: #fff; /* Hovered date text color */
+}
+
+.react-calendar__month-view__weekdays {
+    text-align: center;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    color: #007bff; /* Weekday text color */
+}
+
+.react-calendar__month-view__days__day {
+    color: #000; /* Day text color */
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+    background: #007bff; /* Active date hover/focus background color */
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+    background: #28a745; 
+}
+
+.react-calendar__tile--hover:enabled:hover,
+.react-calendar__tile--hover:enabled:focus {
+    background: #dc3545; 
+}
+
+.react-calendar__navigation {
+    background-color: #07223D;
+    border-radius: 10px 10px 0 0; /* Background color of navigation icons */
+}
+
+.react-calendar__navigation__label,
+.react-calendar__navigation__arrow {
+    color: #fff;
+    font-size: 15px; /* Color of navigation icon */
+}
+
+.react-calendar__navigation__arrow {
+    border-left: 6px solid transparent; /* Adjust arrow size */
+    border-right: 6px solid transparent; /* Adjust arrow size */
+    font-size: 15px;
+}
+
+.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__next2-button {
+    border-left-color: #fff; /* Color of arrow border */
+    border-right-color: #fff; /* Color of arrow border */
+    font-size: 18px;
+}
+
+
+.dashbordsec1{
+    width: 98%;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.dashbordsec1 i{
+    font-size: 30px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
+
+.weldivsec1 {
+    display: flex;
+    background-color: #f5f5f5;
+    justify-content: space-between;
+    border-radius: 10px;
+    width: 400px;
+    height: 150px;
+    padding: 10px;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.weldivsec1 .ordercount {
+    background-color: #007bff;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 45%;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.ordercount h2{
+    font-size: 18px;
+}
+
+.weldivsec1 .totalorders {
+    background-color: #07223D;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    width: 45%;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.totalorders h2{
+    font-size: 18px;
+}
+
+
+
+.weldiv2 {
+    display: flex;
+    background-color: #f5f5f5;
+    justify-content: space-between;
+    border-radius: 10px;
+    width: 400px;
+    height: 150px;
+    padding: 10px;
+    margin-top: 10px;
+    gap: 20px;
+}
+
+.weldiv2 .usercount {
+    background-color: #07223D;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 45%;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.usercount h2{
+    font-size: 18px;
+}
+
+.weldiv2 .Todayrevenue {
+    background-color: #28a745;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    width: 45%;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.weldiv1 .welp{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.weldiv1 h6{
+    font-size: 15px;
+}
+
+.chartsdiv{
+    display: flex;
+    gap: 5%;
+    margin-top: 20px;
+}
+
+.chart1 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 43%;
+}
+
+.chart1 p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.chart1 .recharts-wrapper {
+    margin-top: 20px;
+}
+
+
+.chart2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 43%;
+}
+
+.chart2 p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.chart1 .recharts-wrapper {
+    margin-top: 20px;
+}

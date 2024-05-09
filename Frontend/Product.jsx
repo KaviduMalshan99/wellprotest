@@ -32,6 +32,7 @@ const Product = () => {
         setProduct(productData); // Update the state with fetched product data
         console.log('Product Details:', productData); // Log product details to console
         
+        
       } catch (error) {
         console.error('Error fetching product:', error);
         // Handle the error as needed, e.g., display an error message
@@ -178,6 +179,8 @@ const Product = () => {
         <i className="fas fa-angle-right" /> <Link to="/product/:id">{product.ProductName} </Link>
       </p>
 
+     
+
       <div className="product-container">
         {/* Left Section */}
         <div className="left-section">
@@ -204,6 +207,8 @@ const Product = () => {
           <p className='product_price'>LKR.{getPriceRange()}</p>
 
 
+
+
           <div className="ratings1">
             <div className="stars1">
               {Array.from({ length: product.rating }, (_, index) => (
@@ -214,6 +219,64 @@ const Product = () => {
             </div>
             <span>({product.reviews} Reviews)</span>
           </div>
+
+          
+      
+         
+          {product.QuickDeliveryAvailable && (
+            <div className="quickdelivery">
+              <label>Quick Delivery Available - This product can be delivered within 1 week.</label>
+              
+            </div>
+          )}
+
+{product.Variations && product.Variations.some(variation => variation.size) && (
+  <div className="sizebutton">
+    <p>Sizes</p>
+    {product.Variations
+      .reduce((uniqueSizes, variation) => {
+        if (!uniqueSizes.includes(variation.size)) {
+          uniqueSizes.push(variation.size);
+        }
+        return uniqueSizes;
+      }, [])
+      .map((size, index) => (
+        <button
+          key={index}
+          className={selectedSize === size ? 'selected' : ''}
+          onClick={() => handleSizeClick(size)}
+        >
+          {size}
+        </button>
+      ))}
+    {selectedSize && (
+      <button className="clear-button" onClick={() => setSelectedSize(null)}>
+        Clear Size
+      </button>
+    )}
+  </div>
+)}
+
+
+{selectedSize && (
+  <div className="color-section">
+    <p>Colors</p>
+    {product.Variations
+      .filter(variation => variation.size === selectedSize)
+      .map((variation, index) => (
+        <button
+          key={index}
+          className={selectedColor === variation.name ? 'selected' : ''}
+          onClick={() => handleColorClick(variation.name)}
+          value={variation.name}
+        >
+          {variation.name}
+        </button>
+      ))}
+  </div>
+)}
+
+
 
           
       
@@ -294,6 +357,8 @@ const Product = () => {
             <span>{quantity}</span>
             <button onClick={incrementQuantity}>+</button>
           </div>
+
+
 
 
 

@@ -3,12 +3,13 @@ import Footer from '../Footer/Footer'
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './refundNow.css';
+import './refundNow.scss';
 import { useNavigate, Link } from 'react-router-dom';
 
+import Header from '../Header/Header';
 
 const Refund = () => {
-    const [newRefund, setNewRefund] = useState({ orderId: '', customerName: '', customerEmail: '', reason: '', imgUrls: [] });
+    const [newRefund, setNewRefund] = useState({ orderId: '',  productId: '', customerName: '', customerEmail: '', reason: '', imgUrls: [] });
     const [selectedImage, setSelectedImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
     const [errors, setErrors] = useState({});
@@ -16,31 +17,74 @@ const Refund = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setNewRefund((prevRefund) => ({
+      
+        if (name === 'refundDate') {
+          const selectedDate = new Date(value);
+          const currentTime = new Date();
+          
+          selectedDate.setHours(currentTime.getHours(), currentTime.getMinutes());
+      
+          setNewRefund((prevRefund) => ({
+            ...prevRefund,
+            [name]: selectedDate
+          }));
+        } else if (name === 'customerName') {
+          // Validate customer name to allow only letters and spaces
+          const isValid = /^[a-zA-Z\s]*$/.test(value);
+          if (!isValid) {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              [name]: 'Only letters and spaces are allowed',
+            }));
+          } else {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              [name]: '',
+            }));
+          }
+          setNewRefund((prevRefund) => ({
             ...prevRefund,
             [name]: value
-        }));
-    };
+          }));
+        } else {
+          setNewRefund((prevRefund) => ({
+            ...prevRefund,
+            [name]: value
+          }));
+        }
+      };
 
     const validateForm = () => {
         const errors = {};
+        const orderIdRegex = /^[a-zA-Z0-9]+$/; // Regex pattern for characters and numbers
+        const customerNameRegex = /^[a-zA-Z0-9\s]+$/; // Regex pattern for characters, numbers, and spaces
+    
         if (!newRefund.orderId.trim()) {
             errors.orderId = "Order ID is required";
+        } else if (!orderIdRegex.test(newRefund.orderId)) {
+            errors.orderId = "Order ID must contain only characters and numbers";
         }
+    
         if (!newRefund.customerName.trim()) {
             errors.customerName = "Customer Name is required";
+        } else if (!customerNameRegex.test(newRefund.customerName)) {
+            errors.customerName = "Customer Name must contain only characters, numbers, and spaces";
         }
+    
         if (!newRefund.customerEmail.trim()) {
             errors.customerEmail = "Customer Email is required";
         } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(newRefund.customerEmail)) {
             errors.customerEmail = "Invalid email format";
         }
+    
         if (!newRefund.reason.trim()) {
             errors.reason = "Reason is required";
         }
+    
         setErrors(errors);
         return errors;
     };
+    
 
     const handleChangeImage = (event) => {
         const imageFile = event.target.files[0]; // Get the first selected image
@@ -75,7 +119,7 @@ const Refund = () => {
             axios.post('http://localhost:3001/api/addrefund', newRefund)
                 .then(response => {
                     toast.success('Refund added successfully!');
-                    setNewRefund({ orderId: '', customerName: '', customerEmail: '', reason: '', imgUrls: [] });
+                    setNewRefund({ orderId: '', productId: '', customerName: '', customerEmail: '', reason: '', imgUrls: [] });
                     navigate(`/refundedit/${newRefund.orderId}`);
                 })
                 .catch(error => {
@@ -89,6 +133,7 @@ const Refund = () => {
 
     return (
         <div>
+        <Header/>
             <div className="rnmh">Refund</div>
             <div className="rnlp">Home &gt; Refund</div>
             <div className="rnmbtns">
@@ -103,7 +148,7 @@ const Refund = () => {
                 </button></Link>
             </div>
             <center>
-                <div className="rnmcont">
+                <div id="rnmcont">
                     <form onSubmit={handleAddRefund}>
                         <table className="rnmcon">
                             <tbody>
@@ -112,9 +157,20 @@ const Refund = () => {
                                         <div className="rnmcontit">Order ID</div>
                                     </td>
                                     <td className="rnmconttd">
-                                        <input type="text" className="rnmconinp" name="orderId" placeholder="Enter ID" value={newRefund.orderId} onChange={handleInputChange} required/>
+                                        <input type="text" className="rnmconinp" name="orderId" placeholder="Enter Order ID" value={newRefund.orderId} onChange={handleInputChange} required/>
                                         {errors.orderId && (
-                                          <div className="error-messager">{errors.orderId}</div>
+                                          <div className="error-message">{errors.orderId}</div>
+                                        )}
+                                    </td>
+                                </tr>
+                                <tr className="rnmconttd">
+                                    <td className="rnmconttd">
+                                        <div className="rnmcontit">Product ID</div>
+                                    </td>
+                                    <td className="rnmconttd">
+                                        <input type="text" className="rnmconinp" name="productId" placeholder="Enter Product ID" value={newRefund.productId} onChange={handleInputChange} required/>
+                                        {errors.orderId && (
+                                          <div className="error-messager">{errors.productId}</div>
                                         )}
                                     </td>
                                 </tr>

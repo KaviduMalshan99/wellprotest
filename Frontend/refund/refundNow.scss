@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+/* Main header */
+.rnmh {
+  margin-top: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 35px;
+}
+
+/* Breadcrumb */
+.rnlp {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 23px;
+}
+
+/* Button container */
+.rnmbtns {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Form container */
+#rnmcont {
+  padding-top: 70px;
+  margin-top: 30px;
+  width: 90%; /* Adjusted width */
+  border-radius: 30px;
+  height: auto; /* Adjusted height */
+  margin-bottom: 50px;
+  padding: 40px; /* Adjusted padding */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #F1F1F1;
+}
+
+.rnmcon {
+  margin-top: 30px; /* Adjusted margin */
+  width: 90%; /* Adjusted width */
+  border-radius: 15px;
+  margin-bottom: 30px; /* Adjusted margin */
+  padding: 20px; /* Adjusted padding */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form input fields */
+.rnmconinp, .rn2mconreastyp, .rn2mconaddimg {
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%; /* Adjusted width */
+  border: 1.5px solid #ccc;
+  border-radius: 50px;
+}
+
+/* Hover effect */
+.rnmconinp:hover, .rn2mconreastyp:hover, .rn2mconaddimg:hover {
+  border-color: rgb(153, 153, 153);
+}
+
+.ira{
+  margin-top: 8px;
+}
+
+#transparent-buttonr {
+  background: none;
+  text-decoration: none;
+  border: none;
+  color: #000000;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  width: 150px;
+  margin-top: -10%;
+}
+
+/* Add Image button */
+.rn2mconaddimg-btn {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  background-color: #000000;
+  color: white;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+/* Image preview */
+.preview-image {
+  display: block;
+  margin-top: 10px;
+  max-width: 100%; /* Adjusted max-width */
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.error-messager {
+  color: red;
+  font-size: small;
+}
+
+.regbtnr {
+  color: white;
+  border-radius: 28px;
+  width: 30%; /* Adjusted width */
+  padding: 8px 16px;
+  border: transparent;
+  background-color: #000000;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  font-weight: 500;
+  font-size: 15px;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Media Queries */
+@media only screen and (min-width: 768px) {
+  /* Adjust styles for tablets and larger devices */
+  #rnmcont {
+    width: 80%;
+    padding: 60px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  /* Adjust styles for desktops and larger devices */
+  #rnmcont {
+    width: 50%;
+  }
+}

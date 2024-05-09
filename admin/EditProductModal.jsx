@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
-import './EditProductModel.scss';
+import './EditProductModal.css';
 
+// Define the resizeAndConvertToBase64 function
 const resizeAndConvertToBase64 = (file, maxWidth, maxHeight) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -29,11 +30,15 @@ const resizeAndConvertToBase64 = (file, maxWidth, maxHeight) => {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL('image/jpeg'));
+        resolve(canvas.toDataURL('image/jpeg')); // Convert to base64
       };
-      img.onerror = reject;
+      img.onerror = function (error) {
+        reject(error);
+      };
     };
-    reader.onerror = reject;
+    reader.onerror = function (error) {
+      reject(error);
+    };
   });
 };
 
@@ -42,8 +47,7 @@ const EditProductModal = ({ closeModal, product }) => {
   const [productData, setProductData] = useState({
     VariantType: '',
     Sizes: [],
-    Colors: [],
-    Categories:editedProduct.Categories || []
+    Colors: []
   });
   const [selectedImages, setSelectedImages] = useState([]);
   const [sizeInput, setSizeInput] = useState('');
@@ -55,14 +59,12 @@ const EditProductModal = ({ closeModal, product }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [editedVariation, setEditedVariation] = useState(null);
   const [localVariations, setLocalVariations] = useState(product.Variations || []);
-  
 
   useEffect(() => {
     if (product && product.ProductId) {
       setEditedProduct(product);
       setSelectedImages(product.ImgUrls || []);
       setLocalVariations(product.Variations||[]);
-      setProductData({...productData,Categories:product.Categories || []});
     }
   }, [product]);
 
@@ -74,26 +76,16 @@ const EditProductModal = ({ closeModal, product }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedProduct((prevEditedVariation) => ({
+    setEditedVariation((prevEditedVariation) => ({
       ...prevEditedVariation,
       [name]: value
     }));
   };
-
-  const handleCategoryChange = (category) => {
-    setProductData((prevProductData) => {
-      const newCategories = prevProductData.Categories.includes(category)
-        ? prevProductData.Categories.filter((cat) => cat !== category)
-        : [...prevProductData.Categories, category];
-      return {
-        ...prevProductData,
-        Categories: newCategories
-      };
-    });
-  };
-
+  
+  
   
 
+  // Handle variant type change
   const handleVariantChange = (e) => {
     const selectedVariant = e.target.value;
     setProductData((prevProductData) => ({
@@ -102,84 +94,89 @@ const EditProductModal = ({ closeModal, product }) => {
     }));
   };
 
-  const handleRemoveVariation = (index) => {
-    setLocalVariations((currentVariations) => currentVariations.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const updatedProduct = {
         ...editedProduct,
-        ImgUrls: selectedImages,
-        Areas: selectedOptions,
-        Variations: [...localVariations, ...productData.Sizes, ...productData.Colors],  // Combining existing variations with new sizes and colors
-        Sizes: productData.Sizes,
-        Colors: productData.Colors,
-        Categories:productData.Categories,
+        ImgUrls: selectedImages, // Include selectedImages in the updated product data
+        Areas: selectedOptions // Include selectedOptions in the Areas field
       };
-
-      console.log("Submitting Updated Product:", updatedProduct);
-
+  
+      // Log updatedProduct to verify that Areas data is included
+      console.log("Updated Product:", updatedProduct);
+  
+      // Send the updated product data to the backend
       const response = await axios.put(`http://localhost:3001/api/updateproduct/${editedProduct.ProductId}`, updatedProduct);
+  
+      // Check if the update was successful
       if (response.status === 200) {
-        toast.success('Product updated successfully');
+        toast.success('Product Update Successfully');
         closeModal();
       } else {
-        toast.error('Failed to update the product');
+        toast.error('Failed to Update the Product');
+        console.error('Error updating product:', response.statusText);
       }
     } catch (error) {
-      console.error('Failed to update product:', error);
-      toast.error('Failed to update the product');
+      toast.error('Failed to Update the Product');
+      console.error('Error updating product:', error);
     }
   };
+  
 
   const handleAddImage = async (e) => {
     const file = e.target.files[0];
-    const resizedBase64Image = await resizeAndConvertToBase64(file, 300, 300);
-    setSelectedColorImages((prevImages) => [...prevImages, resizedBase64Image]);
+    const resizedBase64Image = await resizeAndConvertToBase64(file, 300, 300); // Adjust maxWidth and maxHeight as needed
     console.log("Resized Base64 Encoded Image:", resizedBase64Image);
-  };
+    // Now you can use the resizedBase64Image for further processing, such as uploading to the server
+    setSelectedColorImages((prevImages) => [...prevImages, resizedBase64Image]);
+};
 
-  const handleRemoveImage = (index) => {
-    const newImages = [...selectedImages];
-    newImages.splice(index, 1);
-    setSelectedImages(newImages);
-  };
+const handleRemoveImage = (index) => {
+  const newImages = [...selectedImages];
+  // Remove the image at the specified index
+  newImages.splice(index, 1);
+  // Update the state with the new array
+  setSelectedImages(newImages);
+};
 
-  const handleAddSize = (e) => {
-    e.preventDefault();
-    if (sizeInput.trim() !== '' && selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
-      const newSize = {
-        size: sizeInput.trim(),
-        colors: [{
-          name: selectedColorName,
-          count: selectedColorCount,
-          price: selectedColorPrice,
-          images: selectedColorImages
-        }]
-      };
 
-      setProductData(prevData => ({
-        ...prevData,
-        Sizes: [...prevData.Sizes, newSize]
-      }));
+const handleAddSize = () => {
+  if (sizeInput.trim() !== '' && selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
+    const newSize = {
+      size: sizeInput.trim(),
+      colors: [{ // This assumes each size can have multiple colors
+        name: selectedColorName,
+        count: selectedColorCount,
+        price: selectedColorPrice,
+        images: selectedColorImages
+      }]
+    };
 
-      console.log("New Size Data:", newSize);
+    setProductData(prevData => ({
+      ...prevData,
+      Sizes: [...prevData.Sizes, newSize]
+    }));
 
-      setSizeInput('');
-      setSelectedColorName('');
-      setSelectedColorCount(0);
-      setSelectedColorPrice('');
-      setSelectedColorImages([]);
-    } else {
-      console.error("All fields must be filled.");
-    }
-  };
+    // Reset fields after adding a new size
+    setSizeInput('');
+    setSelectedColorName('');
+    setSelectedColorCount(0);
+    setSelectedColorPrice('');
+    setSelectedColorImages([]);
+    console.log("New Size Data:", newSize); // Log for debugging
+  } else {
+    console.error("All fields must be filled.");
+  }
+};
 
-  const handleAddColor = (e) => {
-    e.preventDefault();
+  
+
+  
+
+  const handleAddColor = () => {
     if (selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
+      // Create a new color object including name, count, price, and images
       const newColor = {
         name: selectedColorName,
         count: selectedColorCount,
@@ -187,13 +184,13 @@ const EditProductModal = ({ closeModal, product }) => {
         images: selectedColorImages
       };
 
+      // Update the product data state with the new color
       setProductData(prevProductData => ({
         ...prevProductData,
-        Colors: [...prevProductData.Colors, newColor]
+        Colors: [...prevProductData.Colors, newColor],
       }));
 
-      console.log("New Color Data:", newColor);
-
+      // Clear the input fields after adding color
       setSelectedColorName('');
       setSelectedColorCount(0);
       setSelectedColorPrice('');
@@ -220,10 +217,12 @@ const EditProductModal = ({ closeModal, product }) => {
     });
   };
 
+  // Handle option selection change
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
   };
 
+  // Handle adding option
   const handleAddOption = () => {
     if (selectedOption) {
       setSelectedOptions([...selectedOptions, selectedOption]);
@@ -232,12 +231,14 @@ const EditProductModal = ({ closeModal, product }) => {
     }
   };
 
+  // Handle removing option
   const handleRemoveOption = (index) => {
     const newOptions = [...selectedOptions];
     newOptions.splice(index, 1);
     setSelectedOptions(newOptions);
   };
 
+  // Handle description change
   const handleDescriptionChange = (e) => {
     const { name, value } = e.target;
     setEditedProduct({
@@ -251,7 +252,9 @@ const EditProductModal = ({ closeModal, product }) => {
     if (files && files.length > 0) {
       const file = files[0];
       try {
+        // Resize and convert the image to base64
         const base64String = await resizeAndConvertToBase64(file, 400, 400);
+        // Update the selectedImages state with the base64 string
         setSelectedImages((prevImages) => [...prevImages, base64String]);
       } catch (error) {
         console.error('Error resizing and converting image:', error);
@@ -266,18 +269,44 @@ const EditProductModal = ({ closeModal, product }) => {
       ...prevData,
       Sizes: newSizes
     }));
-    console.log("Updated Sizes after removal:", newSizes);
+    console.log("Updated Sizes after removal:", newSizes); // Debugging log
   };
-
+  
+  
+  const handleSave = () => {
+    if (editedVariation && localVariations) {
+      const updatedVariations = localVariations.map(variation =>
+        variation.name === editedVariation.name ? {
+          ...variation,
+          name: editedVariation.name,
+          count: editedVariation.count,
+          price: editedVariation.price,
+          images: editedVariation.image ? [URL.createObjectURL(editedVariation.image)] : variation.images
+        } : variation
+      );
+      setLocalVariations(updatedVariations);
+      console.log("Updated Variations Details:", updatedVariations);
+      setEditedVariation(null);
+    }
+  };
+  
+  
   
 
+  const handleCancel = () => {
+    setEditedVariation(null); // Clear the edited variation state on cancel
+  };
+
   const handleEdit = (variation, e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission behavior
+  
+    // Initialize the editing with image data if available
     setEditedVariation({
       ...variation,
       image: variation.images.length > 0 ? variation.images[0] : null
     });
   };
+  
 
   return (
     <div className="editModelContainer">
@@ -300,56 +329,8 @@ const EditProductModal = ({ closeModal, product }) => {
           </div>
 
           <div className="mainbox">
-            <div className='editcategory'>
-              <label>3) Categories:(*)</label>
-              <div className="category-checkboxes">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="Men"
-                    checked={productData.Categories.includes("Men")}
-                    onChange={() => handleCategoryChange("Men")}
-                    disabled={productData.Categories.includes("Women")}
-                  />
-                  Men
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="Women"
-                    checked={productData.Categories.includes("Women")}
-                    onChange={() => handleCategoryChange("Women")}
-                    disabled={productData.Categories.includes("Men")}
-                  />
-                  Women
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="Bags"
-                    checked={productData.Categories.includes("Bags")}
-                    onChange={() => handleCategoryChange("Bags")}
-                    disabled={productData.Categories.includes("Shoes")}
-                  />
-                  Bags
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="Shoes"
-                    checked={productData.Categories.includes("Shoes")}
-                    onChange={() => handleCategoryChange("Shoes")}
-                    disabled={productData.Categories.includes("Bags")}
-                  />
-                  Shoes
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div className="mainbox">
             <div>
-              <label>4) Select Variant Type:</label>
+              <label>5) Select Variant Type:</label>
               <select value={productData.VariantType} onChange={handleVariantChange}>
                 <option value="">Select Variant Type</option>
                 <option value="Many Sizes with Many Colors">Many Sizes with Many Colors</option>
@@ -362,7 +343,7 @@ const EditProductModal = ({ closeModal, product }) => {
             <div className="mainbox">
               {productData.VariantType === "Many Sizes with Many Colors" && (
                 <div>
-                  <label>5) Many Sizes with Many Colors:</label>
+                  <label>6) Many Sizes with Many Colors:</label>
                   <div>
                     <label>Add Size:</label>
                     <input type="text" value={sizeInput} onChange={(e) => setSizeInput(e.target.value)} placeholder="Enter size" />
@@ -410,12 +391,13 @@ const EditProductModal = ({ closeModal, product }) => {
 
 
 
+
                   
                 </div>
               )}
               {productData.VariantType === "Only Colors" && (
                 <div>
-                  <label>5) Only Colors:</label>
+                  <label>6) Only Colors:</label>
                   <div>
                     <label>Color Name:</label>
                     <input
@@ -469,43 +451,78 @@ const EditProductModal = ({ closeModal, product }) => {
                   </div>
                 </div>
               )}
+
+
+              {/* Display Variations */}
               
             </div>
           )}
 
 
 
-      <div className='variants'>
-        <h3>Variations:</h3>
-        {localVariations.map((variation, index) => (
-          <div className='variant' key={index}>
-            <h4>Variation {index + 1}</h4>
-            <p>Name: {variation.name}</p>
-            <p>Count: {variation.count}</p>
-            <p>Price: {variation.price}</p>
-            <p>Images:</p>
-            <div>
-              {variation.images.map((image, imgIndex) => (
-                <div key={imgIndex}>
-                  <img 
-                    src={image} 
-                    alt={`Variation Image ${index}-${imgIndex}`} 
-                    style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjust the max width and height as needed
-                  />
-                </div>
-              ))}
-            </div>
-            {/* Edit button */}
-            <button onClick={() => handleRemoveVariation(index)}>Remove</button>
+
+
+
+      <div>
+      <h3>Variations:</h3>
+      {localVariations.map((variation, index) => (
+        <div key={index}>
+          <h4>Variation {index + 1}</h4>
+          <p>Name: {variation.name}</p>
+          <p>Count: {variation.count}</p>
+          <p>Price: {variation.price}</p>
+          <p>Images:</p>
+          <div>
+            {variation.images.map((image, imgIndex) => (
+              <div key={imgIndex}>
+                <img 
+                  src={image} 
+                  alt={`Variation Image ${index}-${imgIndex}`} 
+                  style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjust the max width and height as needed
+                />
+              </div>
+            ))}
           </div>
-        ))}
-     </div>
+          {/* Edit button */}
+          <button onClick={(e) => handleEdit(variation, e)}>Edit</button>
+        </div>
+      ))}
+      {/* Render editable fields if an edit is in progress */}
+      {editedVariation && (
+  <div>
+    <h4>Edit Variation</h4>
+    <label>Name:</label>
+    <input type="text" name="name" value={editedVariation.name} onChange={handleChange} />
+    <label>Count:</label>
+    <input type="text" name='count' value={editedVariation.count} onChange={(e) => handleChange(e)} />
+    <label>Price:</label>
+    <input type="text" name='price' value={editedVariation.price} onChange={(e) => handleChange(e)} />
+    <label>Image:</label>
+    <input type="file" onChange={(e) => setEditedVariation({...editedVariation, image: e.target.files[0]})} />
+    
+    {/* Display the current image and remove button if there is already an image */}
+    {editedVariation.image && (
+      <div>
+        <img 
+          src={editedVariation.image instanceof File ? URL.createObjectURL(editedVariation.image) : editedVariation.image} 
+          alt="Edited Variation Image"
+          style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjust the max width and height as needed
+        />
+        <button onClick={() => setEditedVariation({...editedVariation, image: null})}>Remove Image</button>
+      </div>
+    )}
+    {/* Save and cancel buttons */}
+    <button onClick={handleSave}>Save</button>
+    <button onClick={handleCancel}>Cancel</button>
+  </div>
+      )}
+        </div>
 
 
 
           <div className="mainbox">
             <div>
-              <label>6) Quick Delivery Available:</label>
+              <label>5) Quick Delivery Available:</label>
               <input type="checkbox" name="QuickDeliveryAvailable" checked={editedProduct.QuickDeliveryAvailable} onChange={handleCheckboxChange} />
             </div>
           </div>
@@ -539,7 +556,7 @@ const EditProductModal = ({ closeModal, product }) => {
 
           <div className="mainnbox">
             <div className="desc">
-              <label htmlFor="">8) Description</label>
+              <label htmlFor="">9) Description</label>
               <textarea name="Description" value={editedProduct.Description} onChange={handleDescriptionChange} rows="10"></textarea>
             </div>
           </div>
@@ -563,7 +580,7 @@ const EditProductModal = ({ closeModal, product }) => {
             </div>
           </div>
         </div>
-        <button type="submit" className='editsave'>Submit</button>
+        <button type="submit">Submit</button>
       </form>
       <ToastContainer />
     </div>
