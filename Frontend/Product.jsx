@@ -31,7 +31,9 @@ const Product = () => {
 
         setProduct(productData); // Update the state with fetched product data
         console.log('Product Details:', productData); // Log product details to console
-        
+        console.log('Available Sizes:', productData.Sizes);
+        console.log('Available Colors:', productData.Colors);
+
       } catch (error) {
         console.error('Error fetching product:', error);
         // Handle the error as needed, e.g., display an error message
@@ -63,7 +65,32 @@ const Product = () => {
       .filter(variation => variation.size === size)
       .map(variation => variation.color);
     setAvailableColors(colors);
+
   };
+
+  const handleColorClick = (color) => {
+    setSelectedColor(color);
+    const selectedVariation = product.Variations.find(variation => variation.name === color);
+    if (selectedVariation) {
+      setSelectedImage(selectedVariation.images);
+      setProduct(prevProduct => ({
+        ...prevProduct,
+        Price: selectedVariation.price // Update the price to the variation's price
+      }));
+      
+    } else {
+      // If no variation is found, revert to the original price
+      setProduct(prevProduct => ({
+        ...prevProduct,
+        Price: originalPrice // Update the price to the original price
+      }));
+    }
+  };
+  
+  
+  
+
+
 
   const handleColorClick = (color) => {
     setSelectedColor(color);
@@ -94,7 +121,11 @@ const Product = () => {
   }
 
   const handleBuyNow = () => {
-    const checkoutUrl = `/checkout?id=${id}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${product.ImgUrls[0]}`;
+    // Use the selectedImage if available, otherwise fallback to the first image in the array
+    const finalImageUrl = selectedImage || product.ImgUrls[0];
+    const encodedImageUrl = encodeURIComponent(finalImageUrl);
+    const checkoutUrl = `/checkout?id=${id}&Productname=${product.ProductName}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${encodedImageUrl}`;
+
     navigate(checkoutUrl);
   };
 
