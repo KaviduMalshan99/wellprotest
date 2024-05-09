@@ -5,6 +5,9 @@ const { route } = require('./app');
 
 
 
+
+const { addCoupon, validateCoupon, getAllCoupons,deactivateCoupon } = require('./CouponController');
+
 const catagoryContraller = require('./CatagoryController');
 const customerContraller = require('./CustomerController');
 const orderContraller = require('./OrderController');
@@ -15,6 +18,8 @@ const RefundController = require('./RefundController');
 const SupplierRegController = require('./SupplierRegController');
 const SupplierStockController = require('./SupplierStockController');
 const cartController = require('./AddtocartContraller')
+const shippingMethodController = require('./ShippingMethodController');
+
 
 
 const authMiddleware = require("../server/middleware/authMiddleware");
@@ -56,9 +61,10 @@ router.get("/customer/email/:email", customerContraller.getCustomerByEmail);
 
 //order
 router.get('/orders',orderContraller.getOrders);
-router.post('/addorders',orderContraller.addOrders);
-router.post('/updateorders',orderContraller.updateOrder);
-router.post('/deleteorders',orderContraller.deleteOrder);
+router.post('/addOrder',orderContraller.addOrder);
+router.put('./updateOrder',orderContraller.updateOrder);
+router.delete('/deleteOrder/:orderId',orderContraller.deleteOrder);
+router.get('/getOrder/:orderId',orderContraller.getOrderById);
 
 //product
 router.get('/products',productContraller.getProducts);
@@ -70,13 +76,16 @@ router.delete('/deleteproduct/:ProductId',productContraller.deleteProduct);
 
 //review
 router.get('/reviews',reviewcontroller.getReview);
+router.get('/review/:ReviewID',reviewcontroller.getReviewById)
 router.post('/addreviews',reviewcontroller.addReview);
-router.post('/updatereview',reviewcontroller.updateReview);
-router.delete('/deletereview',reviewcontroller.deleteReview);
+router.post('/updatereview/:ReviewID',reviewcontroller.updateReview);
+router.delete('/deletereview/:ReviewID',reviewcontroller.deleteReview);
 
 //faq
 router.get('/faqs',faqcontroller.getFaq);
 router.post('/addfaqs',faqcontroller.addFaq);
+router.delete('/deletefaq/:FaqID',faqcontroller.deleteFaq);
+router.get('/faq/:FaqID', faqcontroller.getFaqById);
 
 //refund
 router.post('/addrefund', RefundController.addRefund);
@@ -102,6 +111,20 @@ router.delete('/suppliers/:id', SupplierRegController.deleteSupplier);
 //suplierstock
 router.post('/addstock', SupplierStockController.addSupplierStock);
 router.get('/getstock', SupplierStockController.getStock);
+
+
+// Shipping Methods
+router.post('/shippingMethods', shippingMethodController.addShippingMethod);
+router.get('/shippingMethods', shippingMethodController.getShippingMethods);
+router.put('/shippingMethods/:id', shippingMethodController.updateShippingMethod);
+router.delete('/shippingMethods/:id', shippingMethodController.deleteShippingMethod);
+
+// Coupon routes
+router.post('/addcoupon', addCoupon);
+router.get('/coupons', getAllCoupons)
+router.post('/validatecoupon', validateCoupon);
+router.post('/deactivateCoupon', deactivateCoupon);
+
 
 
 

@@ -1,0 +1,63 @@
+.Faq_main .Faqtable{
+    width: 99%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: 10px;
+    background-color: #07223D;
+    border-radius: 10px;
+}
+
+.Faq_main .Faqtable th, .Faq_main .Faqtable td{
+    padding: 8px;
+    text-align: center;
+}
+
+.Faq_main .Faqtable th{
+    background-color: #07223D;
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.Faq_main .Faqtable td{
+    background-color: #F7FBFE;
+    border: 1px solid #07223D;
+}
+
+.Faq_main .Faqtable .faq_theader1{
+    width: 100px;
+}
+.Faq_main .Faqtable .faq_theader2{
+    width: 100px;
+}
+.Faq_main .Faqtable .faq_theader3{
+    width: 150px;
+}
+.Faq_main .Faqtable .faq_theader4{
+    width: 150px;
+}
+.Faq_main .Faqtable .faq_theader5{
+    width: 200px;
+}
+.Faq_main .Faqtable .faq_theader6{
+    width: 200px;
+}
+
+.Faq_main .Faqtable .Faq_reply{
+    padding: 5px 20px 5px 20px;
+    margin-left: 20px;
+    background-color: #07223D;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.Faq_main .Faqtable .Faq_delete{
+    padding: 5px 20px 5px 20px;
+    margin-left: 20px;
+    background-color: #cc3636;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

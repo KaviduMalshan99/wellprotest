@@ -1,12 +1,16 @@
+const { error } = require('server/router');
 const Review = require('./ReviewModel');
+const { response } = require('./app');
 
 
 const addReview = (req, res, next) => {
-    const {ReviewID,ProductID,CustomerID,CustomerName,CustomerEmail,Ratecount,ReviewTitle,ReviewBody,ReviewImage } = req.body;
+    const {ReviewID,ReviewNum,ProductID,CustomerID,Date,CustomerName,CustomerEmail,Ratecount,ReviewTitle,ReviewBody,ReviewImage } = req.body;
    
     const review = new Review({
         ReviewID: ReviewID,
+        ReviewNum: ReviewNum,
         ProductID: ProductID,
+        Date: Date,
         CustomerID: CustomerID,
         CustomerName: CustomerName,
         CustomerEmail: CustomerEmail,
@@ -26,8 +30,18 @@ const addReview = (req, res, next) => {
 };
 
 const getReview = (req, res, next) => {
+    Review.find()
+    .then(response => {
+        res.json({response});
+    })
+    .catch(error =>{
+        res.json({message:error})
+    })
+};
+
+const getReviewById = (req, res, next) => {
     const { ReviewID } = req.params;
-    
+
     Review.findOne({ ReviewID })
         .then(review => {
             if (!review) {
@@ -41,13 +55,13 @@ const getReview = (req, res, next) => {
 };
 
 const updateReview = (req, res, next) => {
-    const { ReviewID } = req.params;
-    const { ReviewTitle, ReviewBody, ReviewImage } = req.body;
+    const ReviewID = req.params.ReviewID;
+    const { ReviewTitle, Ratecount , ReviewBody, ReviewImage } = req.body;
 
-    Review.findOneAndUpdate({ ReviewID }, { ReviewTitle, ReviewBody, ReviewImage }, { new: true })
+    Review.findOneAndUpdate({ ReviewID:ReviewID }, { ReviewTitle, ReviewBody, ReviewImage, Ratecount}, { new: true })
         .then(updatedReview => {
             if (!updatedReview) {
-                return res.status(404).json({ message: "Review not found" });
+                return res.json({ message: "Review not found" });
             }
             res.json({ updatedReview });
         })
@@ -71,9 +85,11 @@ const deleteReview = (req, res, next) => {
         });
 };
 
+
 module.exports = {
     addReview,
     getReview,
+    getReviewById,
     updateReview,
-    deleteReview
+    deleteReview,
 };

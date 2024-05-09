@@ -1,0 +1,116 @@
+.dashboard-container {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .header {
+        font-size: 24px;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .input-field {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%; // Full-width search bar
+      box-sizing: border-box; // Include padding in width calculation
+      margin-bottom: 20px;
+      margin-right: 100%;
+
+      &:focus {
+          border-color: #007bff;
+          outline: none;
+      }
+  }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 20px;
+
+        .input-field {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%; // Full-width inputs
+            box-sizing: border-box; // Include padding in width calculation
+
+            &:focus {
+                border-color: #007bff;
+                outline: none;
+            }
+
+            &:disabled {
+                background-color: #e0e0e0;
+            }
+        }
+
+        .submit-button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+
+            &:hover {
+                background-color: #0056b3;
+            }
+        }
+    }
+
+    .filter-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        .input-field {
+            flex: 1;
+            margin-right: 10px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    .coupon-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #e9e9e9;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        width: 95%;
+
+        .form-container, .filter-container {
+            flex-direction: column;
+        }
+    }
+}
