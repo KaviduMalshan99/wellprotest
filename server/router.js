@@ -5,6 +5,8 @@ const { route } = require('./app');
 
 
 
+
+const { addCoupon, validateCoupon, getAllCoupons,deactivateCoupon } = require('./CouponController');
 const catagoryContraller = require('./CatagoryController');
 const customerContraller = require('./CustomerController');
 const orderContraller = require('./OrderController');
@@ -14,6 +16,7 @@ const faqcontroller = require('./FaqController');
 const RefundController = require('./RefundController');
 const SupplierRegController = require('./SupplierRegController');
 const SupplierStockController = require('./SupplierStockController');
+const shippingMethodController = require('./ShippingMethodController');
 
 
 const authMiddleware = require("../server/middleware/authMiddleware");
@@ -49,15 +52,16 @@ router.get("/customer/email/:email", customerContraller.getCustomerByEmail);
 
 //order
 router.get('/orders',orderContraller.getOrders);
-router.post('/addorders',orderContraller.addOrders);
-router.post('/updateorders',orderContraller.updateOrder);
-router.post('/deleteorders',orderContraller.deleteOrder);
+router.post('/addOrder',orderContraller.addOrder);
+router.put('./updateOrder',orderContraller.updateOrder);
+router.delete('/deleteOrder/:orderId',orderContraller.deleteOrder);
+router.get('/getOrder/:orderId',orderContraller.getOrderById);
 
 //product
 router.get('/products',productContraller.getProducts);
 router.get('/products/:productId', productContraller.getProductById);
 router.post('/addproduct', productContraller.addProduct);
-router.put('/updateproduct/:productId', productContraller.updateProduct);
+router.put('/updateproduct/:ProductId', productContraller.updateProduct);
 router.delete('/deleteproduct/:ProductId',productContraller.deleteProduct);
 
 
@@ -98,6 +102,20 @@ router.delete('/suppliers/:id', SupplierRegController.deleteSupplier);
 //suplierstock
 router.post('/addstock', SupplierStockController.addSupplierStock);
 router.get('/getstock', SupplierStockController.getStock);
+
+
+// Shipping Methods
+router.post('/shippingMethods', shippingMethodController.addShippingMethod);
+router.get('/shippingMethods', shippingMethodController.getShippingMethods);
+router.put('/shippingMethods/:id', shippingMethodController.updateShippingMethod);
+router.delete('/shippingMethods/:id', shippingMethodController.deleteShippingMethod);
+
+// Coupon routes
+router.post('/addcoupon', addCoupon);
+router.get('/coupons', getAllCoupons)
+router.post('/validatecoupon', validateCoupon);
+router.post('/deactivateCoupon', deactivateCoupon);
+
 
 
 

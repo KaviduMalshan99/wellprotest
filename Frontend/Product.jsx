@@ -31,7 +31,8 @@ const Product = () => {
 
         setProduct(productData); // Update the state with fetched product data
         console.log('Product Details:', productData); // Log product details to console
-        
+        console.log('Available Sizes:', productData.Sizes);
+        console.log('Available Colors:', productData.Colors);
       } catch (error) {
         console.error('Error fetching product:', error);
         // Handle the error as needed, e.g., display an error message
@@ -94,7 +95,10 @@ const Product = () => {
   }
 
   const handleBuyNow = () => {
-    const checkoutUrl = `/checkout?id=${id}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${product.ImgUrls[0]}`;
+    // Use the selectedImage if available, otherwise fallback to the first image in the array
+    const finalImageUrl = selectedImage || product.ImgUrls[0];
+    const encodedImageUrl = encodeURIComponent(finalImageUrl);
+    const checkoutUrl = `/checkout?id=${id}&Productname=${product.ProductName}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${encodedImageUrl}`;
     navigate(checkoutUrl);
   };
 

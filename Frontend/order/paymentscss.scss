@@ -1,0 +1,231 @@
+/* Overall container settings */
+.checkout-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  align-items: flex-start;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+.form-section {
+  flex: 1;
+  max-width: 55%;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-right: 20px;
+}
+
+.order-summary {
+  width: 35%;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 20px;
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+/* Input and selection styling */
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Layout adjustments for form groups */
+.form-group, .name-group, .half-width {
+  margin-bottom: 15px;
+  position: relative; // For positioning radio overlays
+}
+
+.half-width {
+  float: left;
+  width: 48%;
+  margin-right: 4%;
+
+  &:last-child {
+      margin-right: 0;
+  }
+}
+
+/* Styling for additional details toggle */
+.additional-details {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 15px;
+  width: fit-content; // Reduce the width to content size
+}
+
+/* Removing radio buttons visually but keeping functionality */
+.method, .payment-method {
+  position: relative;
+  padding: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+
+  input[type="radio"] {
+      appearance: none; // Hides the radio button
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      opacity: 0.01; // Nearly invisible but clickable
+  }
+
+  &:hover {
+      background-color: #f0f0f0;
+  }
+}
+
+/* Specific styles for when payment methods are expanded */
+.payment-method:not(.expanded) .expand-content {
+  display: none;
+}
+
+.payment-method.expanded .expand-content {
+  display: block;
+  padding-top: 10px;
+}
+
+/* Order summary adjustments */
+/* Product image and quantity badge styles */
+.product-item {
+  display: flex;
+  margin-bottom: 15px;
+  align-items: center;  // Ensure vertical alignment of text and image
+
+  .product-image-container {
+      position: relative;
+      width: 100px;  // Reduced width of the image container
+      height: 100px;  // Reduced height of the image container
+      margin-right: 20px;  // Space between image and product details
+
+      .product-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 10px;  // Added rounded corners to the image
+      }
+
+      .quantity-badge {
+          position: absolute;
+          top: -5px;  // Adjust to position correctly on the top right corner
+          right: -5px;  // Adjust to position correctly on the top right corner
+          background-color: #ff4500;
+          color: white;
+          border-radius: 50%;  // Ensure the badge is perfectly circular
+          padding: 5px 8px;  // Adjust padding to fit content
+          font-size: 12px;
+          border: 2px solid white;  // White border to contrast with image/background
+      }
+  }
+
+  .product-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+      .product-details {
+          display: flex;
+          justify-content: space-between;  // Space between name and price
+          width: 100%;  // Take up full width to align price right
+          align-items: center;  // Aligns items vertically in the center
+
+          .product-name {
+              font-weight: bold;
+              font-size: 16px;
+          }
+
+          .product-price {
+              font-size: 16px;
+              color: #333;  // Ensuring readability
+          }
+      }
+
+      .product-subtotal, .order-price {
+        flex: 1;  // Allows each item to take equal space if needed
+        display: flex;
+        justify-content: flex-start;  // Aligns the text to the start of each flex item
+    }
+
+    .product-subtotal {
+      
+        margin-right: auto;  // Ensures it pushes everything else to the right
+    }
+
+    .order-price {
+      margin-bottom: 5%;
+        justify-content: flex-end;  // Aligns the price to the right of its flex item space
+    }
+      .product-meta {
+        font-size: 14px;
+        color: #666;  // Slightly lighter color for less important info
+        display: flex;
+        justify-content: space-between; // Slightly lighter color for less important info
+      }
+  }
+}
+.mar{
+  margin-left: 80%;
+  margin-right: -90%;
+
+}
+.order-costs {
+
+  .right-align {
+      float: right;  // Keep price on the right
+      margin-left: 20px;  // Space between text and price
+  }
+
+  p {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;  // Space between cost entries
+
+      span:first-child {
+          font-weight: bold;
+          font-size: 16px;  // Slightly larger font for labels
+      }
+
+      span:last-child {
+          font-size: 16px;  // Ensures price is visually emphasized
+      }
+  }
+}
+/* Adjustments for responsiveness and overall aesthetics */
+@media (max-width: 800px) {
+  .checkout-container {
+      flex-direction: column;
+      align-items: stretch;
+  }
+
+  .form-section, .order-summary {
+      width: 100%;
+      max-width: 100%;
+      margin-right: 0;
+  }
+
+  .product-item {
+      flex-direction: column;
+      align-items: center;
+
+      .product-image-container {
+          margin-right: 0;  // Remove right margin in mobile view
+          margin-bottom: 10px;  // Space between image and details
+      }
+  }
+}
