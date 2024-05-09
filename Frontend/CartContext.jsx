@@ -1,38 +1,37 @@
 import { createContext, useContext, useReducer } from 'react';
 
-// Cart context
+// Create a Context for the cart
 const CartContext = createContext();
 
-// Initial cart state
+// Define the initial state of the cart
 const initialCartState = {
     items: [],
     total: 0
 };
 
-// Reducer for cart actions
+// Reducer to handle actions related to the cart
 function cartReducer(state, action) {
     switch (action.type) {
         case 'ADD_ITEM':
-            // Check if the item already exists
             const existingItem = state.items.find(item => item.id === action.item.id);
-                if (existingItem) {
-                    // Increase quantity
-                    return {
+            if (existingItem) {
+                // Increase the quantity of the existing item
+                return {
                     ...state,
                     items: state.items.map(item => 
                         item.id === action.item.id ? { ...item, quantity: item.quantity + action.item.quantity } : item
-                    )
-                    };
-                } else {
-                    // Add new item
-                    return {
+                    ),
+                    total: state.total + (action.item.price * action.item.quantity)
+                };
+            } else {
+                // Add new item to the cart
+                return {
                     ...state,
                     items: [...state.items, action.item],
                     total: state.total + (action.item.price * action.item.quantity)
-                    };
-                }
+                };
+            }
         case 'REMOVE_ITEM':
-            // Calculate the new total when an item is removed
             const updatedItems = state.items.filter(item => item.id !== action.id);
             const newTotal = updatedItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
             return {
@@ -41,7 +40,6 @@ function cartReducer(state, action) {
                 total: newTotal
             };
         case 'UPDATE_QUANTITY':
-            // Update the quantity of an item
             return {
                 ...state,
                 items: state.items.map(item => 
@@ -49,7 +47,6 @@ function cartReducer(state, action) {
                 )
             };
         case 'REMOVE_SELECTED_ITEMS':
-            // Remove selected items by filtering out those whose ids are in action.ids
             const remainingItems = state.items.filter(item => !action.ids.includes(item.id));
             const updatedTotal = remainingItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
             return {
@@ -57,12 +54,18 @@ function cartReducer(state, action) {
                 items: remainingItems,
                 total: updatedTotal
             };
+        case 'SET_ITEMS':  // New case to handle setting items directly
+            return {
+                ...state,
+                items: action.items,
+                total: action.items.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+            };
         default:
             throw new Error(`Unhandled action type: ${action.type}`);
     }
 }
 
-// Cart Provider to wrap around App component
+// Provider component to wrap around the application
 export const CartProvider = ({ children }) => {
     const [state, dispatch] = useReducer(cartReducer, initialCartState);
 
@@ -73,5 +76,5 @@ export const CartProvider = ({ children }) => {
     );
 };
 
-// Custom hook to use cart context
+// Custom hook to use cart context throughout the application
 export const useCart = () => useContext(CartContext);

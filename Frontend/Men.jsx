@@ -7,10 +7,14 @@ import Koko from '../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from './Header/Header';
+import LOGOO from '../src/assets/logoorange.png'
+import { PropagateLoader } from 'react-spinners'; 
+import MenBag from '../src/assets/menbag.jpg'
 
 import Footer from './Footer/Footer';
 
 const Men = () => {
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -34,6 +38,7 @@ const Men = () => {
         console.log('Filtered Data:', filteredData); // Log filtered data
         
         setData(filteredData);
+        setTimeout(() => setLoading(false),2000);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -108,8 +113,22 @@ useEffect(() => {
 
 
   return (
+
+    <>
+    
+    {loading && (
+      <div className="loader-container">
+        <div className="loader-overlay">
+          <img src={LOGOO} alt="Logo" className="loader-logo" />
+          <PropagateLoader color={'#ff3c00'} loading={true} />
+        </div>
+      </div>
+    )}
+
+      {!loading && (
     <div>
       <Header/>
+      <img src={MenBag} className='menbaglogo' />
       <p className='menmain'>SHOP MENS</p>
       <p className='menmain1'>
         <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" />
@@ -178,80 +197,80 @@ useEffect(() => {
           </div>
 
           <div className="ratingsFilter">
-  <p className='fittertitles'>Ratings:</p>
-  <div className='ratingsOptions'>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={5}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={4}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={3}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={2}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={1}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-  </div>
-</div>
+            <p className='fittertitles'>Ratings:</p>
+            <div className='ratingsOptions'>
+              <label>
+                <div className='startoption1'>
+                  <input
+                    type="checkbox"
+                    value={5}
+                    onChange={handleRatingChange}
+                  />
+                </div>
+                <div className='startoption2'>
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </label>
+              <label>
+                <div className='startoption1'>
+                  <input
+                    type="checkbox"
+                    value={4}
+                    onChange={handleRatingChange}
+                  />
+                </div>
+                <div className='startoption2'>
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </label>
+              <label>
+                <div className='startoption1'>
+                  <input
+                    type="checkbox"
+                    value={3}
+                    onChange={handleRatingChange}
+                  />
+                </div>
+                <div className='startoption2'>
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </label>
+              <label>
+                <div className='startoption1'>
+                  <input
+                    type="checkbox"
+                    value={2}
+                    onChange={handleRatingChange}
+                  />
+                </div>
+                <div className='startoption2'>
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </label>
+              <label>
+                <div className='startoption1'>
+                  <input
+                    type="checkbox"
+                    value={1}
+                    onChange={handleRatingChange}
+                  />
+                </div>
+                <div className='startoption2'>
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </label>
+            </div>
+          </div>
 
 
         </div>
@@ -261,11 +280,11 @@ useEffect(() => {
             <div className="box" key={record.ProductId}>
               <div className="imgage">
                 <img src={record.ImgUrls[0]} alt="" />
-                <div className="overlay">
-                  <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
-                </div>
                 <div className="overlay2">
-                  <Link to={`/product/${record.ProductId}`}><p>VIEW MORE</p></Link>
+                  <img src={record.ImgUrls[1]} alt="" />
+                </div>
+                <div className="overlay3">
+                <Link to={`/product/${record.ProductId}`}><p >VIEW MORE</p></Link>
                 </div>
               </div>
               <div className="informations">
@@ -291,6 +310,8 @@ useEffect(() => {
 
       <Footer/>
     </div>
+      )}
+    </>
   );
 };
 

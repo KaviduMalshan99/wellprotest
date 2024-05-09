@@ -16,8 +16,6 @@ import MenShoes from '../Frontend/Header/MenShoes';
 import WomenBags from '../Frontend/Header/WomenBag';
 import WomenShoes from '../Frontend/Header/WomenShoes';
 import Sidep from '../Frontend/user/UserPSide'
-import Header from '../Frontend/Header/Header';
-
 import Admin from '../admin/admin';
 import Dashboard from '../admin/Dashboard';
 import Profile from '../admin/Profile';
@@ -66,21 +64,32 @@ function App() {
               <Route path='/ulogin' element={<Sidep/>}/>
             </Route>
 
-            <Route path='/' element={<Home />} />
+            {/*main files*/}
+              <Route path='/login' element={<ULog />} />
+              <Route path='/profilee' element={<UserP />} ></Route>
+              <Route path='/' element={<Home />} />
+              <Route path='/men' element={<Men />} />
+              <Route path='/women' element={<Women />} />
+              <Route path='/best' element={<Best />} />
+              <Route path='/product/:id' element={<Product />} />
+              <Route path='/cart' element={<Cart />} />
+              <Route path='/checkout' element={<Checkout />} />
+              <Route path='/refund' element={<Refund />} />
+              <Route path='/refundedit' element={<RefundEdit />} />
+              <Route path='/refundpolicy' element={<RefundPolicy />} />
+              <Route path='/menbag' element={<MenBag />} />
+              <Route path='/menshoes' element={<MenShoes />} />
+              <Route path='/womenbags' element={<WomenBags />} />
+              <Route path='/womenshoes' element={<WomenShoes />} />
+
 
             {/* Common Routes */}
             <Route
               element={
-                <PrivateRoute
-                  permissionLevel={[USER_ROLES.CUSTOMER, USER_ROLES.ADMIN]}
-                />
-
+                <PrivateRoute permissionLevel={[USER_ROLES.CUSTOMER, USER_ROLES.ADMIN]}/>
               }
             >
-
               <Route path='/' element={<Home />} />
-              
-              
             </Route>
 
             
@@ -102,11 +111,10 @@ function App() {
               <Route path='/refund' element={<Refund />} />
               <Route path='/refundedit' element={<RefundEdit />} />
               <Route path='/refundpolicy' element={<RefundPolicy />} />
-
-            <Route path='/menbag' element={<MenBag />} />
-            <Route path='/menshoes' element={<MenShoes />} />
-            <Route path='/womenbags' element={<WomenBags />} />
-            <Route path='/womenshoes' element={<WomenShoes />} />
+              <Route path='/menbag' element={<MenBag />} />
+              <Route path='/menshoes' element={<MenShoes />} />
+              <Route path='/womenbags' element={<WomenBags />} />
+              <Route path='/womenshoes' element={<WomenShoes />} />
               
             </Route>
 

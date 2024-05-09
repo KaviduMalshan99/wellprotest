@@ -12,6 +12,14 @@ const CustomerSchema = new Schema({
 
   contact: String,
 
+  cartItems: [{
+    size: String, 
+    name: String, 
+    count: Number, 
+    images: [String], 
+    price: Number 
+}],
+
   profileUrl: {
     type: String,
     default:
@@ -22,6 +30,7 @@ const CustomerSchema = new Schema({
     enum: Object.values(USER_ROLES),
     default: USER_ROLES.CUSTOMER,
   },
+
 });
 
 CustomerSchema.pre("save", function (next) {

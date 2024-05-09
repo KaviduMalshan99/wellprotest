@@ -2,7 +2,8 @@ $color_1: #fff;
 $background-color_1: #07223D;
 $background-color_2: red;
 
-.editModelContainer {
+.ProductModelContainer{
+
     display: flex;
     flex-direction: column;
     
@@ -125,21 +126,7 @@ $background-color_2: red;
             }
         }
 
-        .editsave {
-            width: 300px;
-            height: 45px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: $background-color_1;
-            color: $color_1;
-            font-weight: bold;
-            padding: 5px 20px;
-            margin-left: 35%;
-            text-align: center;
-            margin-top: 70px;
-            margin-bottom: 20px;
-        }
+        
 
         .variants {
             display: flex;
@@ -189,29 +176,157 @@ $background-color_2: red;
 
         .manysizemanycolor{
             margin-top: 20px;
+            
+            .mzdiv{
+
+                margin-left: 5%;
+                margin-top: 20px;
 
 
-            .q1{
-                margin-left: 25px;
+                input{
+                    margin-left: 40px;
+                    width: 50%;
+                    border-radius: 5px;
+                }
+    
+                button{
+                    margin-left: 45%;
+                }
+
+                select{
+                    border-radius: 5px;
+                    width: 52%;
+                    margin-left: 4.5%;
+                    border: 2px solid;
+                }
+
+                .imgdiv{
+
+                    img{
+                        height: 150px;
+                        width: 150px;
+                        margin-left: 45%;
+                    }
+                }
+
             }
 
-            input{
-                margin-left: 40px;
-                width: 50%;
-                border-radius: 5px;
-            }
-
-            button{
-                margin-left: 45%;
-            }
+            
         }
+
+        .variants {
+            display: flex;
+            flex-wrap: wrap; // Allows the items to wrap to the next line
+            gap: 20px; 
+          
+            .size-item { 
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              padding: 10px;
+              border: 1px solid #ccc; 
+              border-radius: 10px; 
+              background-color: #ccc;
+              margin-top: 20px; 
+              margin-left: 25px;
+          
+              span {
+                margin-bottom: 5px; // Adjust spacing between spans
+              }
+          
+              img {
+                width: 200px;
+                height: 200px; 
+                margin-top: 10px; 
+                border-radius: 5px;
+              }
+          
+              button {
+                margin-top: 10px; 
+                padding: 5px 10px; 
+                color: white; 
+                background-color: #07223D; // Change button background color
+                border: none; 
+                border-radius: 5px; 
+                cursor: pointer; 
+                margin-left: 13%;
+              }
+            }
+          }
+          
 
         .onlycolors{
 
-            .onlycolorsec{
-                margin-left: 25px;
-                margin-top: 20px;
+            div{
+                margin-left: 5%;
+
+                input{
+                    margin-left: 5%;
+                    width: 60%;
+                    border-radius: 5px;
+                }
+
+                .addbutton{
+                    margin-left: 41.5%;
+                }
+
+                .imgs{
+
+                    img{
+                        height: 150px;
+                        width: 150px;
+                        margin-left: 35%;
+                    }
+
+                    .rmv{
+                        margin-left: 35%;
+                        background-color: $background-color_2;
+                    }
+                }
             }
+
+            .sd2 {
+                display: flex;
+                flex-direction: row; // Allows the items to wrap to the next line
+                gap: 20px; 
+              
+                .size-item { 
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  padding: 10px;
+                  border: 1px solid #ccc; 
+                  border-radius: 10px; 
+                  background-color: #ccc;
+                  margin-top: 20px; 
+                  margin-left: 25px;
+                  width: 25%;
+              
+                  span {
+                    margin-bottom: 5px; // Adjust spacing between spans
+                  }
+              
+                  img {
+                    width: 200px;
+                    height: 200px; 
+                    margin-top: 10px; 
+                    border-radius: 5px;
+                  }
+              
+                  button {
+                    margin-top: 10px; 
+                    padding: 5px 10px; 
+                    color: white; 
+                    background-color: $background-color_2; // Change button background color
+                    border: none; 
+                    border-radius: 5px; 
+                    cursor: pointer; 
+                    margin-left: 18%;
+                  }
+                }
+              }
+
+            
         }
 
         .mainbox--quickdelivary{
@@ -235,15 +350,17 @@ $background-color_2: red;
                 flex-direction: row;
                 margin-left: 40px;
                 align-items: center;
+                
+            }
+            
+            select{
+                height: 40px;
+                width: 60%;
+            }
 
-                select{
-                    width: 450px;
-                }
-
-                button{
-                    height: 40px;
-                    margin-top: -10px;
-                }
+            button{
+                margin-top: -10px;
+                height: 40px;
             }
         }
 
@@ -260,7 +377,7 @@ $background-color_2: red;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    
+                    gap: 20px;
                     
 
                     button{
@@ -278,21 +395,20 @@ $background-color_2: red;
 
             textarea{
                 margin-left: 5%;
-                width: 85%;
+                width: 90%;
                 height: 200px;
                 padding: 20px;
             }
         }
 
-        .mainbox-desc{
+        .mmainbox-desc{
             margin-top: 25px;
 
-
-            .image-container{
-
+            .imagecon{
+                margin-top: 20px;
                 display: flex;
                 flex-direction: row;
-                
+
                 .imh{
                     display: flex;
                     flex-direction: column;
@@ -300,19 +416,49 @@ $background-color_2: red;
                     gap: 10px;
 
 
-                    img{
+                    .dimg{
                         height: 150px;
                         width: 150px;
                         border-radius: 5px;
                     }
                     
-                    button{
+                    .dremove{
                         height: 40px;
                     }
                 }
 
                 
+
+                
             }
+
+            .dfile{
+                margin-top: 25px;
+                margin-left: 8%;
+            }
+
+
+            
         }
     }
+
+    .submitconntainer{
+
+        .editsave {
+            width: 300px;
+            height: 45px;
+            border: none;
+            border-radius: 5px;
+            background-color: $background-color_1;
+            color: $color_1;
+            font-weight: bold;
+            padding: 5px 20px;
+            margin-left: 40%;
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+
+    }
 }
+

@@ -14,6 +14,7 @@ const faqcontroller = require('./FaqController');
 const RefundController = require('./RefundController');
 const SupplierRegController = require('./SupplierRegController');
 const SupplierStockController = require('./SupplierStockController');
+const cartController = require('./AddtocartContraller')
 
 
 const authMiddleware = require("../server/middleware/authMiddleware");
@@ -31,6 +32,12 @@ router.get('/categories',catagoryContraller.getCategories);
 router.post('/addcategories',catagoryContraller.addCategory);
 router.post('/deletecategories/:id',catagoryContraller.deleteCategory);
 router.post('/updatecategory/:id', catagoryContraller.updateCategory);
+
+//addtocart
+router.get('/cart/:customerId', authMiddleware, cartController.getCart);
+router.post('/cart/add', authMiddleware, cartController.addToCart);
+router.put('/cart/item/update', authMiddleware, cartController.updateCartItem);
+router.delete('/cart/item/remove', authMiddleware, cartController.removeCartItem);
 
 //customer
 router.get(
