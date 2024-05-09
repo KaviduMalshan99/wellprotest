@@ -15,16 +15,14 @@ function cartReducer(state, action) {
         case 'ADD_ITEM':
             const existingItem = state.items.find(item => item.id === action.item.id);
             if (existingItem) {
-                // Increase the quantity of the existing item
                 return {
                     ...state,
-                    items: state.items.map(item => 
+                    items: state.items.map(item =>
                         item.id === action.item.id ? { ...item, quantity: item.quantity + action.item.quantity } : item
                     ),
                     total: state.total + (action.item.price * action.item.quantity)
                 };
             } else {
-                // Add new item to the cart
                 return {
                     ...state,
                     items: [...state.items, action.item],
@@ -42,7 +40,7 @@ function cartReducer(state, action) {
         case 'UPDATE_QUANTITY':
             return {
                 ...state,
-                items: state.items.map(item => 
+                items: state.items.map(item =>
                     item.id === action.id ? { ...item, quantity: Math.max(1, item.quantity + action.delta) } : item
                 )
             };
@@ -54,16 +52,22 @@ function cartReducer(state, action) {
                 items: remainingItems,
                 total: updatedTotal
             };
-        case 'SET_ITEMS':  // New case to handle setting items directly
+        case 'SET_ITEMS':
+            if (!action.items || !Array.isArray(action.items)) {
+                console.error('Invalid items array');
+                return state; // return current state if items are not valid
+            }
+            const total = action.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
             return {
                 ...state,
                 items: action.items,
-                total: action.items.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+                total: total
             };
         default:
             throw new Error(`Unhandled action type: ${action.type}`);
     }
 }
+
 
 // Provider component to wrap around the application
 export const CartProvider = ({ children }) => {

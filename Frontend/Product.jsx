@@ -96,34 +96,6 @@ const Product = () => {
     }
   };
   
-  
-  
-
-
-
-  const handleColorClick = (color) => {
-    setSelectedColor(color);
-    const selectedVariation = product.Variations.find(variation => variation.name === color);
-    if (selectedVariation) {
-      setSelectedImage(selectedVariation.images);
-      setProduct(prevProduct => ({
-        ...prevProduct,
-        Price: selectedVariation.price // Update the price to the variation's price
-      }));
-      
-    } else {
-      // If no variation is found, revert to the original price
-      setProduct(prevProduct => ({
-        ...prevProduct,
-        Price: originalPrice // Update the price to the original price
-      }));
-    }
-  };
-  
-  
-  
-
-
 
   if (!product) {
     return <div>Loading...</div>;
