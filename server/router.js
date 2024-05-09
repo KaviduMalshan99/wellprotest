@@ -7,6 +7,7 @@ const { route } = require('./app');
 
 
 const { addCoupon, validateCoupon, getAllCoupons,deactivateCoupon } = require('./CouponController');
+
 const catagoryContraller = require('./CatagoryController');
 const customerContraller = require('./CustomerController');
 const orderContraller = require('./OrderController');
@@ -17,6 +18,7 @@ const RefundController = require('./RefundController');
 const SupplierRegController = require('./SupplierRegController');
 const SupplierStockController = require('./SupplierStockController');
 const shippingMethodController = require('./ShippingMethodController');
+
 
 
 const authMiddleware = require("../server/middleware/authMiddleware");
@@ -61,7 +63,7 @@ router.get('/getOrder/:orderId',orderContraller.getOrderById);
 router.get('/products',productContraller.getProducts);
 router.get('/products/:productId', productContraller.getProductById);
 router.post('/addproduct', productContraller.addProduct);
-router.put('/updateproduct/:ProductId', productContraller.updateProduct);
+router.put('/updateproduct/:productId', productContraller.updateProduct);
 router.delete('/deleteproduct/:ProductId',productContraller.deleteProduct);
 
 

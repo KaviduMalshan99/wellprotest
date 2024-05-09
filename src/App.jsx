@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Frontend components
+
 import Men from '../Frontend/Men';
 import Women from '../Frontend/Women';
 import Best from '../Frontend/Best';
@@ -12,6 +13,7 @@ import Refund from '../Frontend/refund/refund';
 import RefundEdit from '../Frontend/refund/refundEdit';
 import RefundPolicy from '../Frontend/refund/refundPolicy';
 import Checkout from '../Frontend/order/Checkout';
+
 import MenBag from '../Frontend/Header/MenBag';
 import MenShoes from '../Frontend/Header/MenShoes';
 import WomenBags from '../Frontend/Header/WomenBag';
@@ -27,6 +29,7 @@ import Products from '../admin/Product';
 import Users from '../admin/Users';
 import Orders from '../admin/Orders';
 import Ratings from '../admin/Reviews';
+
 import Overview from '../admin/Overview';
 import Suppliers from '../admin/Suppliers';
 import Warehouse from '../admin/Warehouse';
@@ -41,7 +44,6 @@ import OrderTable from '../admin/order/OrderTable'
 import OrderDetails from '../admin/order/OrderDetails'
 import AdminDashboard from '../admin/order/AdminDashboard';
 import ShippingMethodManager from '../admin/order/ShippingMethodManager';
-
 
 
 
@@ -142,7 +144,7 @@ function App() {
               <Route path='OrderTable' element={<OrderTable />} />
               <Route path='OrderDetails/:orderId' element={<OrderDetails />} />
               <Route path='Shipping' element={<ShippingMethodManager />} />
-              <Route path='coupon' element={<AdminDashboard />} />
+
             </Route>
 
             </Route>

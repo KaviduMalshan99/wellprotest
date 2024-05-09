@@ -106,6 +106,7 @@ const updateCustomer = async (req, res, next) => {
       // hash the new password
       const hashedPassword = await bcrypt.hash(customerData.newPassword, 10);
       customerData.password = hashedPassword;
+
     }
 
     const updatedCustomer = await Customer.findOneAndUpdate(
@@ -228,7 +229,6 @@ const register = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 module.exports = {
   getCustomer,
