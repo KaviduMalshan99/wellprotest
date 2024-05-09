@@ -1,3 +1,4 @@
+
 import { useState, useEffect,useCallback } from 'react';
 import { useCart } from './CartContext';
 import Footer from './Footer/Footer';
@@ -61,6 +62,7 @@ useEffect(() => {
     setSelectAll(newSelectedItems.size === state.items.length);
   };
 
+
   const handleRemoveSelectedItems = async () => {
     try {
         await axios.delete('/cart/item/remove', { data: { userId, itemIds: Array.from(selectedItems) }});
@@ -120,6 +122,7 @@ useEffect(() => {
               <div>{item.color}</div>
               <div>{item.size}</div>
               <div>Available: {item.availableCount}</div>
+
               <div>LKR.{item.price.toFixed(2)}</div>
               <div style={{display:'flex',gap:'5px',alignItems:'center'}}>
                 <button onClick={() => dispatch({ type: 'UPDATE_QUANTITY', id: item.id, delta: -1 })}

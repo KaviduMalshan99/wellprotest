@@ -17,6 +17,7 @@
     "express": "^4.19.2",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
+
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
 

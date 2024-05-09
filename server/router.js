@@ -6,6 +6,7 @@ const { route } = require('./app');
 
 
 
+
 const { addCoupon, validateCoupon, getAllCoupons,deactivateCoupon } = require('./CouponController');
 
 const catagoryContraller = require('./CatagoryController');
@@ -17,6 +18,7 @@ const faqcontroller = require('./FaqController');
 const RefundController = require('./RefundController');
 const SupplierRegController = require('./SupplierRegController');
 const SupplierStockController = require('./SupplierStockController');
+
 const cartController = require('./AddtocartContraller')
 const shippingMethodController = require('./ShippingMethodController');
 
@@ -93,6 +95,9 @@ router.get('/refunds', RefundController.getRefunds);
 router.delete('/deleterefund/:id', RefundController.deleteRefund);
 router.put('/updaterefund/:orderId', RefundController.updateRefund);
 router.get('/refund/:orderId', RefundController.getRefundById);
+router.put('/approverefund/:orderId', RefundController.approveRefund);
+router.get('/acceptrefunds', RefundController.getAcceptedRefunds);
+
 
 
 // //refundemail
@@ -111,6 +116,7 @@ router.delete('/suppliers/:id', SupplierRegController.deleteSupplier);
 //suplierstock
 router.post('/addstock', SupplierStockController.addSupplierStock);
 router.get('/getstock', SupplierStockController.getStock);
+
 
 
 // Shipping Methods

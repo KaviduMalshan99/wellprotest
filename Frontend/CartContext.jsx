@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer } from 'react';
 
+
 // Create a Context for the cart
 const CartContext = createContext();
 
@@ -38,6 +39,7 @@ function cartReducer(state, action) {
                 total: newTotal
             };
         case 'UPDATE_QUANTITY':
+
             return {
                 ...state,
                 items: state.items.map(item =>
@@ -45,6 +47,7 @@ function cartReducer(state, action) {
                 )
             };
         case 'REMOVE_SELECTED_ITEMS':
+
             const remainingItems = state.items.filter(item => !action.ids.includes(item.id));
             const updatedTotal = remainingItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
             return {
@@ -52,6 +55,7 @@ function cartReducer(state, action) {
                 items: remainingItems,
                 total: updatedTotal
             };
+
         case 'SET_ITEMS':
             if (!action.items || !Array.isArray(action.items)) {
                 console.error('Invalid items array');
@@ -69,7 +73,6 @@ function cartReducer(state, action) {
 }
 
 
-// Provider component to wrap around the application
 export const CartProvider = ({ children }) => {
     const [state, dispatch] = useReducer(cartReducer, initialCartState);
 
@@ -80,5 +83,4 @@ export const CartProvider = ({ children }) => {
     );
 };
 
-// Custom hook to use cart context throughout the application
 export const useCart = () => useContext(CartContext);

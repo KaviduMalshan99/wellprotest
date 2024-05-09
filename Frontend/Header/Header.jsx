@@ -1,3 +1,4 @@
+
 import './Header.scss';
 import Logo from '../../src/assets/logo.png';
 import { Link } from 'react-router-dom';
@@ -14,6 +15,7 @@ const Header = () => {
             </div>
             <div className="hcenter-section">
                 <ul>
+
                     <li>
                         <Link to='/' className="hhui2">Home</Link>
                     </li>
@@ -44,6 +46,7 @@ const Header = () => {
                             <i className="fa fa-search"></i>
                         </form>
                     </li>
+
                     <li>
                         <div className="hhui22">
                             <Link to="/login" onClick={() => console.log('Login link clicked')}>
