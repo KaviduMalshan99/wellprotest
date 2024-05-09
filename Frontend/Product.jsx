@@ -7,7 +7,13 @@ import Footer from './Footer/Footer';
 import Header from './Header/Header';
 import { useCart } from './CartContext';
 
+import LOGOO from '../src/assets/logoorange.png'
+import { PropagateLoader } from 'react-spinners'; 
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Product = () => {
+  const [loading, setLoading] = useState(true);
   const { id } = useParams(); 
   const {dispatch} =useCart();
   const navigate = useNavigate();
@@ -18,6 +24,9 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [availableColors, setAvailableColors] = useState([]);
   const [originalPrice, setOriginalPrice] = useState(null);
+  
+  
+
 
   useEffect(() => {
     const fetchProductById = async (productId) => {
@@ -31,8 +40,11 @@ const Product = () => {
 
         setProduct(productData); // Update the state with fetched product data
         console.log('Product Details:', productData); // Log product details to console
-        
-        
+
+        setTimeout(() => setLoading(false),2000);
+        console.log('Available Sizes:', productData.Sizes);
+        console.log('Available Colors:', productData.Colors);
+
       } catch (error) {
         console.error('Error fetching product:', error);
         // Handle the error as needed, e.g., display an error message
@@ -64,6 +76,7 @@ const Product = () => {
       .filter(variation => variation.size === size)
       .map(variation => variation.color);
     setAvailableColors(colors);
+
   };
 
   const handleColorClick = (color) => {
@@ -85,17 +98,17 @@ const Product = () => {
     }
   };
   
-  
-  
-
-
 
   if (!product) {
     return <div>Loading...</div>;
   }
 
   const handleBuyNow = () => {
-    const checkoutUrl = `/checkout?id=${id}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${product.ImgUrls[0]}`;
+    // Use the selectedImage if available, otherwise fallback to the first image in the array
+    const finalImageUrl = selectedImage || product.ImgUrls[0];
+    const encodedImageUrl = encodeURIComponent(finalImageUrl);
+    const checkoutUrl = `/checkout?id=${id}&Productname=${product.ProductName}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${encodedImageUrl}`;
+
     navigate(checkoutUrl);
   };
 
@@ -136,15 +149,23 @@ const Product = () => {
 
 
   const handleAddToCart = () => {
+
+    if (!selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
+  
     if (!selectedColor) {
       alert("Please select a color.");
       return;
     }
-    // Find the variation that matches the selected color and size (if size is provided).
-    const selectedVariation = product.Variations.find(variation =>
-      variation.name === selectedColor && (selectedSize ? variation.size === selectedSize : true)
-    );
 
+  
+    // Find the variation that matches the selected color and size
+    const selectedVariation = product.Variations.find(variation =>
+      variation.name === selectedColor && variation.size === selectedSize
+    );
+  
     if (!selectedVariation) {
       alert("Selected variation not available.");
       return;
@@ -165,6 +186,33 @@ const Product = () => {
     });
     navigate('/cart');
   };
+  
+    if (selectedVariation.count === 0) {
+      alert("This product is currently out of stock.");
+      return;
+    }
+  
+    // Prepare the item object based on the selected variation
+    const itemToAdd = {
+      id: product.ProductId,
+      name: product.ProductName,
+      price: parseFloat(selectedVariation.price),
+      image: selectedVariation.images[0], // Assuming the first image is the primary one
+      size: selectedSize,
+      color: selectedColor,
+      quantity: quantity,
+      availableCount: selectedVariation.count
+    };
+  
+    // Dispatch the action to add the item to the cart
+    dispatch({
+      type: 'ADD_ITEM',
+      item: itemToAdd
+    });
+  
+    toast.success('Product added to cart successfully');
+  };
+  
 
   
   
@@ -174,12 +222,24 @@ const Product = () => {
     <div>
 
       <Header/>
+      
+      
       <p className='main1'>
         <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link>
         <i className="fas fa-angle-right" /> <Link to="/product/:id">{product.ProductName} </Link>
       </p>
 
-     
+
+      {loading && (
+      <div className="loader-container">
+        <div className="loader-overlay">
+          <img src={LOGOO} alt="Logo" className="loader-logo" />
+          <PropagateLoader color={'#ff3c00'} loading={true} />
+        </div>
+      </div>
+    )}
+
+      {!loading && (
 
       <div className="product-container">
         {/* Left Section */}
@@ -367,6 +427,8 @@ const Product = () => {
             <div className="addcart">
               <button onClick={handleAddToCart}>Add to Cart</button>
             </div>
+            <ToastContainer />
+
 
             {/* Buy Now Button */}
             <div className="buyNow">
@@ -376,7 +438,12 @@ const Product = () => {
         </div>
       </div>
 
+      )}
+
+  
+
       <Footer/>
+      
     </div>
   );
 };

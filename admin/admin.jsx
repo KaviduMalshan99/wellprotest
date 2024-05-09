@@ -1,19 +1,18 @@
 import { useState } from 'react';
+
 import { Link, Outlet } from 'react-router-dom';
 import './admin.css';
 import Logo from '../src/assets/logo.png';
 
 const Admin = () => {
   const [selectedSection, setSelectedSection] = useState('dashboard');
-  
-
-  
 
   const handleSectionChange = (section) => {
     setSelectedSection(section);
   };
 
   return (
+
     <div className="admin-container">
       <div className="nav-bar">
         <div className="company-logo">

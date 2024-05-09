@@ -1,22 +1,51 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect,useCallback } from 'react';
 import { useCart } from './CartContext';
 import Footer from './Footer/Footer';
 import Header from './Header/Header';
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
+import {useAuthStore} from "../src/store/useAuthStore"
 
 const Cart = () => {
   const { state, dispatch } = useCart();
+  const {user} =useAuthStore();
   const [selectAll, setSelectAll] = useState(false);
   const [selectedItems, setSelectedItems] = useState(new Set());
 
-  // Effect to handle select all toggle
-  useEffect(() => {
-    if (selectAll) {
-      const newSelectedItems = new Set(state.items.map(item => item.id));
-      setSelectedItems(newSelectedItems);
-    } else {
-      setSelectedItems(new Set());
+  const userId = user?.UserId;
+  console.log("customerid: ",userId);
+
+  const generateCartId = useCallback(() => {
+    return `CID_${uuidv4()}`;
+  }, []);
+
+  const fetchCartItems = useCallback(async () => {
+    if (!userId) {
+        console.error("UserId is undefined");
+        return;
     }
-  }, [selectAll, state.items]);
+    try {
+        const response = await axios.get(`/cart/${userId}`);
+        dispatch({ type: 'SET_ITEMS', items: response.data.items });
+    } catch (error) {
+        console.error('Failed to fetch cart items:', error);
+    }
+}, [userId, dispatch]);
+
+useEffect(() => {
+    fetchCartItems();
+}, [fetchCartItems]);
+
+useEffect(() => {
+    if (selectAll) {
+        const newSelectedItems = new Set(state.items.map(item => item.id));
+        setSelectedItems(newSelectedItems);
+    } else {
+        setSelectedItems(new Set());
+    }
+}, [selectAll, state.items]);
+
 
   const handleSelectAllToggle = () => {
     setSelectAll(!selectAll);
@@ -33,10 +62,30 @@ const Cart = () => {
     setSelectAll(newSelectedItems.size === state.items.length);
   };
 
-  const handleRemoveSelectedItems = () => {
-    dispatch({ type: 'REMOVE_SELECTED_ITEMS', ids: Array.from(selectedItems) });
-    setSelectedItems(new Set()); // Clear selections
-    setSelectAll(false);
+
+  const handleRemoveSelectedItems = async () => {
+    try {
+        await axios.delete('/cart/item/remove', { data: { userId, itemIds: Array.from(selectedItems) }});
+        dispatch({ type: 'REMOVE_SELECTED_ITEMS', ids: Array.from(selectedItems) });
+        setSelectedItems(new Set());
+        setSelectAll(false);
+    } catch (error) {
+        console.error('Failed to remove items:', error);
+    }
+};
+
+  // Update quantity in the backend
+  const updateQuantity = async (id, delta) => {
+    try {
+      const item = state.items.find(item => item.id === id);
+      const newQuantity = item.quantity + delta;
+      if (newQuantity > 0 && newQuantity <= item.availableCount) {
+        await axios.put('/cart/item/update', { cartId: YOUR_CART_ID, itemId: id, quantity: newQuantity });
+        dispatch({ type: 'UPDATE_QUANTITY', id: id, delta });
+      }
+    } catch (error) {
+      console.error('Failed to update quantity:', error);
+    }
   };
 
   const subtotal = [...selectedItems].reduce(
@@ -73,7 +122,8 @@ const Cart = () => {
               <div>{item.color}</div>
               <div>{item.size}</div>
               <div>Available: {item.availableCount}</div>
-              <div>${item.price.toFixed(2)}</div>
+
+              <div>LKR.{item.price.toFixed(2)}</div>
               <div style={{display:'flex',gap:'5px',alignItems:'center'}}>
                 <button onClick={() => dispatch({ type: 'UPDATE_QUANTITY', id: item.id, delta: -1 })}
                   disabled={item.quantity === 1}>-</button>

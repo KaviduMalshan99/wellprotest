@@ -8,9 +8,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header/Header';
 
+import { PropagateLoader } from 'react-spinners'; 
 import Footer from '../Footer/Footer';
+import LOGOO from '../../src/assets/logoorange.png'
+import './MenBag.scss'
 
 const MenBag = () => {
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedCategory] = useState('');
@@ -34,6 +38,7 @@ const MenBag = () => {
         console.log('Filtered Data:', filteredData); // Log filtered data
         
         setData(filteredData);
+        setTimeout(() => setLoading(false),2000);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -105,122 +110,143 @@ useEffect(() => {
 
 
   return (
+
+
+    <>
+    {loading && (
+      <div className="loader-container">
+        <div className="loader-overlay">
+          <img src={LOGOO} alt="Logo" className="loader-logo" />
+          <PropagateLoader color={'#ff3c00'} loading={true} />
+        </div>
+      </div>
+    )}
+
+      {!loading && (
+    
     <div>
+
+      
+
+      
       <Header/>
       <p className='menmain'>SHOP MENS</p>
       <p className='menmain1'>
         <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" /><Link to="/menbag"> BAGS </Link><i className="fas fa-angle-right" />
       </p>
 
-      <div className="menmid">
-        <div className="menfilter">
-          <h2 className='menfiltertitle'>Filter Options</h2>
-          
-          
-           
-          <div className="pricefilter">
 
-            <p className='fittertitles'>Price Range:</p>
-              <div className='minmaxdiv'>
-                <input
-                  type="number"
-                  placeholder="Min Price"
-                  value={minPrice}
-                  onChange={handleMinPriceChange}
-                /> -
-                <input
-                  type="number"
-                  placeholder="Max Price"
-                  value={maxPrice}
-                  onChange={handleMaxPriceChange}
-                />
-              </div>
+      
 
-              <div className="sortprice">
-                {/* Sorting */}
-                <p className='fittertitles'>Sort By:</p>
-                <div className='sortminmax'>
-                  <button className='btnsortminmax' onClick={() => handleSortChange('maxToMin')}>Price: Low to High</button>
-                  <button className='btnsortminmax' onClick={() => handleSortChange('minToMax')}>Price: High to Low</button>
+        <div className="menmid">
+          <div className="menfilter">
+            <h2 className='menfiltertitle'>Filter Options</h2>
+            
+            
+            
+            <div className="pricefilter">
+
+              <p className='fittertitles'>Price Range:</p>
+                <div className='minmaxdiv'>
+                  <input
+                    type="number"
+                    placeholder="Min Price"
+                    value={minPrice}
+                    onChange={handleMinPriceChange}
+                  /> -
+                  <input
+                    type="number"
+                    placeholder="Max Price"
+                    value={maxPrice}
+                    onChange={handleMaxPriceChange}
+                  />
                 </div>
-              </div>
-          </div>
 
-          <div className="ratingsFilter">
-  <p className='fittertitles'>Ratings:</p>
-  <div className='ratingsOptions'>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={5}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={4}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={3}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={2}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={1}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
+                <div className="sortprice">
+                  {/* Sorting */}
+                  <p className='fittertitles'>Sort By:</p>
+                  <div className='sortminmax'>
+                    <button className='btnsortminmax' onClick={() => handleSortChange('maxToMin')}>Price: Low to High</button>
+                    <button className='btnsortminmax' onClick={() => handleSortChange('minToMax')}>Price: High to Low</button>
+                  </div>
+                </div>
+            </div>
+
+            <div className="ratingsFilter">
+    <p className='fittertitles'>Ratings:</p>
+    <div className='ratingsOptions'>
+      <label>
+        <div className='startoption1'>
+          <input
+            type="checkbox"
+            value={5}
+            onChange={handleRatingChange}
+          />
+        </div>
+        <div className='startoption2'>
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+      </label>
+      <label>
+        <div className='startoption1'>
+          <input
+            type="checkbox"
+            value={4}
+            onChange={handleRatingChange}
+          />
+        </div>
+        <div className='startoption2'>
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+      </label>
+      <label>
+        <div className='startoption1'>
+          <input
+            type="checkbox"
+            value={3}
+            onChange={handleRatingChange}
+          />
+        </div>
+        <div className='startoption2'>
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+      </label>
+      <label>
+        <div className='startoption1'>
+          <input
+            type="checkbox"
+            value={2}
+            onChange={handleRatingChange}
+          />
+        </div>
+        <div className='startoption2'>
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+      </label>
+      <label>
+        <div className='startoption1'>
+          <input
+            type="checkbox"
+            value={1}
+            onChange={handleRatingChange}
+          />
+        </div>
+        <div className='startoption2'>
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+      </label>
+    </div>
   </div>
-</div>
 
 
         </div>
@@ -232,9 +258,12 @@ useEffect(() => {
                 <img src={record.ImgUrls[0]} alt="" />
                 <div className="overlay">
                   <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
-                </div>
+
                 <div className="overlay2">
-                  <Link to={`/product/${record.ProductId}`}><p>VIEW MORE</p></Link>
+                  <img src={record.ImgUrls[1]} alt="" />
+                </div>
+                <div className="overlay3">
+                <Link to={`/product/${record.ProductId}`}><p >VIEW MORE</p></Link>
                 </div>
               </div>
               <div className="informations">
@@ -259,8 +288,13 @@ useEffect(() => {
 
 
       <Footer/>
+      
+      
     </div>
+      )}
+    </>
   );
 };
+
 
 export default MenBag;

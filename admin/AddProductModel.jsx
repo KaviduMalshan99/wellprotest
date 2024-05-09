@@ -1,7 +1,8 @@
 import  { useState, useEffect } from 'react';
-import './AddProductModel.css';
+import './AddProductModel.scss';
 import axios from 'axios';
 import { toast,ToastContainer } from 'react-toastify';
+
 
 // Define the resizeAndConvertToBase64 function
 const resizeAndConvertToBase64 = (file, maxWidth, maxHeight) => {
@@ -57,6 +58,8 @@ const AddProductModel = ({onClose}) => {
     Description:'',
   });
 
+  
+
 
   const [products, setProducts] = useState([]);
   const [selectedColorCount, setSelectedColorCount] = useState(0);
@@ -69,6 +72,8 @@ const AddProductModel = ({onClose}) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [priceError, setPriceError] = useState('');
   const [selectedColorPrice,setSelectedColorPrice]=useState([]);
+  const [selectedColor, setSelectedColor] = useState('');
+  const colors = ['Red', 'Green', 'Blue', 'Yellow', 'Orange', 'Purple', 'Pink', 'Brown', 'Black', 'White'];
 
   useEffect(() => {
     console.log("Selected Categories:", productData.Categories);
@@ -103,6 +108,10 @@ const AddProductModel = ({onClose}) => {
       ...productData,
       [name]: checked,
     });
+  };
+
+  const handleColorChange = (e) => {
+    setSelectedColor(e.target.value);
   };
 
 
@@ -154,13 +163,26 @@ const AddProductModel = ({onClose}) => {
 
   const handleAddProduct = async () => {
 
-    if (
-      productData.ProductName.trim() === '' ||
-      productData.Categories.length === 0 ||
-      selectedOptions.length === 0
-    ) {
-      // Display an error message if any required field is empty
-      toast.error('Please fill in all required fields');
+    if (!productData.ProductName.trim()) {
+      toast.error('Product Name is required.');
+      return;
+    }
+  
+    // Check if at least one category is selected
+    if (productData.Categories.length === 0) {
+      toast.error('Please select at least one category.');
+      return;
+    }
+  
+    // Check if at least one area is selected
+    if (selectedOptions.length === 0) {
+      toast.error('Please select at least one area.');
+      return;
+    }
+  
+    // Check if at least one default image is added
+    if (defaultImages.length === 0) {
+      toast.error('Please add at least one default image.');
       return;
     }
 
@@ -238,7 +260,7 @@ const AddProductModel = ({onClose}) => {
   
 
   const handleAddSize = () => {
-    if (sizeInput.trim() !== '' && selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
+    if (sizeInput.trim() !== '' && selectedColor && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
       // Log the size before updating the state
       console.log("Size added:", sizeInput.trim());
       
@@ -246,7 +268,7 @@ const AddProductModel = ({onClose}) => {
       const newSize = {
         size: sizeInput.trim(),
         color: {
-          name: selectedColorName,
+          name: selectedColor, // Use selectedColor instead of selectedColorName
           count: selectedColorCount,
           price: selectedColorPrice,
           images: selectedColorImages
@@ -264,7 +286,7 @@ const AddProductModel = ({onClose}) => {
   
       // Clear the input fields after adding size
       setSizeInput('');
-      setSelectedColorName('');
+      setSelectedColor('');
       setSelectedColorCount(0);
       setSelectedColorPrice('');
       setSelectedColorImages([]);
@@ -273,6 +295,7 @@ const AddProductModel = ({onClose}) => {
       console.error("Please fill in all the required fields.");
     }
   };
+  
 
     const handleAddColor = () => {
       if (selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
@@ -457,7 +480,7 @@ const AddProductModel = ({onClose}) => {
             </div>
           </div>
 
-          <div className="mainbox">
+          <div className="variantslect">
             <div>
               <label>4) Select Variant Type:</label>
               <select value={productData.VariantType} onChange={handleVariantChange}>
@@ -469,12 +492,12 @@ const AddProductModel = ({onClose}) => {
           </div>
 
           {productData.VariantType && (
-            <div className="mainbox">
+            <div className="manysizemanycolor">
               {/* Render sections dynamically based on selected variant */}
               {productData.VariantType === "Many Sizes with Many Colors" && (
-                <div>
+                <div className='mz1'>
                   <label>4) Many Sizes with Many Colors:</label>
-                  <div>
+                  <div className='mzdiv'>
                     <label>Add Size:</label>
                     <input
                       type="text"
@@ -482,13 +505,16 @@ const AddProductModel = ({onClose}) => {
                       onChange={(e) => setSizeInput(e.target.value)}
                       placeholder="Enter size"
                     />
-                    <label>Color Name:</label>
-                    <input
-                      type="text"
-                      value={selectedColorName}
-                      onChange={(e) => setSelectedColorName(e.target.value)}
-                      placeholder="Enter color name"
-                    />
+                    <label>Select Color:</label>
+                      <select
+                        value={selectedColor}
+                        onChange={handleColorChange}
+                      >
+                        <option value="">Select Color</option>
+                        {colors.map((color, index) => (
+                          <option key={index} value={color}>{color}</option>
+                        ))}
+                      </select>
                     <label>Available Count:</label>
                     <input
                       type="number"
@@ -496,16 +522,24 @@ const AddProductModel = ({onClose}) => {
                       onChange={(e) => setSelectedColorCount(e.target.value)}
                       placeholder="Enter available count"
                     />
-                    <label>Price:</label>
-                    <input
-                      type="number"
-                      value={selectedColorPrice}
-                      onChange={(e) => setSelectedColorPrice(e.target.value)}
-                      placeholder="Enter price"
-                    />
+                   <label>Price:</label>
+                      <input
+                        type="text"
+                        value={selectedColorPrice}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Allow only numeric values or an empty string
+                          if (/^\d*\.?\d*$/.test(value) || value === '') {
+                            setSelectedColorPrice(value);
+                          }
+                        }}
+                        placeholder="Enter price"
+                      />
+
+
                     <input type="file" onChange={handleAddImage} accept="image/*" />
                     {/* Display selected images for the current color */}
-                    <div>
+                    <div className='imgdiv'>
                       {selectedColorImages.map((image, index) => (
                         <div key={index}>
                           <img src={image} alt={`Color Image ${index}`} />
@@ -517,7 +551,7 @@ const AddProductModel = ({onClose}) => {
                   </div>
 
                   {/* Display added sizes */}
-                    <div className='sd2'>
+                    <div className='variants'>
                       {productData.Sizes.map((size, index) => (
                         <div key={index} className='size-item'>
                           <span>Size:{size.size}</span>
@@ -539,7 +573,7 @@ const AddProductModel = ({onClose}) => {
                 </div>
               )}
               {productData.VariantType === "Only Colors" && (
-                <div>
+                <div className='onlycolors'>
                   <label>4) Only Colors:</label>
                   <div>
                     <label>Color Name:</label>
@@ -565,15 +599,15 @@ const AddProductModel = ({onClose}) => {
                     />
                     <input type="file" onChange={handleAddImage} accept="image/*" />
                     {/* Display selected images for the current color */}
-                    <div>
+                    <div className='imgs'>
                       {selectedColorImages.map((image, index) => (
                         <div key={index}>
                           <img src={image} alt={`Color Image ${index}`} />
-                          <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
+                          <button type="button" className='rmv' onClick={() => handleRemoveImage(index)}>Remove</button>
                         </div>
                       ))}
                     </div>
-                    <button type="button" onClick={handleAddColor}>Add Color</button>
+                    <button type="button" className='addbutton' onClick={handleAddColor}>Add Color</button>
                   </div>
 
                   {/* Display added colors */}
@@ -599,7 +633,7 @@ const AddProductModel = ({onClose}) => {
           )}
 
           
-          <div className="mainbox">
+          <div className="mainbox-areas">
             <div>
               <label>5) Areas:(*)</label>
               <div className='catdiv'>
@@ -613,7 +647,7 @@ const AddProductModel = ({onClose}) => {
               </div>
             </div>
 
-            <div className='selectedclass'>
+            <div className='selectedareas'>
               {/* Display selected options */}
               <ul>
                 {selectedOptions.map((option, index) => (
@@ -628,7 +662,7 @@ const AddProductModel = ({onClose}) => {
 
 
           
-          <div className="mainbox">
+          <div className="mainbox--quickdelivary">
             <div className='dilevary'>
               <label>6) Quick Delivery Available:</label>
               <input
@@ -652,21 +686,21 @@ const AddProductModel = ({onClose}) => {
         </div>
       
 
-          <div className="mainbox">
-            <div className='default'>
+          <div className="mmainbox-desc">
+            
 
               <label>8) Default Images:</label>
-                <div>
+                <div className='imagecon'>
                   {defaultImages.map((image, index) => (
-                    <div key={index}>
+                    <div className='imh' key={index}>
                       <img className='dimg' src={image} alt={`Default Image ${index}`} />
                       <button type="button" className='dremove' onClick={() => handleRemoveDefaultImage(index)}>Remove Image</button>
                     </div>
                   ))}
-                  <input type="file" className='dfile' onChange={handleAddDefaultImage} accept="image/*" />
+                  
                 </div>
-
-            </div>
+                <input type="file" className='dfile' onChange={handleAddDefaultImage} accept="image/*" />
+            
           </div>
           
             
@@ -676,7 +710,7 @@ const AddProductModel = ({onClose}) => {
       </form>
 
       <div className='submitconntainer'>
-      <button onClick={handleAddProduct} className='submitbtn'>Add Product</button>
+      <button onClick={handleAddProduct} className='editsave'>Add Product</button>
       </div>
 
       <ToastContainer/>

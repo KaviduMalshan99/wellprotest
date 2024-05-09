@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const faqSchema = new Schema ({
     FaqID: String,
+    Date: Date,
     CustomerName: String,
     CustomerEmail: String,
     Question: String,

@@ -9,8 +9,11 @@ import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header/Header';
 
 import Footer from '../Footer/Footer';
+import LOGOO from '../../src/assets/logoorange.png'
+import { PropagateLoader } from 'react-spinners'; 
 
 const MenShoes = () => {
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedCategory] = useState('');
@@ -34,6 +37,7 @@ const MenShoes = () => {
         console.log('Filtered Data:', filteredData); // Log filtered data
         
         setData(filteredData);
+        setTimeout(() => setLoading(false),2000);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -76,6 +80,7 @@ useEffect(() => {
   setFilteredData(filteredProducts);
 }, [data, selectedCategory, minPrice, maxPrice, selectedRatings, sortOrder]);
 
+
   
 
     // Function to handle minimum price change
@@ -104,7 +109,44 @@ useEffect(() => {
     };
 
 
+    // Function to handle minimum price change
+    const handleMinPriceChange = (event) => {
+      setMinPrice(event.target.value);
+    };
+  
+    // Function to handle maximum price change
+    const handleMaxPriceChange = (event) => {
+      setMaxPrice(event.target.value);
+    };
+
+    // Function to handle sorting change
+    const handleSortChange = (order) => {
+      setSortOrder(order);
+    };
+
+    // Function to handle rating change
+    const handleRatingChange = (event) => {
+      const rating = event.target.value;
+      if (event.target.checked) {
+        setSelectedRatings((prevRatings) => [...prevRatings, rating]);
+      } else {
+        setSelectedRatings((prevRatings) => prevRatings.filter((r) => r !== rating));
+      }
+    };
+
+
   return (
+    <>
+    {loading && (
+      <div className="loader-container">
+        <div className="loader-overlay">
+          <img src={LOGOO} alt="Logo" className="loader-logo" />
+          <PropagateLoader color={'#ff3c00'} loading={true} />
+        </div>
+      </div>
+    )}
+
+      {!loading && (
     <div>
       <Header/>
       <p className='menmain'>SHOP MENS SHOES</p>
@@ -260,6 +302,8 @@ useEffect(() => {
 
       <Footer/>
     </div>
+      )}
+      </>
   );
 };
 

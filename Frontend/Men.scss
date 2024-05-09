@@ -1,0 +1,45 @@
+
+setFilteredData(filteredProducts); {
+} {
+    const selected = event.target.value; setselectedcategory(prevcategory => prevcategory === selected ? '': selected);
+}
+}
+[data {
+const selected = event.target.value; setselectedcategory(prevcategory => prevcategory === selected ? '': selected);
+}
+selectedCategory {
+const selected = event.target.value; setselectedcategory(prevcategory => prevcategory === selected ? '': selected);
+}
+minPrice {
+const selected = event.target.value; setselectedcategory(prevcategory => prevcategory === selected ? '': selected);
+}
+maxPrice {
+const selected = event.target.value; setselectedcategory(prevcategory => prevcategory === selected ? '': selected);
+}
+selectedRatings {
+const selected = event.target.value; setselectedcategory(prevcategory => prevcategory === selected ? '': selected);
+}
+sortOrder]); {
+const {
+    handleCategoryChange {
+        = {
+            (event) {
+                = {
+                    > {
+                        const selected = event.target.value; setselectedcategory(prevcategory => prevcategory === selected ? '': selected);
+                    }
+                }
+            }
+        }
+    }
+}
+}
+/ {
+></div {
+    ></div {
+        >)} {
+            !loading && ( <div> <header/> <p classname='menmain'>shop mens</p> <p classname='menmain1'> <link to='/'>home</link> <i classname="fas fa-angle-right" /> <link to="/men">men </link><i classname="fas fa-angle-right" /> </p> <div classname="menmid"> <div classname="menfilter"> <h2 classname='menfiltertitle'>filter options</h2> <div classname="categoriesfilter"> <p classname='fittertitles'>categories: </p> <div className='filcatdiv'> <label>Bags</label> <input type="checkbox" value="Bags" checked={selectedCategory === "Bags";
+        }
+    }
+}
+}

@@ -1,10 +1,12 @@
 const Faq = require('./FaqModel');
+const { response } = require('./app');
 
 const addFaq = (req, res, next) => {
-    const { FaqID,CustomerName,CustomerEmail,Question } = req.body;
+    const { FaqID,Date,CustomerName,CustomerEmail,Question } = req.body;
 
     const faq = new Faq ({
         FaqID: FaqID,
+        Date: Date,
         CustomerName: CustomerName,
         CustomerEmail: CustomerEmail,
         Question: Question,
@@ -19,22 +21,79 @@ const addFaq = (req, res, next) => {
         });
 };
 
-const getFaq = (req, res, next) => {
-    const { FaqID } = req.params;
+// const getFaq = (req, res, next) => {
+//     const { FaqID } = req.params;
 
-    Faq.findOne({ FaqID })
-        .then(faq => {
-            if (!faq) {
-                return res.status(404).json({ message: "FAQ not found" });
-            }
-            res.json({ faq });
+//     Faq.findOne({ FaqID })
+//         .then(faq => {
+//             if (!faq) {
+//                 return res.status(404).json({ message: "FAQ not found" });
+//             }
+//             res.json({ faq });
+//         })
+//         .catch(error => {
+//             res.status(500).json({ error });
+//         });
+// };
+
+const getFaq = (req, res, next) => {
+
+    Faq.find()
+        .then(response => {
+                res.json({ response});
         })
         .catch(error => {
-            res.status(500).json({ error });
+            res.json({ error });
         });
 };
 
+
+const deleteFaq = (req, res, next) => {
+    const FaqID = req.params.FaqID;
+
+    Faq.deleteOne({FaqID: FaqID})
+        .then(response => {
+            res.json({response});
+        })
+        .catch(error => {
+            res.json({ error })
+        });
+};
+
+const getFaqById = (req, res, next) => {
+    const faqId  = req.params.FaqID; // Assuming faqId is passed as a parameter
+
+    try{
+        const faq = Faq.findOne({ FaqID: faqId })
+        if(faq) {
+            return res.status(404).json({ error: 'Not found'});
+        }
+
+        res.json({ faq });
+    } catch (error) {
+        res.status(500).json({ error: error.message});
+    }
+        
+};
+
+// const deleteFaq = (req, res, next) => {
+//     const { id } = req.params;
+
+//     Faq.findByIdAndDelete(id)
+//         .then(response => {
+//             if (!response) {
+//                 return res.status(404).json({ message: "FAQ not found" });
+//             }
+//             res.json({ message: "FAQ deleted successfully" });
+//         })
+//         .catch(error => {
+//             res.status(500).json({ error });
+//         });
+// };
+
 module.exports = {
     addFaq,
-    getFaq
+    getFaq,
+    deleteFaq,
+    getFaqById
 };
