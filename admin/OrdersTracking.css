@@ -1,0 +1,83 @@
+
+
+.orders-container {
+  display: flex;
+  justify-content: space-between;
+  width: 95%; /* Adjust as needed */
+  margin: 20px auto;
+}
+
+
+.left-panel {
+  width: 48%;
+  overflow-y: auto;
+  max-height: 500px; /* Adjust as needed */
+  max-width: 300px;
+  margin: 10px;
+}
+
+.orders-container h2 {
+  font-size: 18px;
+}
+
+.orders-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.orders-container th,
+.orders-container td {
+  padding: 12px;
+  text-align: center;
+}
+
+.orders-container th {
+  background-color: #07223d;
+  color: white;
+}
+
+.orders-container td {
+  background-color: #f7fbfe;
+  border: 1px solid #07223d;
+  color: black;
+  height: 60px;
+}
+
+.order-checkbox {
+  width: 30px; /* Increase checkbox size */
+  height: 30px;
+}
+
+.orders-container input[type="radio"] {
+  margin-right: 10px;
+}
+
+.orders-container .delete-btn, .orders-container .edit-btn {
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+}
+
+.orders-container .delete-btn {
+  background-color: red;
+}
+
+.orders-container .edit-btn {
+  background-color: #07223d;
+}
+
+/* Optional: Add styles for the right panel (tracking table) */
+.right-panel {
+  overflow-y: auto; /* Enable vertical scroll if needed */
+  max-height: 500px; /* Adjust max-height as needed */
+  margin: 10px;
+  max-height: 500px;
+}
+
+.OderTracking_Status_Update{
+  position: relative;
+    justify-content: center;
+}
