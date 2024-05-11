@@ -39,10 +39,11 @@ router.post('/deletecategories/:id',catagoryContraller.deleteCategory);
 router.post('/updatecategory/:id', catagoryContraller.updateCategory);
 
 //addtocart
-router.get('/cart/:customerId', authMiddleware, cartController.getCart);
-router.post('/cart/add', authMiddleware, cartController.addToCart);
-router.put('/cart/item/update', authMiddleware, cartController.updateCartItem);
-router.delete('/cart/item/remove', authMiddleware, cartController.removeCartItem);
+router.get('/cart/:customerId',  cartController.getCart);
+router.post('/cart/add', cartController.addToCart);
+router.put('/updatecart',  cartController.updateCartItem);
+router.delete('/deletecart/:cartId', cartController.removeCartItem);
+
 
 //customer
 router.get(

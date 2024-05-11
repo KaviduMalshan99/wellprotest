@@ -27,6 +27,7 @@ import Products from '../admin/Product';
 import Users from '../admin/Users';
 import Orders from '../admin/Orders';
 import Ratings from '../admin/Reviews';
+import HomeMen from '../Frontend/Home/HomeMen';
 
 import Overview from '../admin/Overview';
 import Suppliers from '../admin/Suppliers';
@@ -91,6 +92,7 @@ function App() {
               <Route path='/menshoes' element={<MenShoes />} />
               <Route path='/womenbags' element={<WomenBags />} />
               <Route path='/womenshoes' element={<WomenShoes />} />
+              <Route path='/homemen' element={<HomeMen />} />
 
 
             {/* Common Routes */}
@@ -125,6 +127,7 @@ function App() {
               <Route path='/menshoes' element={<MenShoes />} />
               <Route path='/womenbags' element={<WomenBags />} />
               <Route path='/womenshoes' element={<WomenShoes />} />
+              <Route path='/homemen' element={<HomeMen />} />
               
             </Route>
 
@@ -172,6 +175,7 @@ function App() {
             <Route path='/menshoes' element={<MenShoes />} />
             <Route path='/womenbags' element={<WomenBags />} />
             <Route path='/womenshoes' element={<WomenShoes />} />
+            <Route path='/homemen' element={<HomeMen />} />
 
             
 

@@ -3,9 +3,12 @@ import Logo from '../../src/assets/logo.png';
 import { Link } from 'react-router-dom';
 import { useCart } from '../CartContext';
 
+
 const Header = () => {
-    const { state } = useCart();
-    const numberOfDistinctProducts = state.items.length;
+    
+    const { cartItems } = useCart(); // Use the cart context
+    const numberOfDistinctProducts = cartItems.length;
+    
 
     return (
         <div className="mmainheader">

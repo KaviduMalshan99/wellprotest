@@ -10,11 +10,13 @@ import LOGOO from '../src/assets/logoorange.png'
 import { PropagateLoader } from 'react-spinners'; 
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuthStore } from "../src/store/useAuthStore";
+
 
 const Product = () => {
   const [loading, setLoading] = useState(true);
   const { id } = useParams(); 
-  const {dispatch} =useCart();
+  const {refreshCart} =useCart();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
@@ -23,9 +25,11 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [availableColors, setAvailableColors] = useState([]);
   const [originalPrice, setOriginalPrice] = useState(null);
-  
-  
+  const { user } = useAuthStore(); 
 
+  const userId = user?.UserId;
+  
+  
 
   useEffect(() => {
     const fetchProductById = async (productId) => {
@@ -144,54 +148,67 @@ const Product = () => {
     }
   };
 
-
+  
 
   const handleAddToCart = () => {
-    if (!selectedSize) {
-      alert("Please select a size.");
-      return;
-    }
-  
+    // Validation
+    
+
     if (!selectedColor) {
-      alert("Please select a color.");
-      return;
+        toast.error("Please select a color.");
+        return;
     }
-  
+
     // Find the variation that matches the selected color and size
     const selectedVariation = product.Variations.find(variation =>
-      variation.name === selectedColor && variation.size === selectedSize
-    );
-  
+      variation.name === selectedColor && (!product.Variations.some(v => v.size) || variation.size === selectedSize)
+  );
+
     if (!selectedVariation) {
-      alert("Selected variation not available.");
-      return;
+        toast.error("Selected variation not available.");
+        return;
     }
-  
+
     if (selectedVariation.count === 0) {
-      alert("This product is currently out of stock.");
-      return;
+        toast.error("This product is currently out of stock.");
+        return;
     }
-  
+
+    const randomNumber = Math.floor(10000 + Math.random() * 90000); // Generate a random 5-digit number
+    const cartId = `CART_${randomNumber}`;
+
+
     // Prepare the item object based on the selected variation
     const itemToAdd = {
-      id: product.ProductId,
-      name: product.ProductName,
-      price: parseFloat(selectedVariation.price),
-      image: selectedVariation.images[0], // Assuming the first image is the primary one
-      size: selectedSize,
-      color: selectedColor,
-      quantity: quantity,
-      availableCount: selectedVariation.count
+        cartId,
+        productId: product._id,
+        name: product.ProductName,
+        price: parseFloat(selectedVariation.price),
+        image: selectedVariation.images[0],
+        size: selectedSize,
+        color: selectedColor,
+        quantity: quantity,
+        availableCount: selectedVariation.count,
+        customerId: userId  
     };
-  
-    // Dispatch the action to add the item to the cart
-    dispatch({
-      type: 'ADD_ITEM',
-      item: itemToAdd
-    });
-  
-    toast.success('Product added to cart successfully');
-  };
+
+    console.log("product : ",itemToAdd)
+
+    axios.post('http://localhost:3001/api/cart/add', itemToAdd)
+        .then(response => {
+            if (response.status === 200) {
+                toast.success('Product added to cart successfully');
+                refreshCart();
+            } else {
+                toast.error('Failed to add product to cart');
+            }
+        })
+        .catch(error => {
+            console.error('Failed to add product to cart:', error);
+            toast.error('Failed to add product to cart');
+        });
+};
+
   
 
   
