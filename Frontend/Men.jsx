@@ -5,14 +5,12 @@ import './Men.css';
 import Mint from '../src/assets/int.png';
 import Koko from '../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from './Header/Header';
 import LOGOO from '../src/assets/logoorange.png';
 import { PropagateLoader } from 'react-spinners'; 
 import MenBag from '../src/assets/menbag.jpg'
 import { faShoppingCart, faHeart, faStar } from '@fortawesome/free-solid-svg-icons';
 import Footer from './Footer/Footer';
-import Header from './Header/Header';
 
 const Men = () => {
   const [loading, setLoading] = useState(true);
