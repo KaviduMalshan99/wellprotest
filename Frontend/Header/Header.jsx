@@ -6,10 +6,10 @@ import { useCart } from '../CartContext';
 
 
 const Header = () => {
-    
+
     const { cartItems } = useCart(); // Use the cart context
     const numberOfDistinctProducts = cartItems.length;
-    
+
 
     return (
         <div className="mmainheader">
@@ -61,7 +61,7 @@ const Header = () => {
                         <div className="hhui22">
                             <Link to='/cart'>
                                 <i className="fas fa-cart-shopping fa-xl" style={{ color: '#ffffff' }}></i>
-                                <span className="cart-count">{numberOfDistinctProducts}</span> 
+                                <span className="cart-count">{numberOfDistinctProducts}</span>
                             </Link>
                         </div>
                     </li>

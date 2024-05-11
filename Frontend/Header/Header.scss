@@ -7,14 +7,17 @@ $background-color_1: #050517;
 $background-color_2: red;
 
 @import "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap";
+
 @keyframes animate {
 	0% {
 		background-position: 0;
 	}
+
 	100% {
 		background-position: 470px;
 	}
 }
+
 * {
 	padding: 0;
 	margin: 0;
@@ -22,80 +25,86 @@ $background-color_2: red;
 }
 
 .mmainheader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 20px;
-    background-color: #010103;
-    color: $color_1;
-    height: 70px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 5px 20px;
+	background-color: #010103;
+	color: $color_1;
+	height: 70px;
 
-    .hcenter-section {
-        ul {
-            display: flex;
-            gap: 50px;
-            font-size: 18px;
-            justify-content: space-between;
-            justify-content: center;
-            text-decoration: none;
-            list-style: none;
-        }
+	.hcenter-section {
+		ul {
+			display: flex;
+			gap: 50px;
+			font-size: 18px;
+			justify-content: space-between;
+			justify-content: center;
+			text-decoration: none;
+			list-style: none;
+		}
 
-        li {
-            position: relative;
+		li {
+			position: relative;
 
-            .dropdown-content {
-                position: absolute;
-                background-color: #000;
-                min-width: 160px;
-                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                z-index: 1;
-                left: 0;
-                top: 100%;
-                display: flex;
-                flex-direction: column;
-                border-radius: 5px;
-            }
+			.dropdown-content {
+				position: absolute;
+				background-color: #000;
+				min-width: 160px;
+				box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+				z-index: 1;
+				left: 0;
+				top: 100%;
+				display: flex;
+				flex-direction: column;
+				border-radius: 5px;
+			}
 
-            .dropdown-content a {
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-                color: #fff; /* Set link color to black */
+			.dropdown-content a {
+				padding: 12px 16px;
+				text-decoration: none;
+				display: block;
+				color: #fff;
+				/* Set link color to black */
 
-                &:hover {
-                    background-color: #050517;
-                    border-radius: 5px;
-                }
-            }
+				&:hover {
+					background-color: #050517;
+					border-radius: 5px;
+				}
+			}
 
-            &:hover .dropdown-content {
-                display: flex; /* Change display to flex on hover */
-            }
+			&:hover .dropdown-content {
+				display: flex;
+				/* Change display to flex on hover */
+			}
 
-            &:not(:hover) .dropdown-content {
-                display: none;
-            }
-        }
-    }
+			&:not(:hover) .dropdown-content {
+				display: none;
+			}
+		}
+	}
 }
 
 .hhui {
 	font-size: 15px;
 }
+
 .hhui22 {
 	margin-bottom: 20px;
 	margin-top: -10px;
 }
+
 .hhui1 {
 	font-size: 15px;
 	margin-top: 10px;
 }
+
 .hhui2 {
 	font-size: 20px;
 	color: $color_2;
 	text-decoration: none;
 }
+
 .hhex {
 	background-image: linear-gradient(45deg, #ffd700, #ffd700 20%, #ffec8b 70%, #ffec8b);
 	-webkit-background-clip: text;
@@ -106,9 +115,11 @@ $background-color_2: red;
 	animation: animate 3s linear infinite;
 	font-weight: 400;
 }
+
 .hlogo {
 	max-height: 40px;
 }
+
 .hright-section {
 	ul {
 		padding-top: 20px;
@@ -119,6 +130,7 @@ $background-color_2: red;
 		list-style: none;
 	}
 }
+
 form.searchh {
 	margin-top: -15px;
 	position: relative;
@@ -133,14 +145,17 @@ form.searchh {
 	border-radius: 25px;
 	border: 4px solid white;
 	padding: 0px 5px 5px 5px;
+
 	&:hover {
 		width: 300px;
 		cursor: pointer;
+
 		input {
 			padding-bottom: 5px;
 			padding-left: 50px;
 			display: block;
 		}
+
 		.fa {
 			background: #07051a;
 			color: $color_2;
@@ -148,25 +163,30 @@ form.searchh {
 			left: -5px;
 		}
 	}
+
 	&:valid {
 		width: 300px;
 		cursor: pointer;
+
 		input {
 			padding-bottom: 5px;
 			padding-left: 50px;
 			display: block;
 		}
+
 		.fa {
 			background: #07051a;
 			color: $color_2;
 			top: -5px;
 			left: -5px;
 		}
+
 		a {
 			display: block;
 		}
 	}
 }
+
 input.hsearch {
 	position: absolute;
 	top: 0;
@@ -181,6 +201,7 @@ input.hsearch {
 	border-radius: 20px;
 	padding: 0 20px;
 }
+
 .fa {
 	box-sizing: border-box;
 	padding: 10px 0 0 3px;
@@ -196,14 +217,17 @@ input.hsearch {
 	font-size: 1.2em;
 	transition: all 1s;
 }
+
 .hleft-section {
 	padding-left: 20px;
 }
+
 .hcenter-section {
 	.marker {
 		text-decoration: none;
 	}
 }
+
 .cart-count {
 	position: absolute;
 	top: 10px;
