@@ -1,0 +1,138 @@
+/* Overall footer container */
+
+.footer {
+  background-color: #050517;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+/* Container for footer content */
+
+.container {
+  display: flex;
+  gap: 200px;
+}
+
+/* Social links */
+
+.social-links {
+  padding-top: 10px;
+  display: flex;
+  font-size: 24px;
+  justify-content: center;
+  gap: 80px;
+  margin-top: 1rem;
+  margin-bottom: 20px;
+
+  li {
+    list-style: none;
+  }
+
+  a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+}
+
+/* Lists within the footer */
+
+.collection ul, .info ul, .connect ul {
+  text-align: left;
+
+  /* Center align the list items */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.collection, .info {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+
+  /* Align items in the center */
+}
+
+.connect {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+
+  /* Align items in the center */
+
+  margin-right: 50px;
+}
+
+.collection {
+  margin-right: 0rem;
+}
+
+.info {
+  margin-right: 3rem;
+}
+
+.footer {
+  ul li {
+    margin-bottom: 0.5rem;
+
+    a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+  }
+
+  h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    margin-left: 0rem;
+    margin-right: 10rem;
+  }
+}
+
+.copyright {
+  color: #ffffff;
+  font-size: 12px;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-top: 1px solid #ffffff;
+  width: 100%;
+  text-align: center;
+}
+
+.logo {
+  height: 65px;
+  margin-top: 50px;
+}
+
+.ftmcon {
+  display: flex;
+  justify-content: space-between;
+}
+
+.socialbar {
+  background-color: #1a1a1a;
+  width: 100%;
+}
+
+.logoos {
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  gap: 20px;
+  margin-left: 90px;
+
+  label {
+    padding-left: 13px;
+    font-size: 18px;
+  }
+}
+
+.connect input {
+  border-radius: 5px;
+  padding-left: 10px;
+  height: 36px;
+  width: 200px;
+  border: none;
+}

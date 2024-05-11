@@ -137,12 +137,21 @@ $background-color_2: red;
             padding: 5px 20px;
             margin-left: 35%;
             text-align: center;
+
             margin-top: 70px;
             margin-bottom: 20px;
         }
 
         .variants {
             display: flex;
+            flex-wrap: wrap; // Allows the items to wrap to the next line
+            gap: 20px; 
+
+            > div.variant { 
+                flex: 1 1 calc((100% - 30px) / 3); // Set flex-basis
+                width: calc((100% - 50px) / 3);
+                display: flex;
+                flex-direction: column;
             flex-direction: row; // Allows the items to wrap to the next line
             gap: 20px; 
             
@@ -154,6 +163,7 @@ $background-color_2: red;
                 border: 1px solid #ccc; 
                 border-radius: 10px; 
                 background-color: #ccc;
+
                 margin-top: 70px;
                 
 
@@ -165,6 +175,8 @@ $background-color_2: red;
                     max-width: 100%; 
                     height: auto; 
                     margin-top: 10px; 
+                    margin-left: 25%;
+
                 }
 
                 button {
@@ -174,6 +186,7 @@ $background-color_2: red;
                     border: none; 
                     border-radius: 5px; 
                     cursor: pointer; 
+
                     margin-left: 15%;
                 }
             }

@@ -7,6 +7,7 @@ import Koko from '../../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header/Header';
+
 import Footer from '../Footer/Footer';
 import LOGOO from '../../src/assets/logoorange.png'
 import { PropagateLoader } from 'react-spinners'; 
@@ -36,6 +37,7 @@ const WomenShoes = () => {
         console.log('Filtered Data:', filteredData); // Log filtered data
         
         setData(filteredData);
+
         setTimeout(() => setLoading(false),2000);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -108,6 +110,7 @@ useEffect(() => {
 
 
   return (
+
     <>
     {loading && (
       <div className="loader-container">
@@ -244,6 +247,9 @@ useEffect(() => {
             <div className="box" key={record.ProductId}>
               <div className="imgage">
                 <img src={record.ImgUrls[0]} alt="" />
+                <div className="overlay">
+                  <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
+
                 <div className="overlay2">
                   <img src={record.ImgUrls[1]} alt="" />
                 </div>
@@ -274,6 +280,7 @@ useEffect(() => {
 
       <Footer/>
     </div>
+
       )}
       </>
   );

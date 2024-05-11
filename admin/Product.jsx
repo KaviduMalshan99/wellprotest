@@ -150,19 +150,42 @@ const Product = () => {
 
       
 
-        <div className="product-count">
-          <p>Total Products: ({filteredProducts.length})</p>
-        </div>
+      <div className="product-table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Image</th>
+              <th>Product Name</th>
+              <th>Price</th>
+              <th colSpan={2}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredProducts.map(product => (
+              <tr key={product.ProductId}>
+                <td>{product.ProductId}</td>
+                <td>
+                  {product.ImgUrls && product.ImgUrls.length > 0 ? (
+                      <img
+                        src={product.ImgUrls[0]}
+                        alt={product.ProductName}
+                        onLoad={() => console.log('Image loaded successfully')}
+                        onError={(e) => { e.target.src = 'placeholder-image-url'; }} 
+                      />
+                    ) : (
+                      <div>No Image</div>
+                    )}
+                </td>
+                <td>{product.ProductName}</td>
+                <td>{`${Math.min(...product.Variations.map(variation => variation.price))} - ${Math.max(...product.Variations.map(variation => variation.price))}`}</td>
+                <td>
+                  <button className="edit-btn" onClick={() => toggleEditModal(product.ProductId)}>Edit</button>
+                </td>
+                <td>
+                  <button className="delete-btn" onClick={() => handleDelete(product.ProductId)}>Delete</button>
+                </td>
 
-        <div className="product-table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th colSpan={2}>Actions</th>
               </tr>
             </thead>
             <tbody>

@@ -11,7 +11,9 @@ import LOGOO from '../src/assets/logoorange.png';
 import { PropagateLoader } from 'react-spinners'; 
 import MenBag from '../src/assets/menbag.jpg'
 
+import { faShoppingCart, faHeart, faStar } from '@fortawesome/free-solid-svg-icons';
 import Footer from './Footer/Footer';
+import Header from './Header/Header';
 
 const Men = () => {
   const [loading, setLoading] = useState(true);
@@ -64,11 +66,13 @@ useEffect(() => {
       const minProductPrice = Math.min(...product.Variations.map(variation => variation.price));
       return minProductPrice >= parseFloat(minPrice) && minProductPrice <= parseFloat(maxPrice);
     });
+
   }
 
   // Apply ratings filter
   if (selectedRatings.length > 0) {
     filteredProducts = filteredProducts.filter(product => selectedRatings.includes(product.Rating.toString()));
+
   }
 
   if (sortOrder === 'minToMax') {
@@ -132,6 +136,7 @@ useEffect(() => {
       <p className='menmain'>SHOP MENS</p>
       <p className='menmain1'>
         <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" />
+
       </p>
 
       <div className="menmid">
@@ -190,6 +195,7 @@ useEffect(() => {
                 {/* Sorting */}
                 <p className='fittertitles'>Sort By:</p>
                 <div className='sortminmax'>
+
                   <button className='btnsortminmax' onClick={() => handleSortChange('maxToMin')}>Price: Low to High</button>
                   <button className='btnsortminmax' onClick={() => handleSortChange('minToMax')}>Price: High to Low</button>
                 </div>
@@ -297,6 +303,7 @@ useEffect(() => {
                     </div>
                     <div className='p02'>
                       or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with<img src={Koko} className='kokopay' />
+
                     </div>
                   </div>
                 </div>

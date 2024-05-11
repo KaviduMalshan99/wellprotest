@@ -7,6 +7,7 @@ import Koko from '../../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header/Header';
+
 import Footer from '../Footer/Footer';
 import LOGOO from '../../src/assets/logoorange.png'
 import { PropagateLoader } from 'react-spinners'; 
@@ -79,7 +80,34 @@ useEffect(() => {
   setFilteredData(filteredProducts);
 }, [data, selectedCategory, minPrice, maxPrice, selectedRatings, sortOrder]);
 
+
   
+
+    // Function to handle minimum price change
+    const handleMinPriceChange = (event) => {
+      setMinPrice(event.target.value);
+    };
+  
+    // Function to handle maximum price change
+    const handleMaxPriceChange = (event) => {
+      setMaxPrice(event.target.value);
+    };
+
+    // Function to handle sorting change
+    const handleSortChange = (order) => {
+      setSortOrder(order);
+    };
+
+    // Function to handle rating change
+    const handleRatingChange = (event) => {
+      const rating = event.target.value;
+      if (event.target.checked) {
+        setSelectedRatings((prevRatings) => [...prevRatings, rating]);
+      } else {
+        setSelectedRatings((prevRatings) => prevRatings.filter((r) => r !== rating));
+      }
+    };
+
 
     // Function to handle minimum price change
     const handleMinPriceChange = (event) => {

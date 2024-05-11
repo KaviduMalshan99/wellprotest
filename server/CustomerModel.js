@@ -12,6 +12,7 @@ const CustomerSchema = new Schema({
 
   contact: String,
 
+
   cartItems: [{
     size: String, 
     name: String, 
@@ -30,6 +31,7 @@ const CustomerSchema = new Schema({
     enum: Object.values(USER_ROLES),
     default: USER_ROLES.CUSTOMER,
   },
+
 
 });
 

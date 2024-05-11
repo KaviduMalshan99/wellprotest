@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Footer from '../Footer/Footer'
+import Header from '../Header/Header';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './refundEdit.css';
+import './refundEdit.scss';
 import { useParams, useNavigate, Link } from 'react-router-dom'; // Import useParams hook to extract route parameters
 
 const RefundEdit = () => {
@@ -11,6 +12,8 @@ const RefundEdit = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const { orderId } = useParams(); // Extract orderId from route parameters
   const [imagePreview, setImagePreview] = useState(null); // State to hold image preview URL
+  const [showMessageBox, setShowMessageBox] = useState(false);
+
 
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -37,7 +40,7 @@ const RefundEdit = () => {
       .then(res => {
         console.log(res);
         toast.success('Refund deleted successfully!');
-        navigate('/refundPolicy'); // Redirect to the refundPolicy page after successful deletion
+        navigate('/men'); // Redirect to the refundPolicy page after successful deletion
       })
       .catch(err => {
         console.error('Error deleting refund:', err);
@@ -46,10 +49,16 @@ const RefundEdit = () => {
   };
   
   const handleUpdate = () => {
+    // alert("Details saved successfully! Click OK to go to the homepage.");
+
     axios.put(`http://localhost:3001/api/updaterefund/${orderId}`, newRefund)
       .then(res => {
         console.log(res);
         toast.success('Refund updated successfully!');
+        console.log("Details saved successfully! Click OK to go to the homepage.");
+        setShowMessageBox(true);
+
+
         navigate(`/refundedit/${orderId}`); // Redirect to the current page after successful update
       })
       .catch(err => {
@@ -122,6 +131,7 @@ const RefundEdit = () => {
 
   return (
     <div>
+    <Header/>
       <div className="rnmh">Refund</div>
       <div className="rnlp">Home &gt; Refund</div>
       <div className="rnmbtns">
@@ -147,6 +157,17 @@ const RefundEdit = () => {
                     <input type="text" className="rnmconinp" name="orderId" placeholder="Enter ID" value={newRefund.orderId} onChange={handleInputChange} required/>
                   </td>
                 </tr>
+                <tr className="rnmconttd">
+                                    <td className="rnmconttd">
+                                        <div className="rnmcontit">Product ID</div>
+                                    </td>
+                                    <td className="rnmconttd">
+                                        <input type="text" className="rnmconinp" name="productId" placeholder="Enter ID" value={newRefund.productId} onChange={handleInputChange} required/>
+                                        {/* {errors.orderId && (
+                                          <div className="error-messager">{errors.productId}</div>
+                                        )} */}
+                                    </td>
+                                </tr>
                 <tr>
                   <td>
                     <div className="rnmcontit">Customer Name</div>
@@ -197,7 +218,7 @@ const RefundEdit = () => {
                       {newRefund.imgUrls.map((imageUrl, index) => (
                         <div key={index} className="image-wrapper">
                           <img src={imageUrl} alt={`Image ${index}`} style={{ width: '100px', height: '100px' }} />
-                          <button type="buttonr" onClick={() => handleRemoveImage(index)}>Remove</button>
+                          <button className='buttonremo'  onClick={() => handleRemoveImage(index)}>Remove</button>
                         </div>
                       ))}
                     </div>
@@ -220,6 +241,15 @@ const RefundEdit = () => {
       </center>
       <Footer/>
       <ToastContainer />
+      {showMessageBox && (
+        <div className="message-box">
+          <p>Details saved successfully! Click OK to go to the homepage.</p>
+          <button onClick={() => {
+            setShowMessageBox(false);
+            handleUpdate();
+          }}>OK</button>
+        </div>
+      )}
     </div>
   );
 };
