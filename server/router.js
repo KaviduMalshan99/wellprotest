@@ -18,6 +18,26 @@ const faqcontroller = require('./FaqController');
 const RefundController = require('./RefundController');
 const SupplierRegController = require('./SupplierRegController');
 const SupplierStockController = require('./SupplierStockController');
+const dispatchedOrderController = require('./DispatchedOrdersController')
+
+const CurrentStockController = require('./CurrentStockController');
+const {
+  createOrUpdateNotification,
+  getNotifications,
+} = require('./NotificationController');
+
+
+const AcceptedStockController = require('./AcceptedStockController');
+// const OrdersTableController = require('./OrdersTableController');
+const {
+    getWarehouse,
+    getAllWarehouses,
+    addWarehouse,
+    getWarehouseById,
+    updateWarehouse,
+    deleteWarehouse,
+    getNextId
+  } = require('./WarehouseController');
 
 const OrderCancellationController = require('./OrderCancellationController');
 const messageController = require('./DelayOrderChatController');
@@ -68,6 +88,11 @@ router.get("/customer/email/:email", customerContraller.getCustomerByEmail);
 
 //order
 router.get('/orders',orderContraller.getOrders);
+
+router.post('/orders/sendemail', orderContraller.sendOrderStatusEmail);
+router.put("/updatestatus", orderContraller.updateOrderStatus);
+router.put("/updateContactStatus/:orderId", orderContraller.updateContactStatus);
+
 router.post('/addOrder',orderContraller.addOrder);
 router.put('./updateOrder',orderContraller.updateOrder);
 router.delete('/deleteOrder/:orderId',orderContraller.deleteOrder);
@@ -121,6 +146,49 @@ router.delete('/suppliers/:id', SupplierRegController.deleteSupplier);
 //suplierstock
 router.post('/addstock', SupplierStockController.addSupplierStock);
 router.get('/getstock', SupplierStockController.getStock);
+
+//Warehouse
+// router.get("/oders", OrdersTableController.getOrdersTable);
+// router.post("/addorder", OrdersTableController.addOrdersTable);
+// router.put("/updateorder", OrdersTableController.updateOrdersTable);
+// router.delete("/deleteorder", OrdersTableController.deleteOrdersTable);
+// router.post('/orders/sendemail', OrdersTableController.sendOrderStatusEmail);
+// router.put("/updatestatus", OrdersTableController.updateOrdersTableStatus);
+// router.put("/updateContactStatus/:orderId", OrdersTableController.updateContactStatus);
+
+// Routes for warehouse operations
+router.get('/warehouse', getAllWarehouses);
+router.post('/addwarehouse', addWarehouse);
+router.get('/warehouse/:id', getWarehouse, getWarehouseById);
+router.patch('/updatewarehouse/:id', getWarehouse, updateWarehouse);
+router.delete('/deletewarehouse/:id', getWarehouse, deleteWarehouse);
+router.get('/nextId', getNextId);
+
+
+
+router.get('/stocks/:warehouseId', CurrentStockController.getStockByWarehouseId);
+router.post('/stocks', CurrentStockController.createProductStock);
+router.put('/stocks/:id', CurrentStockController.updateProductStock);
+router.delete('/stocks/:id', CurrentStockController.deleteProductStock);
+router.get('/stocks', CurrentStockController.getAllProductStocks);
+router.put('/dispatchOrder', CurrentStockController.dispatchOrder);
+
+
+router.post('/acceptstock/:id', CurrentStockController.acceptAndModifyStock);
+
+// Route to fetch all accepted stocks
+router.get('/acceptedstocks', AcceptedStockController.getAcceptedStocks);
+
+//Notifications Inventory
+
+router.post('/notifications', createOrUpdateNotification);
+router.get('/notifications', getNotifications);
+
+// Route to create a dispatched order
+router.post('/dispatchedOrders', dispatchedOrderController.createDispatchedOrder);
+router.post('/adjustStockQuantities', CurrentStockController.adjustStockQuantities);
+
+router.delete('/dispatchedOrders', dispatchedOrderController.deleteAllDispatchedOrders);
 
 
 

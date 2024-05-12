@@ -1,0 +1,53 @@
+.wareordtit {
+  margin-top: 50px;
+  font-size: 35px;
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 50px;
+  padding-left: 50px;
+}
+
+.Waresuportab {
+  width: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.Waresuportab td {
+  background: #b7dbff;
+  font-size: 20px;
+  padding: 10px;
+  text-align: center;
+}
+
+.Waresuportab th {
+  background: #07223D;
+  color: aliceblue;
+  padding: 7px;
+  font-size: 20px;
+}
+
+.wreortabacbtn {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background: #b7dbff;
+}
+
+.waresupactbtn {
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 15px;
+  background: #07223D;
+  color: white;
+}
+
+.waresupactbtn:hover {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(90deg, rgba(30, 144, 255, 1) 0%, rgba(0, 212, 255, 1) 100%);
+}
+
+.waresupactbtn:active {
+  transform: translate(0em, 0.2em);
+}
