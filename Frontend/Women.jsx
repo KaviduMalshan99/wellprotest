@@ -278,35 +278,35 @@ useEffect(() => {
         <div className="men">
           {filteredData.map(record => (
             <div className="box" key={record.ProductId}>
-              <div className="imgage">
-                <img src={record.ImgUrls[0]} alt="" />
-                <div className="overlay">
-                  <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
- 
-                
-                <div className="overlay2">
-                  <img src={record.ImgUrls[1]} alt="" />
-                </div>
-                <div className="overlay3">
-                <Link to={`/product/${record.ProductId}`}><p >VIEW MORE</p></Link>
-                </div>
-              </div>
-              <div className="informations">
-                <div className="title">{record.ProductName}</div>
-                <div className="price">LKR.{(Math.min(...record.Variations.map(variation => variation.price))).toFixed(2)} </div>
-                <div className="ratings">
-                  <div className="paymentsimg">
-                    <div className='p01'>
-                      or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with <img src={Mint} className='intpay' />
-                    </div>
-                    <div className='p02'>
-                      or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with<img src={Koko} className='kokopay' />
-                    </div>
-                  </div>
-                </div>
-                <div className="price">{record.price}</div>
-              </div>
-            </div>
+  <div className="imgage">
+    <img src={record.ImgUrls[0]} alt="" />
+    <div className="overlay">
+      <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
+      <div className="overlay2">
+        <img src={record.ImgUrls[1]} alt="" />
+      </div>
+      <div className="overlay3">
+        <Link to={`/product/${record.ProductId}`}><p>VIEW MORE</p></Link>
+      </div>
+    </div>
+  </div>
+  <div className="informations">
+    <div className="title">{record.ProductName}</div>
+    <div className="price">LKR.{(Math.min(...record.Variations.map(variation => variation.price))).toFixed(2)} </div>
+    <div className="ratings">
+      <div className="paymentsimg">
+        <div className='p01'>
+          or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with <img src={Mint} className='intpay' />
+        </div>
+        <div className='p02'>
+          or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with<img src={Koko} className='kokopay' />
+        </div>
+      </div>
+    </div>
+    <div className="price">{record.price}</div>
+  </div>
+</div>
+
           ))}
         </div>
       </div>

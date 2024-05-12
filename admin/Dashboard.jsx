@@ -98,7 +98,7 @@ const Dashboard = () => {
                   setOrderCount(todayOrders.length);
 
                   // Calculate today's revenue
-                  const revenue = todayOrders.reduce((total, order) => total + order.total, 0);
+                  const revenue = todayOrders.reduce((total, order) => total + order.totalPrice, 0);
                   setTodayRevenue(revenue);
 
                   
