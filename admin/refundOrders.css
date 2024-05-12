@@ -26,7 +26,7 @@ button {
 }
 
 
-.generate-reports-button {
+.generate-reports-buttonr {
   background-color: #007bff; /* Blue background color */
   color: white; /* White text color */
   border: none; /* Remove border */
@@ -37,10 +37,33 @@ button {
   width: fit-content;
 }
 
-.generate-reports-button:hover {
+.generate-reports-buttonr:hover {
   background-color: #0056b3; /* Darker blue background color on hover */
 }
 
 .subtitle{
   margin-top: 5%;
+}
+
+
+#search-barr{
+  display: flex;
+  align-items: right;
+  margin-left: 65%;
+}
+
+#search-buttonrrr{
+  width: 50px;
+  margin-top:1px;
+  height: 40px;
+}
+
+.search-buttonr:hover{
+  background:#07223D;
+}
+
+.twobtnr{
+  display: flex; /* Change to flex */
+  justify-content: left; /* Center align horizontally */
+  gap: 20px; /* Add gap between buttons */
 }

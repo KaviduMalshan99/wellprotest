@@ -1,84 +1,46 @@
-import { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import axios from 'axios';
+import { useAuthStore } from '../src/store/useAuthStore';
 
-// Create a Context for the cart
 const CartContext = createContext();
 
-// Define the initial state of the cart
-const initialCartState = {
-    items: [],
-    total: 0
-};
-
-// Reducer to handle actions related to the cart
-function cartReducer(state, action) {
-    switch (action.type) {
-        case 'ADD_ITEM':
-            const existingItem = state.items.find(item => item.id === action.item.id);
-            if (existingItem) {
-                return {
-                    ...state,
-                    items: state.items.map(item =>
-                        item.id === action.item.id ? { ...item, quantity: item.quantity + action.item.quantity } : item
-                    ),
-                    total: state.total + (action.item.price * action.item.quantity)
-                };
-            } else {
-                return {
-                    ...state,
-                    items: [...state.items, action.item],
-                    total: state.total + (action.item.price * action.item.quantity)
-                };
-            }
-        case 'REMOVE_ITEM':
-            const updatedItems = state.items.filter(item => item.id !== action.id);
-            const newTotal = updatedItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-            return {
-                ...state,
-                items: updatedItems,
-                total: newTotal
-            };
-        case 'UPDATE_QUANTITY':
-            return {
-                ...state,
-                items: state.items.map(item =>
-                    item.id === action.id ? { ...item, quantity: Math.max(1, item.quantity + action.delta) } : item
-                )
-            };
-        case 'REMOVE_SELECTED_ITEMS':
-            const remainingItems = state.items.filter(item => !action.ids.includes(item.id));
-            const updatedTotal = remainingItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-            return {
-                ...state,
-                items: remainingItems,
-                total: updatedTotal
-            };
-        case 'SET_ITEMS':
-            if (!action.items || !Array.isArray(action.items)) {
-                console.error('Invalid items array');
-                return state; // return current state if items are not valid
-            }
-            const total = action.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-            return {
-                ...state,
-                items: action.items,
-                total: total
-            };
-        default:
-            throw new Error(`Unhandled action type: ${action.type}`);
-    }
-}
-
-
-// Provider component to wrap around the application
 export const CartProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(cartReducer, initialCartState);
+    const [cartItems, setCartItems] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const { user } = useAuthStore();
+    const [refresh, setRefresh] = useState(false);
+
+    useEffect(() => {
+        const fetchCartItems = async () => {
+
+            if (!user?.UserId) {
+                console.error("UserId is undefined");
+                return;
+            }
+            setLoading(true);
+            try {
+                const response = await axios.get(`http://localhost:3001/api/cart/${user.UserId}`);
+                setCartItems(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Failed to fetch cart items:', error);
+                setLoading(false);
+            }
+            setLoading(false);
+        };
+
+        fetchCartItems();
+    }, [refresh]);
+
+    const refreshCart = () => {
+        setRefresh(prev => !prev); 
+    };
 
     return (
-        <CartContext.Provider value={{ state, dispatch }}>
+        <CartContext.Provider value={{ cartItems, loading,refreshCart }}>
             {children}
         </CartContext.Provider>
     );
 };
 
-// Custom hook to use cart context throughout the application
 export const useCart = () => useContext(CartContext);

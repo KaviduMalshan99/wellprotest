@@ -56,6 +56,10 @@
   }
   
   .collection {
+    margin-right: 0rem;
+  }
+
+  .info{
     margin-right: 3rem;
   }
   
@@ -73,6 +77,8 @@
     font-weight: bold;
     margin-bottom: 1rem;
     color: #ffffff;
+    margin-left: 0rem;
+    margin-right: 10rem;
   }
   
   .copyright {

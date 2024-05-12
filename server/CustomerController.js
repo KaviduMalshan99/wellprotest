@@ -107,6 +107,7 @@ const updateCustomer = async (req, res, next) => {
       const hashedPassword = await bcrypt.hash(customerData.newPassword, 10);
       customerData.password = hashedPassword;
 
+
     }
 
     const updatedCustomer = await Customer.findOneAndUpdate(

@@ -86,12 +86,13 @@ app.post('/send-email', async (req, res) => {
       to: email,
       subject: subject,
       text: `
+        Message: ${message}
         Product ID: ${productId}
         Sizes: ${sizes}
         Colors: ${colors}
         Quantity: ${quantity}
         Price: ${price}
-        Message: ${message}
+        
       `
     };
   
@@ -118,7 +119,7 @@ app.post('/sendemail', async (req, res) => {
     });
 
     let mailOptions = {
-        from: 'nirmalsubashana3@gmail.com',
+        from: '"WellWorn Private Limited" <nirmalsubashana3@gmail.com>',
         to: email,
         subject: subject,
         text: message

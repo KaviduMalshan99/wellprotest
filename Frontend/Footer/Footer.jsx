@@ -1,5 +1,5 @@
 import React from 'react';
-import './Footer.css'; // Import your CSS for styling
+import './Footer.scss'; // Import your CSS for styling
 import logoImage from './wellwornlogo2.png'; // Adjust the path accordingly
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhone } from '@fortawesome/free-solid-svg-icons';
@@ -30,10 +30,10 @@ function Footer() {
      
         <div className="collection">
           <h3>COLLECTION</h3> <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Men</a></li>
-            <li><a href="#">Women</a></li>
-            <li><a href="#">Exclusive</a></li>
+            <li><Link to="/home">Home</Link></li>
+            <li><Link to="/men">Men</Link></li>
+            <li><Link to="/women">Women</Link></li>
+            <li><Link to="/exclusive">Exclusive</Link></li>
 
            
           </ul>

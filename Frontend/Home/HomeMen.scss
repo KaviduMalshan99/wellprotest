@@ -1,0 +1,137 @@
+.menmids {
+    overflow-x: auto;
+    width: 98%;
+    height: 470px;  
+    margin-top: 25px;
+    padding-left: 25px;
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none;
+
+    .scroll-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        border: none;
+        font-size: 24px;
+        padding: 0 12px;
+        &.left {
+          left: 0;
+        }
+        &.right {
+          right: 0;
+        }
+      }
+  }
+  
+  .mens {
+    display: flex; // Flexbox to align children inline
+    flex-wrap: nowrap; 
+    gap: 30px; 
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none;
+  
+    .boxs {
+      display: inline-block; // Ensure boxes line up inline
+      width: 300px;
+      height: 400px;
+      vertical-align: top; // Align items at the top
+      margin-right: 20px; // Space between boxes, adjust as needed
+
+      .imgages{
+
+        img {
+            width: 250px; // Ensure images fill the box width
+            height: 300px; // Maintain aspect ratio
+            border-radius: 5px;
+        }
+
+        .overlay2s {
+          position: absolute;
+          top: -30%;
+          transform: translate(-50%, -50%);
+          opacity: 0;
+          cursor: pointer;
+          transition: opacity 0.3s ease;
+        }
+
+        .overlay3s a {
+          text-decoration: none;
+          color: black;
+      }
+
+      .overlay3s p {
+        margin-left: 50%;
+        background-color: white;
+        margin-top: -30%;
+        margin-bottom: 40px;
+        z-index: 10;
+        transform: translateX(-50%);
+        padding: 10px;
+        text-align: center;
+        border-radius: 5px;
+        font-weight: bold;
+        
+      }
+
+      .overlay3s p:hover{
+        display: block;
+        background-color: #000;
+        color: #fff;
+      }
+
+
+
+      }
+  
+      
+  
+      .informationss{
+
+        .title{
+            font-size: 19px;
+        }
+        .price{
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .paymentsimgs{
+        
+            div{
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+            
+            .p01{
+                display: flex;
+                align-items: center;
+                font-size: 15px;
+                margin-top: 5px;
+
+                img{
+                    height: 20px;
+                    width: 70px;
+                    margin-top: -8px;
+                }
+            }
+
+            .p02{
+                display: flex;
+                align-items: center;
+                font-size: 15px;
+                margin-top: -10px;
+
+                img{
+                    height: 20px;
+                    width: 50px;
+                    margin-top: -8px;
+                }
+            }
+            
+          }
+      }
+    }
+  }
+  

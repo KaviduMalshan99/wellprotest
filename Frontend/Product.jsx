@@ -6,16 +6,19 @@ import { Link } from 'react-router-dom';
 import Footer from './Footer/Footer';
 import Header from './Header/Header';
 import { useCart } from './CartContext';
+
 import LOGOO from '../src/assets/logoorange.png'
 import { PropagateLoader } from 'react-spinners'; 
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useCheckout } from '../Frontend/order/CheckoutContext';
+import { useAuthStore } from "../src/store/useAuthStore";
+
 
 const Product = () => {
   const [loading, setLoading] = useState(true);
   const { id } = useParams(); 
-  const {dispatch} =useCart();
+  const {refreshCart} =useCart();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
@@ -25,9 +28,10 @@ const Product = () => {
   const [availableColors, setAvailableColors] = useState([]);
   const [originalPrice, setOriginalPrice] = useState(null);
   const { setCheckoutInfo } = useCheckout();
+  const { user } = useAuthStore(); 
 
-  
-
+  const userId = user?.UserId;
+    
 
   useEffect(() => {
     const fetchProductById = async (productId) => {
@@ -41,6 +45,7 @@ const Product = () => {
 
         setProduct(productData); // Update the state with fetched product data
         console.log('Product Details:', productData); // Log product details to console
+
         setTimeout(() => setLoading(false),2000);
         console.log('Available Sizes:', productData.Sizes);
         console.log('Available Colors:', productData.Colors);
@@ -160,54 +165,67 @@ const Product = () => {
     }
   };
 
-
+  
 
   const handleAddToCart = () => {
-    if (!selectedSize) {
-      alert("Please select a size.");
-      return;
-    }
-  
+    // Validation
+    
+
     if (!selectedColor) {
-      alert("Please select a color.");
-      return;
+        toast.error("Please select a color.");
+        return;
     }
-  
+
     // Find the variation that matches the selected color and size
     const selectedVariation = product.Variations.find(variation =>
-      variation.name === selectedColor && variation.size === selectedSize
-    );
-  
+      variation.name === selectedColor && (!product.Variations.some(v => v.size) || variation.size === selectedSize)
+  );
+
     if (!selectedVariation) {
-      alert("Selected variation not available.");
-      return;
+        toast.error("Selected variation not available.");
+        return;
     }
-  
+
     if (selectedVariation.count === 0) {
-      alert("This product is currently out of stock.");
-      return;
+        toast.error("This product is currently out of stock.");
+        return;
     }
-  
+
+    const randomNumber = Math.floor(10000 + Math.random() * 90000); // Generate a random 5-digit number
+    const cartId = `CART_${randomNumber}`;
+
+
     // Prepare the item object based on the selected variation
     const itemToAdd = {
-      id: product.ProductId,
-      name: product.ProductName,
-      price: parseFloat(selectedVariation.price),
-      image: selectedVariation.images[0], // Assuming the first image is the primary one
-      size: selectedSize,
-      color: selectedColor,
-      quantity: quantity,
-      availableCount: selectedVariation.count
+        cartId,
+        productId: product._id,
+        name: product.ProductName,
+        price: parseFloat(selectedVariation.price),
+        image: selectedVariation.images[0],
+        size: selectedSize,
+        color: selectedColor,
+        quantity: quantity,
+        availableCount: selectedVariation.count,
+        customerId: userId  
     };
-  
-    // Dispatch the action to add the item to the cart
-    dispatch({
-      type: 'ADD_ITEM',
-      item: itemToAdd
-    });
-  
-    toast.success('Product added to cart successfully');
-  };
+
+    console.log("product : ",itemToAdd)
+
+    axios.post('http://localhost:3001/api/cart/add', itemToAdd)
+        .then(response => {
+            if (response.status === 200) {
+                toast.success('Product added to cart successfully');
+                refreshCart();
+            } else {
+                toast.error('Failed to add product to cart');
+            }
+        })
+        .catch(error => {
+            console.error('Failed to add product to cart:', error);
+            toast.error('Failed to add product to cart');
+        });
+};
+
   
 
   
@@ -224,6 +242,7 @@ const Product = () => {
         <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link>
         <i className="fas fa-angle-right" /> <Link to="/product/:id">{product.ProductName} </Link>
       </p>
+
 
       {loading && (
       <div className="loader-container">
@@ -262,6 +281,8 @@ const Product = () => {
           <p className='product_price'>LKR.{getPriceRange()}</p>
 
 
+
+
           <div className="ratings1">
             <div className="stars1">
               {Array.from({ length: product.rating }, (_, index) => (
@@ -272,6 +293,64 @@ const Product = () => {
             </div>
             <span>({product.reviews} Reviews)</span>
           </div>
+
+          
+      
+         
+          {product.QuickDeliveryAvailable && (
+            <div className="quickdelivery">
+              <label>Quick Delivery Available - This product can be delivered within 1 week.</label>
+              
+            </div>
+          )}
+
+{product.Variations && product.Variations.some(variation => variation.size) && (
+  <div className="sizebutton">
+    <p>Sizes</p>
+    {product.Variations
+      .reduce((uniqueSizes, variation) => {
+        if (!uniqueSizes.includes(variation.size)) {
+          uniqueSizes.push(variation.size);
+        }
+        return uniqueSizes;
+      }, [])
+      .map((size, index) => (
+        <button
+          key={index}
+          className={selectedSize === size ? 'selected' : ''}
+          onClick={() => handleSizeClick(size)}
+        >
+          {size}
+        </button>
+      ))}
+    {selectedSize && (
+      <button className="clear-button" onClick={() => setSelectedSize(null)}>
+        Clear Size
+      </button>
+    )}
+  </div>
+)}
+
+
+{selectedSize && (
+  <div className="color-section">
+    <p>Colors</p>
+    {product.Variations
+      .filter(variation => variation.size === selectedSize)
+      .map((variation, index) => (
+        <button
+          key={index}
+          className={selectedColor === variation.name ? 'selected' : ''}
+          onClick={() => handleColorClick(variation.name)}
+          value={variation.name}
+        >
+          {variation.name}
+        </button>
+      ))}
+  </div>
+)}
+
+
 
           
       
@@ -352,6 +431,8 @@ const Product = () => {
             <span>{quantity}</span>
             <button onClick={incrementQuantity}>+</button>
           </div>
+
+
 
 
 

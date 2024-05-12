@@ -1,54 +1,62 @@
-require("dotenv").config();
-const express = require("express");
-const router = express.Router();
-const AddToCart = require("./AddtoCartModel"); 
+const AddToCart = require("./AddtoCartModel");  // Adjust the path as necessary
+
 
 // Add an item to the cart
-const addToCart = async (req, res) => {
-    const { customerId, item } = req.body;
+const addToCart = async (req, res,next) => {
+    const { cartId,customerId, productId, name, price, image, size, color, quantity, availableCount } = req.body;
 
     try {
-        // Check if the user already has a cart
-        let cart = await AddToCart.findOne({ customerId });
-        
-        if (cart) {
-            // Add new item to the cart's items array
-            const existingItemIndex = cart.items.findIndex(cartItem => cartItem.productId.equals(item.productId) && cartItem.size === item.size && cartItem.color === item.color);
+        // Check if the item already exists in the cart
+        let cart = await AddToCart.findOne({
+            cartId:cartId,
+            customerId: customerId,
+            productId: productId,
+            size: size,
+            color: color
+        });
 
-            if (existingItemIndex > -1) {
-                // Update existing item quantity
-                cart.items[existingItemIndex].quantity += item.quantity;
-            } else {
-                // Push the new item
-                cart.items.push(item);
-            }
+        if (cart) {
+            // If the item exists, just update the quantity
+            cart.quantity += quantity;
+            cart.availableCount = availableCount; // update available count if needed
         } else {
-            // No cart for the user, create new cart
+            // If no such item exists, create a new cart entry
             cart = new AddToCart({
+                cartId,
                 customerId,
-                items: [item]
+                productId,
+                name,
+                price,
+                image,
+                size,
+                color,
+                quantity,
+                availableCount
             });
         }
 
-        cart = await cart.save();
-        res.status(200).json(cart);
+        const savedCart = await cart.save();
+        res.status(200).json(savedCart);
     } catch (error) {
+        console.error('Error in addToCart:', error);
         res.status(500).json({ error: error.message });
     }
 };
 
+
 // Get the cart for a specific customer
 const getCart = async (req, res) => {
-    const customerId = req.params.customerId;
+    const customerId = req.params.customerId; // Get customer ID from the URL parameter
 
     try {
-        const cart = await AddToCart.findOne({ customerId }).populate('items.productId');
-        if (!cart) {
-            return res.status(404).json({ error: "Cart not found" });
+        const cartItems = await AddToCart.find({ customerId: customerId });
+        if (!cartItems || cartItems.length === 0) {
+            return res.status(404).json({ message: 'No cart items found for this customer.' });
         }
-        res.status(200).json(cart);
+        res.status(200).json(cartItems);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Error fetching cart:', error);
+        res.status(500).json({ error: 'Failed to retrieve cart items: ' + error.message });
     }
 };
 
@@ -76,24 +84,22 @@ const updateCartItem = async (req, res) => {
     }
 };
 
-// Remove an item from the cart
+
 const removeCartItem = async (req, res) => {
-    const { cartId, itemId } = req.body;
+    
+    const cartId = req.params.cartId;
 
-    try {
-        const cart = await AddToCart.findById(cartId);
-        if (!cart) {
-            return res.status(404).json({ error: "Cart not found" });
-        }
-
-        // Remove the item from the cart
-        cart.items = cart.items.filter(item => !item._id.equals(itemId));
-        await cart.save();
-        res.status(200).json(cart);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    AddToCart.deleteOne({cartId:cartId})
+    .then(response => {
+        res.json({response});
+    })
+    .catch(error =>{
+        res.json({error});
+    });
+    
+        
 };
+
 
 module.exports = {
     addToCart,

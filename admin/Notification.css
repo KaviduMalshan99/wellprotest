@@ -40,3 +40,49 @@
     font-weight: bold;
   }
   
+  /* Notification.css */
+
+.mainNotification {
+  position: relative;
+}
+
+.notification-popup {
+  position: absolute;
+  top: 60px; /* Adjust based on your layout */
+  right: 10px; /* Adjust based on your layout */
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  z-index: 100;
+  width: 300px;
+  border-radius: 8px;
+}
+
+.notification-popup h2 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.notification-popup ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.notification-popup li {
+  margin-bottom: 8px;
+}
+
+.notification-popup li p {
+  margin: 0;
+}
+
+.notifi ul {
+  display: flex;
+  list-style: none;
+}
+
+.notifi ul li {
+  margin-right: 15px;
+  cursor: pointer;
+}

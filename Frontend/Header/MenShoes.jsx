@@ -7,6 +7,7 @@ import Koko from '../../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header/Header';
+
 import Footer from '../Footer/Footer';
 import LOGOO from '../../src/assets/logoorange.png'
 import { PropagateLoader } from 'react-spinners'; 
@@ -79,7 +80,7 @@ useEffect(() => {
   setFilteredData(filteredProducts);
 }, [data, selectedCategory, minPrice, maxPrice, selectedRatings, sortOrder]);
 
-  
+
 
     // Function to handle minimum price change
     const handleMinPriceChange = (event) => {

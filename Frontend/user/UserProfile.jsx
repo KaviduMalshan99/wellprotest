@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./UserProfile.css";
+import "./UserProfile.scss";
 import { useAuthStore } from "../../src/store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header/Header";
@@ -112,103 +112,108 @@ function UserProfile() {
 
   return (
     <div>
-      <Header/>
-    <div className="usermain" style={{ padding: "20px" }}>
+      <Header />
       <div className="userpropath">Home - Profile</div>
-      <div className="upfirst">
-        <div className="uplblsec">
-          <label className="uplbls">First Name:</label>
-          <label className="uplbls">Last Name:</label>
-          <label className="uplbls">Contact No:</label>
-          <label className="uplbls">Email:</label>
-          <label className="uplbls">Profile Image:</label>
-          <label className="uplbls">Old Password:</label>
-          <label className="uplbls">New Password:</label>
+      <div className="usermain" style={{ padding: "20px" }}>
+
+        <div className="upfirst">
+          <div className="uplblsec">
+            <label className="uplbls">First Name:</label>
+            <label className="uplbls">Last Name:</label>
+            <label className="uplbls">Contact No:</label>
+            <label className="uplbls">Email:</label>
+            <label className="uplbls">Profile Image:</label>
+
+            <label className="uplbls">Old Password:</label>
+            <label className="uplbls">New Password:</label>
+          </div>
+          <div className="upintextsec">
+            <input
+              type="text"
+              name="firstName"
+              value={user.firstName || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="text"
+              name="lastName"
+              value={user.lastName || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="text"
+              name="contact"
+              value={user.contact || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="text"
+              name="email"
+              value={user.email || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="text"
+              name="profileUrl"
+              value={user.profileUrl || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="password"
+              name="oldPassword"
+              value={user.oldPassword || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="password"
+              name="newPassword"
+              value={user.newPassword || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+          </div>
+          <div className="imgnbtnsecup">
+            <div className="upimgsec">
+              {user.profileUrl ? (
+                <img
+                  src={user.profileUrl}
+                  alt={`${user.firstName}'s profile`}
+                  className="uuprofile-image"
+                />
+              ) : (
+                <div>No profile image available</div>
+              )}
+            </div>
+
+            {isEditing ? (
+              <button className="editupbtn" onClick={handleUpdate}>Update</button>
+            ) : (
+              <button onClick={handleEdit} className="editupbtn">Edit</button>
+            )}</div>
+
         </div>
-        <div className="upintextsec">
-          <input
-            type="text"
-            name="firstName"
-            value={user.firstName || ""}
-            onChange={handleInputChange}
-            readOnly={!isEditing}
-            className="upfinp"
-          />
-          <input
-            type="text"
-            name="lastName"
-            value={user.lastName || ""}
-            onChange={handleInputChange}
-            readOnly={!isEditing}
-            className="upfinp"
-          />
-          <input
-            type="text"
-            name="contact"
-            value={user.contact || ""}
-            onChange={handleInputChange}
-            readOnly={!isEditing}
-            className="upfinp"
-          />
-          <input
-            type="text"
-            name="email"
-            value={user.email || ""}
-            onChange={handleInputChange}
-            readOnly={!isEditing}
-            className="upfinp"
-          />
-          <input
-            type="text"
-            name="profileUrl"
-            value={user.profileUrl || ""}
-            onChange={handleInputChange}
-            readOnly={!isEditing}
-            className="upfinp"
-          />
-          <input
-            type="password"
-            name="oldPassword"
-            value={user.oldPassword || ""}
-            onChange={handleInputChange}
-            readOnly={!isEditing}
-            className="upfinp"
-          />
-          <input
-            type="password"
-            name="newPassword"
-            value={user.newPassword || ""}
-            onChange={handleInputChange}
-            readOnly={!isEditing}
-            className="upfinp"
-          />
+        <div className="upsecond" style={{ marginTop: "20px" }}>
+          <button className='logoutbtnup' onClick={handleDelete}>Delete Account</button>
+        </div>
+        <div className="logout">
+          <button className='logoutbtnup' onClick={handleLogout}>Logout</button>
         </div>
 
-        <div className="upimgsec">
-          {user.profileUrl ? (
-            <img
-              src={user.profileUrl}
-              alt={`${user.firstName}'s profile`}
-              className="uuprofile-image"
-            />
-          ) : (
-            <div>No profile image available</div>
-          )}
-        </div>
-        {isEditing ? (
-          <button onClick={handleUpdate}>Update</button>
-        ) : (
-          <button onClick={handleEdit}>Edit</button>
-        )}
       </div>
-      <div className="logout">
-        <button onClick={handleLogout}>Logout</button>
-      </div>
-      <div className="upsecond" style={{ marginTop: "20px" }}>
-        <button onClick={handleDelete}>Delete Account</button>
-      </div>
-    </div>
-    <Footer/>
+      <Footer />
     </div>
   );
 }

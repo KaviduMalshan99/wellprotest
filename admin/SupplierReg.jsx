@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './SupplierReg.css';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -78,14 +78,14 @@ function SupplierReg() {
 
     
     const handleSubmit = async () => {
-         // Check if any input field (except company name) has an error or is empty
-    const hasError = Object.keys(inputErrors).filter(field => field !== 'companyName').some(field => inputErrors[field]) || 
-    Object.keys(formData).filter(field => field !== 'companyName').some(field => !formData[field].trim());
+        // Check if any input field (except company name) has an error or is empty
+        const hasError = Object.keys(inputErrors).filter(field => field !== 'companyName').some(field => inputErrors[field]) || 
+        Object.keys(formData).filter(field => field !== 'companyName').some(field => !formData[field].trim());
 
-if (hasError) {
-toast.error("Please fill all fields with valid input.");
-return;
-}
+        if (hasError) {
+            toast.error("Please fill all fields with valid input.");
+            return;
+        }
         try {
             const response = await axios.post('http://localhost:3001/api/addsupplier', formData);
             if (response.status === 200) {
@@ -101,7 +101,7 @@ return;
                     nearestWarehouse: ''
                 });
 
-                toast.success("Successfully submitted!");
+                toast.success("Supplier registration is successful!");
             } else {
                 throw new Error("Submission failed. Please try again later.");
             }
@@ -117,6 +117,7 @@ return;
             <div className="regpath">Existing Suppliers / Supplier Registration</div>
             <button className="goback-btn" onClick={handleclick2}>Go back to Suppliers</button>
             <button className="goback-btn2" onClick={handleclick4}>+ Add Stock</button>
+            <form className="formregis">
             <center>
                 <div className="regmconn">
                     <div className="rgfcon">
@@ -135,7 +136,7 @@ return;
                                                 onChange={handleChange} 
                                                 placeholder="FULL NAME:"
                                             />
-                                            {inputErrors.fullName && <span className="error-messagesup">*Only letters and spaces are allowed.</span>}
+                                            {inputErrors.fullName && <span className="error-messagesup">*Only letters are allowed</span>}
                                         </td>
                                     </tr>
                                     <tr>
@@ -149,7 +150,7 @@ return;
                                                 onChange={handleChange} 
                                                 placeholder="COMPANY NAME:"
                                             />
-                                            {inputErrors.companyName && <span className="error-messagesup">*Only letters and spaces are allowed.</span>}
+                                            {inputErrors.companyName && <span className="error-messagesup">*Only letters are allowed.</span>}
                                         </td>
                                     </tr>
                                     <tr>
@@ -183,14 +184,14 @@ return;
                                         <td>
                                             <input 
                                                 type="text" 
-                                                className="reginp3" 
+                                                className="reginpnic" 
                                                 name="nic" 
                                                 id="nic" 
                                                 value={formData.nic} 
                                                 onChange={handleChange} 
                                                 placeholder="NIC:"
                                             />
-                                            {inputErrors.nic && <span className="error-messagesup">*Please enter a valid NIC.</span>}
+                                            {inputErrors.nic && <span className="error-messagesup">*Enter a valid NIC.</span>}
                                         </td>
                                     </tr>
                                     <tr>
@@ -225,7 +226,7 @@ return;
                                                 onChange={handleChange} 
                                                 placeholder="CITY:"
                                             />
-                                            {inputErrors.city && <span className="error-messagesup">*Only letters and spaces are allowed.</span>}
+                                            {inputErrors.city && <span className="error-messagesup">*Only letters are allowed.</span>}
                                         </td>
                                     </tr>
                                     <tr>
@@ -239,7 +240,7 @@ return;
                                                 onChange={handleChange} 
                                                 placeholder="COUNTRY:"
                                             />
-                                            {inputErrors.country && <span className="error-messagesup">*Only letters and spaces are allowed.</span>}
+                                            {inputErrors.country && <span className="error-messagesup">*Only letters are allowed.</span>}
                                         </td>
                                     </tr>
                                     <tr>
@@ -269,6 +270,7 @@ return;
                     </div>
                 </div>
             </center>
+            </form>
             <ToastContainer />
         </div>
     );

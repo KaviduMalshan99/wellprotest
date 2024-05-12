@@ -1,11 +1,15 @@
+
 import './Header.scss';
 import Logo from '../../src/assets/logo.png';
 import { Link } from 'react-router-dom';
 import { useCart } from '../CartContext';
 
+
 const Header = () => {
-    const { state } = useCart();
-    const numberOfDistinctProducts = state.items.length;
+
+    const { cartItems } = useCart(); // Use the cart context
+    const numberOfDistinctProducts = cartItems.length;
+
 
     return (
         <div className="mmainheader">
@@ -14,6 +18,7 @@ const Header = () => {
             </div>
             <div className="hcenter-section">
                 <ul>
+
                     <li>
                         <Link to='/' className="hhui2">Home</Link>
                     </li>
@@ -44,6 +49,7 @@ const Header = () => {
                             <i className="fa fa-search"></i>
                         </form>
                     </li>
+
                     <li>
                         <div className="hhui22">
                             <Link to="/login" onClick={() => console.log('Login link clicked')}>
@@ -55,7 +61,7 @@ const Header = () => {
                         <div className="hhui22">
                             <Link to='/cart'>
                                 <i className="fas fa-cart-shopping fa-xl" style={{ color: '#ffffff' }}></i>
-                                <span className="cart-count">{numberOfDistinctProducts}</span> 
+                                <span className="cart-count">{numberOfDistinctProducts}</span>
                             </Link>
                         </div>
                     </li>
