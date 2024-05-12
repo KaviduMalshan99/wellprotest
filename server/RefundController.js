@@ -111,11 +111,11 @@ const getRefundById = async (req, res, next) => {
 
 
 const addRefund = async (req, res, next) => {
-    const { orderId, productId, customerName, customerEmail, reason, refundDate, imgUrls } = req.body;
+    const { orderId, id, customerName, customerEmail, reason, refundDate, imgUrls } = req.body;
 
     try {
         // Check if the orderId exists in the orders table
-        const orderExists = await Order.exists({ orderId: orderId, productId: productId });
+        const orderExists = await Order.exists({ orderId: orderId, id: id });
         if (!orderExists) {
             return res.status(400).json({ error: 'Order ID does not exist' });
         }
@@ -123,7 +123,7 @@ const addRefund = async (req, res, next) => {
         // If the orderId exists, proceed to add the refund
         const newRefund = new Refund({
             orderId: orderId,
-            productId: productId,
+            id: id,
             customerName: customerName,
             customerEmail: customerEmail,
             reason: reason,
@@ -142,12 +142,12 @@ const addRefund = async (req, res, next) => {
 
 const updateRefund = async (req, res, next) => {
     const orderId = req.params.orderId; // Extract orderId from path parameter
-    const { productId, customerName, customerEmail, reason, refundDate, imgUrls } = req.body;
+    const { id, customerName, customerEmail, reason, refundDate, imgUrls } = req.body;
 
     try {
         const updatedRefund = await Refund.findOneAndUpdate(
             { orderId: orderId },
-            { productId, customerName, customerEmail, reason, refundDate, imgUrls },
+            { id, customerName, customerEmail, reason, refundDate, imgUrls },
             { new: true }
         );
 

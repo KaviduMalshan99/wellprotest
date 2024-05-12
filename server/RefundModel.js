@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const refundSchema = new Schema({
     orderId: String,
-    productId: String,
+    id: String,
     customerName: String,
     customerEmail: String,
     reason: String,

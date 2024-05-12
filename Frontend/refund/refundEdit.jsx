@@ -162,7 +162,7 @@ const RefundEdit = () => {
                                         <div className="rnmcontit">Product ID</div>
                                     </td>
                                     <td className="rnmconttd">
-                                        <input type="text" className="rnmconinp" name="productId" placeholder="Enter ID" value={newRefund.productId} onChange={handleInputChange} required/>
+                                        <input type="text" className="rnmconinp" name="id" placeholder="Enter ID" value={newRefund.id} onChange={handleInputChange} required/>
                                         {/* {errors.orderId && (
                                           <div className="error-messager">{errors.productId}</div>
                                         )} */}
