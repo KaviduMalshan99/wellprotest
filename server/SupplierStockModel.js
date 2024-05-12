@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const stockSchema = new Schema({
     StocksupplierName: String,
     supproductId: String,
+    supproductnamee:String,
     supstockId: {
         type: String,
         unique: true 
