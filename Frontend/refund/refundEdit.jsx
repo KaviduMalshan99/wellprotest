@@ -5,8 +5,6 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './refundEdit.scss';
-import LOGOO from '../../src/assets/logoorange.png'
-import { PropagateLoader } from 'react-spinners'; 
 import { useParams, useNavigate, Link } from 'react-router-dom'; // Import useParams hook to extract route parameters
 
 const RefundEdit = () => {
@@ -15,8 +13,6 @@ const RefundEdit = () => {
   const { orderId } = useParams(); // Extract orderId from route parameters
   const [imagePreview, setImagePreview] = useState(null); // State to hold image preview URL
   const [showMessageBox, setShowMessageBox] = useState(false);
-  const [loading, setLoading] = useState(true);
-
 
 
   const navigate = useNavigate();
@@ -27,9 +23,6 @@ const RefundEdit = () => {
       try {
         const response = await axios.get(`http://localhost:3001/api/refund/${orderId}`);
         setNewRefund(response.data.refund); // Set fetched refund data to newRefund state
-
-        setTimeout(() => setLoading(false),2000);
-
       } catch (error) {
         console.error('Error fetching refund:', error);
       }
@@ -137,20 +130,6 @@ const RefundEdit = () => {
   };
 
   return (
-
-    <>
-    
-    {loading && (
-      <div className="loader-container">
-        <div className="loader-overlay">
-          <img src={LOGOO} alt="Logo" className="loader-logo" />
-          <PropagateLoader color={'#ff3c00'} loading={true} />
-        </div>
-      </div>
-    )}
-
-      {!loading && (
-
     <div>
     <Header/>
       <div className="rnmh">Refund</div>
@@ -183,7 +162,7 @@ const RefundEdit = () => {
                                         <div className="rnmcontit">Product ID</div>
                                     </td>
                                     <td className="rnmconttd">
-                                        <input type="text" className="rnmconinp" name="productId" placeholder="Enter ID" value={newRefund.id} onChange={handleInputChange} required/>
+                                        <input type="text" className="rnmconinp" name="productId" placeholder="Enter ID" value={newRefund.productId} onChange={handleInputChange} required/>
                                         {/* {errors.orderId && (
                                           <div className="error-messager">{errors.productId}</div>
                                         )} */}
@@ -262,9 +241,16 @@ const RefundEdit = () => {
       </center>
       <Footer/>
       <ToastContainer />
-    </div>
+      {showMessageBox && (
+        <div className="message-box">
+          <p>Details saved successfully! Click OK to go to the homepage.</p>
+          <button onClick={() => {
+            setShowMessageBox(false);
+            handleUpdate();
+          }}>OK</button>
+        </div>
       )}
-      </>
+    </div>
   );
 };
 

@@ -33,7 +33,7 @@ const AcceptedRefunds = () => {
       head: [['Order Id','Product Id', 'Customer Name', 'Customer Email', 'Reason', 'Refund Initiate Date']],
       body: acceptedRefunds.map(refund => [
         refund?.orderId,
-        refund?.id,
+        refund?.productId,
         refund?.customerName,
         refund?.customerEmail,
         refund?.reason,
@@ -49,13 +49,13 @@ const AcceptedRefunds = () => {
     // Filter refunds based on the search term
     const filtered = acceptedRefunds.filter(refund => {
       const orderId = refund?.orderId || '';
-      const id = refund?.id || '';
+      const productId = refund?.productId || '';
       const customerName = refund?.customerName || '';
       const refundDate = formatDate(refund?.refundDate); // Format refund date
 
       // Check if orderId or customerName includes the search term
       return orderId.toLowerCase().includes(searchTerm.toLowerCase()) || customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      refundDate.toLowerCase().includes(searchTerm.toLowerCase()) || id.toLowerCase().includes(searchTerm.toLowerCase()) ;
+      refundDate.toLowerCase().includes(searchTerm.toLowerCase()) || productId.toLowerCase().includes(searchTerm.toLowerCase()) ;
     });
 
     setFilteredRefunds(filtered);
@@ -87,7 +87,7 @@ const AcceptedRefunds = () => {
             {acceptedRefunds.map(refund => (
               <tr key={refund?.orderId}>
                 <td>{refund?.orderId}</td>
-                <td>{refund?.id}</td>
+                <td>{refund?.productId}</td>
                 <td>{refund?.customerName}</td>
                 <td>{refund?.customerEmail}</td>
                 <td>{refund?.reason}</td>
