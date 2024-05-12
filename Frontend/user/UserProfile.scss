@@ -1,0 +1,109 @@
+$color_1: #333;
+$color_2: #555;
+$font-family_1: 'Poppins', sans-serif;
+$background-color_1: #f9f9f9;
+$background-color_2: rgb(0, 200, 240);
+$background-color_3: #ff0000;
+
+@import "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap";
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	font-family: $font-family_1;
+}
+.usermain {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: $background-color_1;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+	max-width: 1200px;
+	margin: auto;
+}
+.userpropath {
+	margin-top: 30px;
+	font-size: 30px;
+	display: flex;
+	justify-content: center;
+	color: $color_1;
+	margin-bottom: 2rem;
+}
+.upfirst {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	gap: 10px;
+}
+.uplblsec {
+	margin-top: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 41px;
+}
+.uplbls {
+	font-weight: 500;
+	color: $color_2;
+}
+.upfinp {
+	border: 2px solid #ccc;
+	width: 700px;
+	border-radius: 15px;
+	padding: 10px 15px;
+	font-size: 16px;
+	color: $color_1;
+}
+.upintextsec {
+	flex: 1;
+	width: 400px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+.uuprofile-image {
+	border-radius: 50%;
+	width: 140px;
+	height: 140px;
+	object-fit: cover;
+}
+.logout {
+	margin-top: 20px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
+.upsecond {
+	margin-top: 20px;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
+.editupbtn {
+	width: 60px;
+	height: 40px;
+	padding: 10px;
+	font-size: 16px;
+	&:hover {
+		background-color: $background-color_2;
+	}
+}
+.imgnbtnsecup {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-left: 100px;
+	margin-right: 100px;
+	gap: 50px;
+}
+.logoutbtnup {
+	height: 35px;
+	width: 150px;
+	&:hover {
+		background-color: $background-color_3;
+	}
+}
