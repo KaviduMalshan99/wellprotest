@@ -1,0 +1,160 @@
+.order-table-container {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+
+        h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        div {
+            display: flex;
+            justify-content: center;
+            gap: 10px; // Ensure gaps between buttons
+
+            .export-btn, .method-btn, .coupon-btn {
+                padding: 8px 16px;
+                border: none;
+                color: white;
+                background-color: #007bff;
+                font-weight: bold;
+                border-radius: 4px;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: #0056b3;
+                }
+            }
+        }
+    }
+
+    .controls-container {
+        display: flex;
+        flex-wrap: wrap; // Allow wrapping for smaller widths
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+
+        .filter-container {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+
+            .filter-label {
+                margin-right: 10px;
+                font-weight: bold;
+            }
+
+            .filter-dropdown {
+                padding: 8px;
+                width: 40%;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                margin-right: 10px; // Added spacing between filters
+            }
+        }
+
+        .search-bar {
+            margin-left: 22%;
+            margin-right: -22%;
+            margin-top: 5%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: auto; // Adjust width to auto for flexibility
+            flex-grow: 1; // Allow search bar to grow as needed
+            max-width: 200px; // Limit maximum width to maintain layout
+            max-height: 20px; // Limit maximum width to maintain layout
+
+        }
+    }
+
+    .order-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .view-more-btn, .delete-btn {
+            padding: 6px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%; // Ensure buttons fill cell
+
+            &:hover {
+                background-color: #0056b3;
+            }
+        }
+    }
+
+    .confirm-dialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        padding: 20px;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+
+        button {
+            padding: 10px 15px;
+            margin-top: 20px;
+            border: none;
+            color: white;
+            background-color: #007bff;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #0056b3;
+            }
+
+            &:first-child {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .order-table-container {
+        .controls-container {
+            flex-direction: column;
+            align-items: stretch;
+
+            .search-bar {
+                width: 100%;  // Ensure full width on smaller screens
+                margin-top: 10px;
+            }
+
+            .filter-container {
+                width: 100%; // Ensure filters span the full width
+                justify-content: space-around;
+            }
+        }
+    }
+}

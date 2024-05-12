@@ -1,0 +1,87 @@
+.cart-container {
+    max-width: 75%;
+    margin: auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        flex-grow: 1; 
+
+        th, td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+
+        .imagecon{
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+
+           img{
+
+            height: 150px;
+            width: 150px;
+            border-radius: 5px;
+
+           }
+
+           .imgdetails{
+            display: flex;
+            flex-direction: column;
+            
+           }
+
+           p{
+            margin-top: -10px;
+           }
+
+           h2{
+            margin-top: 10px;
+            margin-bottom: 15px;
+           }
+        }
+
+        .quntitydetails{
+            flex-direction: column;
+            gap: 15px;
+            button{
+                width: 50px;
+                background-color: #fff;
+                color: #000;
+                border: 1.5px solid black;
+            }
+            span{
+                margin: 0px 15px 0 15px;
+            }
+
+
+        }
+
+        .actioncon{
+            
+            i{
+                margin-left: 20px;
+                color: red;
+                cursor: pointer;
+            }
+        }
+
+
+        
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+            border: none;
+        }
+    }
+}

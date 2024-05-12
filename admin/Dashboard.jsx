@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Dashboard.css';
+import './Dashboard.scss'
 import Notification from './Notification';
 import moment from 'moment';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import AuthAPI from '../src/api/AuthAPI';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,AreaChart,Area  } from 'recharts';
 
 
@@ -60,16 +61,16 @@ const Dashboard = () => {
     const [orderData, setOrderData] = useState([]);
     const [salesData, setSalesData] = useState([]);
 
-      useEffect(() => {
+    useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await axios.get('http://localhost:3001/api/customer');
-                setUserCount(response.data.customers.length); // Update user count
+                const response = await AuthAPI.fetchCustomers(); // Corrected to call the function
+                setUserCount(response.data.customers.length); // Assuming response.data.customers is an array
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
         };
-
+    
         fetchUsers();
     }, []);
 
@@ -97,7 +98,7 @@ const Dashboard = () => {
                   setOrderCount(todayOrders.length);
 
                   // Calculate today's revenue
-                  const revenue = todayOrders.reduce((total, order) => total + order.totalPrice, 0);
+                  const revenue = todayOrders.reduce((total, order) => total + order.total, 0);
                   setTodayRevenue(revenue);
 
                   

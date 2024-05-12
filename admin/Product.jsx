@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-import './Product.css';
+import './Product.scss'
 import axios from 'axios';
 import AddProductModel from '../admin/AddProductModel';
 import { toast,ToastContainer } from 'react-toastify';
@@ -9,6 +9,11 @@ import { Modal } from '@mui/material';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import Notification from './Notification';
+import { writeFile } from 'xlsx';
+import * as XLSX from 'xlsx';
+
+
+
 
 
 const Product = () => {
@@ -51,13 +56,14 @@ const Product = () => {
   };
 
   useEffect(() => {
-    // Filter products based on search term
-    const filtered = products.filter(product => {
-      return product.ProductName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-             product.ProductId.toString().includes(searchTerm.toLowerCase());
-    });
+    // Filter products based on search term applied to product names and product IDs
+    const filtered = products.filter(product => 
+      product.ProductName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.ProductId.toString().includes(searchTerm) // Assuming ProductId is a number
+    );
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
+  
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -76,45 +82,28 @@ const Product = () => {
   };
 
   
-  const generateReport = () => {
-    const doc = new jsPDF();
+  const generateExcel = () => {
+    // Mapping each product to restructure the data as needed for the report
+    const data = products.map(product => ({
+        'ID': product.ProductId,
+        'Product Name': product.ProductName,
+        'Categories': product.Categories.join(', '), // Join categories array into a single string
+        'Areas': product.Areas.join(', '), // Join areas array into a single string
+        'Variants': product.Variations.map(variant => // Map over variations to create a string for each
+            `Size: ${variant.size}, Name: ${variant.name}, Count: ${variant.count}, Price: ${variant.price}`).join('; '), // Join all variants into a single string
+        'Description': product.Description
+    }));
+
+    // Use XLSX library to generate Excel sheet
+    const ws = XLSX.utils.json_to_sheet(data); // Create worksheet from JSON data
+    const wb = XLSX.utils.book_new(); // Create a new workbook
+    XLSX.utils.book_append_sheet(wb, ws, 'Products'); // Append worksheet to workbook with the name 'Products'
+    
+    const filename = 'product_report.xlsx'; // Set the filename for the Excel file
+    writeFile(wb, filename); // Write the workbook to a file
+};
+
   
-    // Define table headers
-    const headers = ['ID', 'Product Name', 'Price'];
-  
-    // Define table data
-    const data = filteredProducts.map(product => [
-      product.ProductId,
-      product.ProductName,
-      product.Price
-    ]);
-  
-    // Set table styles
-    const tableProps = {
-      startY: 20,
-      margin: { top: 20 },
-      styles: {
-        cellPadding: 0.5,
-        fontSize: 10,
-        valign: 'middle',
-        halign: 'center',
-      },
-      headStyles: {
-        fillColor: [41, 128, 185],
-        textColor: 255,
-        fontStyle: 'bold',
-      },
-      theme: 'striped',
-      head: [headers],
-      body: data,
-    };
-  
-    // Add table to the document
-    doc.autoTable(tableProps);
-  
-    // Save the PDF
-    doc.save('product_report.pdf');
-  };
   
   
 
@@ -122,19 +111,13 @@ const Product = () => {
 
   return (
     <div className='ProductContainer'>
-      
-
-      <Notification/>
-
-      <div className="productsecondiv">
-
+    <Notification/>
+    <div className="productsecondiv">
       <h1 className='PRODUCTTITLE'>Products Section</h1>
-
-
       <div className="search-bar">
         <input
           type="text"
-          placeholder="Search Category..."
+          placeholder="Search by Name or ID..."
           className="search-input"
           value={searchTerm}
           onChange={handleSearchChange}
@@ -143,28 +126,14 @@ const Product = () => {
           <i className="fas fa-search" />
         </button>
       </div>
-      
-      <div className="addProductSection" > 
-      <button className='PRODUCTGenarate' onClick={generateReport}>Generate Report</button>
-
-
+      <div className="addProductSection">
         <button type='button' className='PRODUCTADDPRO' onClick={toggleAddModal}>
-          <i className="fas fa-plus"></i>Add Products
+          <i className="fas fa-plus"></i> Add Products
         </button>
         <Modal open={isAddModalOpen} onClose={toggleAddModal} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{justifyContent:'center', width: '80%', maxWidth: '1000px', borderRadius:'10px',maxHeight: '85vh', overflowY: 'auto', backgroundColor: '#cfd2d2', padding: '20px',  }}>
-            <AddProductModel onClose={toggleAddModal} />
-          </div>
+          <AddProductModel onClose={toggleAddModal} />
         </Modal>
-
       </div>
-
-    
-
-      <div className="product-count">
-        <p>Total Products: ({filteredProducts.length})</p>
-      </div>
-
       <div className="product-table-container">
         <table>
           <thead>
@@ -173,7 +142,7 @@ const Product = () => {
               <th>Image</th>
               <th>Product Name</th>
               <th>Price</th>
-              <th>Actions</th>
+              <th colSpan={2}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -182,15 +151,14 @@ const Product = () => {
                 <td>{product.ProductId}</td>
                 <td>
                   {product.ImgUrls && product.ImgUrls.length > 0 ? (
-                      <img
-                        src={product.ImgUrls[0]}
-                        alt={product.ProductName}
-                        onLoad={() => console.log('Image loaded successfully')}
-                        onError={(e) => { e.target.src = 'placeholder-image-url'; }} 
-                      />
-                    ) : (
-                      <div>No Image</div>
-                    )}
+                    <img
+                      src={product.ImgUrls[0]}
+                      alt={product.ProductName}
+                      onError={(e) => { e.target.src = 'default-placeholder-image-url.png'; }} 
+                    />
+                  ) : (
+                    <div>No Image</div>
+                  )}
                 </td>
                 <td>{product.ProductName}</td>
                 <td>{`${Math.min(...product.Variations.map(variation => variation.price))} - ${Math.max(...product.Variations.map(variation => variation.price))}`}</td>
@@ -205,18 +173,14 @@ const Product = () => {
           </tbody>
         </table>
       </div>
-
       {isEditModalOpen && (
-        <Modal open={isEditModalOpen} onClose={toggleEditModal} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-          <div style={{justifyContent:'center', width: '80%', maxWidth: '1000px', borderRadius:'10px',maxHeight: '85vh', overflowY: 'auto', backgroundColor: '#cfd2d2', padding: '20px',  }}>
-          <EditProductModal closeModal={toggleEditModal} product={selectedProduct} />
-          </div>
+        <Modal open={isEditModalOpen} onClose={() => toggleEditModal()} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <EditProductModal closeModal={() => toggleEditModal()} product={selectedProduct} />
         </Modal>
       )}
-
       <ToastContainer/>
-      </div>
     </div>
+  </div>
   )
 }
 

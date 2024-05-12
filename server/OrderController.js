@@ -6,6 +6,9 @@ const orderStatusEmailTemplate = require("./util/email_templates/orderStatusEmai
 
 
 
+
+const { sendEmail } = require('../server/utilities/emailUtility'); // Make sure this path is correct based on your project structure
+
 // Function to generate order ID with the format OIDXXXXX
 function generateOrderId() {
     const prefix = 'OID';
@@ -37,12 +40,14 @@ const addOrder = (req, res, next) => {
         couponCode,
         ProductName,
         id,
+
         quantity,
         size,
         color,
         price,
         total,
         image,
+
         Status,
         ContactStatus 
     } = req.body;
@@ -72,12 +77,14 @@ const addOrder = (req, res, next) => {
         couponCode,
         ProductName,
         id,
+
         quantity,
         size,
         color,
         price,
         total,
         image,
+
         Status,
         ContactStatus 
     });
@@ -104,34 +111,7 @@ const updateOrder = (req, res, next) => {
         .catch(error => res.status(500).json({ error: error.message }));
 };
 
-const deleteOrder = (req, res, next) => {
-    const orderId = req.params.orderId;
 
-    Order.deleteOne({ orderId })
-        .then(result => {
-            if (result.deletedCount === 1) {
-                res.status(200).json({ message: 'Order deleted successfully' });
-            } else {
-                res.status(404).json({ error: 'Order not found' });
-            }
-        })
-        .catch(error => res.status(500).json({ error: 'Internal server error' }));
-};
-
-
-const getOrderById = async (req, res, next) => {
-    const orderId = req.params.orderId;
-
-    try {
-        const order = await Order.findOne({ orderId });
-        if (!order) {
-            return res.status(404).json({ error: 'Order not found' });
-        }
-        res.json({ order });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
 
 // In your backend controller
 const updateContactStatus = async (req, res) => {
@@ -204,4 +184,35 @@ const sendOrderStatusEmail = async (req, res, next) => {
   };
 
 
-module.exports = { getOrders, addOrder, updateOrder, deleteOrder, getOrderById ,updateContactStatus , sendOrderStatusEmail,updateOrderStatus};
+
+
+const deleteOrder = (req, res, next) => {
+    const orderId = req.params.orderId;
+
+    Order.deleteOne({ orderId })
+        .then(result => {
+            if (result.deletedCount === 1) {
+                res.status(200).json({ message: 'Order deleted successfully' });
+            } else {
+                res.status(404).json({ error: 'Order not found' });
+            }
+        })
+        .catch(error => res.status(500).json({ error: 'Internal server error' }));
+};
+
+
+const getOrderById = async (req, res, next) => {
+    const orderId = req.params.orderId;
+
+    try {
+        const order = await Order.findOne({ orderId });
+        if (!order) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+        res.json({ order });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = { getOrders, addOrder, updateOrder, deleteOrder, getOrderById,updateContactStatus , sendOrderStatusEmail,updateOrderStatus };

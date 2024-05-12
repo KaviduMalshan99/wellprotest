@@ -1,0 +1,327 @@
+* {
+    padding: 0;
+    margin: 0;
+  }
+  
+  .supregister-btnsup {
+    background-color: #092645;
+    color: #fff;
+    font-size: 17px;
+    width: 17%;
+    margin-left: 80%;
+    margin-top: 1%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 8%;
+  }
+  
+  .STbWi {
+    width: 100%;
+    padding-right: 15px;
+  }
+  
+  .supregister-btnsup {
+    &:hover {
+      background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+    }
+  
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  .supheadtxt {
+    font-size: 40px;
+    margin-top: 50px;
+    margin-bottom: 40px;
+    margin-left: 400px;
+    font-weight: 600;
+    font-family: poppins;
+  }
+  
+  .Titlehead {
+    font-size: 17px;
+    font-family: poppins;
+    font-weight: 500;
+    color: #fff;
+    max-width: 120px;
+  }
+  
+  .data {
+    font-size: 16px;
+    font-family: poppins;
+    font-weight: 500;
+  }
+  
+  .search-bar {
+    width: 300px;
+    padding: 5px 0px 5px 10px;
+    border-radius: 10px;
+    margin-bottom: 50px;
+    margin-left: 905px;
+    margin-top: 20px;
+    font-size: 17px;
+    background-color: #efebfb;
+    height: 45px;
+  }
+  
+  .supplier-table {
+    margin-top: 20px;
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+  }
+  
+  .supbtnmcon {
+    display: flex;
+  }
+  
+  .supplier-table {
+    th, td {
+      border: 2px solid #092645;
+      padding: 2px;
+      border-radius: 0px;
+      text-align: center;
+    }
+  
+    th {
+      background-color: #07223D;
+      text-align: center;
+      text-align: center;
+    }
+  }
+  
+  .view-more-cancel {
+    background-color: #237816;
+    color: #fff;
+    font-size: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: none;
+    margin-left: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .view-more-delete {
+    background-color: #c20808;
+    color: #fff;
+    font-size: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: none;
+    margin-left: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .view-more-update, .view-more-save {
+    background-color: #092645;
+    color: #fff;
+    font-size: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: none;
+    margin-left: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .view-more-update:hover {
+    background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+  }
+  
+  .view-more-send:hover {
+    background-color: #911111;
+  }
+  
+  .view-more-delete:hover {
+    background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgb(6, 6, 121, 1) 75%);
+  }
+  
+  .view-more-view:focus {
+    outline: none;
+  }
+  
+  .Supreport {
+    margin-left: 5%;
+    background-color: #092645;
+    color: #fff;
+    font-size: 17px;
+    margin-top: -30px;
+    padding: 12px;
+    width: 15%;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 8%;
+  
+    &:hover {
+      background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+    }
+  
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  .Supemail-btn {
+    margin-left: 4%;
+    background-color: #092645;
+    color: #fff;
+    font-size: 17px;
+    margin-top: -30px;
+    padding: 12px;
+    width: 15%;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    height: 8%;
+  
+    &:hover {
+      background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+    }
+  
+    &:focus {
+      outline: none;
+    }
+  }
+  
+  .submitted-data {
+    margin-top: 30px;
+  
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .supplierstock-table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+    margin-top: 20px;
+  
+    th, td {
+      border: 2px solid #092645;
+      padding: 8px;
+      border-radius: 0px;
+      text-align: center;
+    }
+  
+    th {
+      background-color: #07223D;
+      color: #fff;
+    }
+  }
+  
+  .valueinputfield {
+    width: 90px;
+    height: 3px;
+    font-size: 15px;
+    margin-bottom: 0.1px;
+    background-color: black;
+    color: #ffffff;
+    border-radius: 2px;
+  }
+  
+  .valueselect{
+    width: 150px;
+    height: 3px;
+    margin-bottom: 0.1px;
+    font-size: 15px;
+    background-color: black;
+    color: #ffffff;
+    border-radius: 2px;
+  }
+
+  .valueemail {
+    width: 150px;
+    height: 3px;
+    margin-bottom: 0.1px;
+    font-size: 15px;
+    background-color: black;
+    color: #ffffff;
+    border-radius: 2px;
+  }
+  
+  .valuecitcouwar {
+    width: 65px;
+    height: 3px;
+    margin-bottom: 0.1px;
+    font-size: 15px;
+    background-color: black;
+    color: #ffffff;
+    border-radius: 2px;
+  }
+  
+  .valuecityy{
+    width: 50px;
+    height: 3px;
+    margin-bottom: 0.1px;
+    font-size: 15px;
+    background-color: black;
+    color: #ffffff;
+    border-radius: 2px;
+  }
+
+
+  .confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+  
+    p {
+      margin-bottom: 20px;
+    }
+  
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+  
+      /* Add margin to separate buttons */
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 5%;
+  
+      &:first-child {
+        background-color: green;
+        color: white;
+        align-self: flex-start;
+  
+        /* Align "Yes" button to the left */
+      }
+  
+      &:last-child {
+        background-color: red;
+        color: white;
+        align-self: flex-end;
+  
+        /* Align "No" button to the right */
+      }
+  
+      &:hover {
+        filter: brightness(90%);
+  
+        /* Darken button on hover */
+      }
+    }
+  }
+  

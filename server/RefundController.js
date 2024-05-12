@@ -2,6 +2,8 @@
 const { response } = require('./app');
 const Refund = require('./RefundModel');
 const Order = require('./OrdersModel'); // Import the Order model
+const AcceptRefund = require('./RefundAcceptModel');
+const {sendEmail} = require('./refundEmailContr');
 
 //const fs = require('fs');
 
@@ -33,48 +35,62 @@ const getRefundById = async (req, res, next) => {
 };
 
 
-const addRefund = async (req, res, next) => {
-    const { orderId, customerName, customerEmail, reason, refundDate, imgUrls } = req.body;
+// const addRefund = async (req, res, next) => {
+//   const { orderId, productId, customerName, customerEmail, reason, refundDate, imgUrls } = req.body;
 
-    try {
-        // Check if the orderId exists in the orders table
-        const orderExists = await Order.exists({ orderId: orderId });
-        if (!orderExists) {
-            return res.status(400).json({ error: 'Order ID does not exist' });
-        }
+//   try {
+//       // Check if the orderId exists in the orders table
+//       const orderExists = await Order.exists({ orderId: orderId, productId: productId });
+//       if (!orderExists) {
+//           return res.status(400).json({ error: 'Order ID does not exist' });
+//       }
 
-        // If the orderId exists, proceed to add the refund
-        const newRefund = new Refund({
-            orderId: orderId,
-            customerName: customerName,
-            customerEmail: customerEmail,
-            reason: reason,
-            refundDate: refundDate,
-            imgUrls: imgUrls
-        });
+//       // If the orderId exists, proceed to add the refund
+//       const newRefund = new Refund({
+//           orderId: orderId,
+//           productId: productId,
+//           customerName: customerName,
+//           customerEmail: customerEmail,
+//           reason: reason,
+//           refundDate: refundDate,
+//           imgUrls: imgUrls
+//       });
 
-        const savedRefund = await newRefund.save();
-        res.json({ response: savedRefund });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
+//       // Save the new refund
+//       const savedRefund = await newRefund.save();
 
-const updateRefund = (req, res, next) => {
-    const orderId = req.params.orderId; // Extract orderId from path parameter
-    const { customerName, customerEmail, reason, refundDate, imgUrls } = req.body;
+//       // Send email concurrently
+//       sendEmail(savedRefund)
+//           .then(() => {
+//               res.status(201).json({ message: "Refund added and email sent!", refund: savedRefund });
+//           })
+//           .catch(emailError => {
+//               console.error("Email send error:", emailError);
+//               res.status(201).json({ message: "Refund added but email could not be sent", refund: savedRefund });
+//           });
+//   } catch (error) {
+//       res.status(500).json({ error: error.message });
+//   }
+// };
 
-    Refund.findOneAndUpdate({ orderId: orderId }, { customerName, customerEmail, reason, refundDate, imgUrls }, { new: true })
-        .then(response => {
-            if (!response) {
-                return res.status(404).json({ error: 'Refund not found' });
-            }
-            res.json({ response });
-        })
-        .catch(error => {
-            res.json({ error });
-        });
-};
+
+  
+
+// const updateRefund = (req, res, next) => {
+//     const orderId = req.params.orderId; // Extract orderId from path parameter
+//     const { productId, customerName,  customerEmail, reason, refundDate, imgUrls } = req.body;
+
+//     Refund.findOneAndUpdate({ orderId: orderId }, { productId, customerName, customerEmail, reason, refundDate, imgUrls }, { new: true })
+//         .then(response => {
+//             if (!response) {
+//                 return res.status(404).json({ error: 'Refund not found' });
+//             }
+//             res.json({ response });
+//         })
+//         .catch(error => {
+//             res.json({ error });
+//         });
+// };
 
 
 // const updateRefund = (req, res, next) => {
@@ -92,6 +108,68 @@ const updateRefund = (req, res, next) => {
 //             res.json({ error });
 //         });
 // };
+
+
+const addRefund = async (req, res, next) => {
+    const { orderId, productId, customerName, customerEmail, reason, refundDate, imgUrls } = req.body;
+
+    try {
+        // Check if the orderId exists in the orders table
+        const orderExists = await Order.exists({ orderId: orderId, productId: productId });
+        if (!orderExists) {
+            return res.status(400).json({ error: 'Order ID does not exist' });
+        }
+
+        // If the orderId exists, proceed to add the refund
+        const newRefund = new Refund({
+            orderId: orderId,
+            productId: productId,
+            customerName: customerName,
+            customerEmail: customerEmail,
+            reason: reason,
+            refundDate: refundDate,
+            imgUrls: imgUrls
+        });
+
+        // Save the new refund
+        const savedRefund = await newRefund.save();
+
+        res.status(201).json({ message: "Refund added!", refund: savedRefund });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const updateRefund = async (req, res, next) => {
+    const orderId = req.params.orderId; // Extract orderId from path parameter
+    const { productId, customerName, customerEmail, reason, refundDate, imgUrls } = req.body;
+
+    try {
+        const updatedRefund = await Refund.findOneAndUpdate(
+            { orderId: orderId },
+            { productId, customerName, customerEmail, reason, refundDate, imgUrls },
+            { new: true }
+        );
+
+        if (!updatedRefund) {
+            return res.status(404).json({ error: 'Refund not found' });
+        }
+
+        // Send email
+        sendEmail(updatedRefund)
+            .then(() => {
+                res.json({ message: 'Refund updated and email sent!', refund: updatedRefund });
+            })
+            .catch(emailError => {
+                console.error("Email send error:", emailError);
+                res.json({ message: 'Refund updated but email could not be sent', refund: updatedRefund });
+            });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 
 // const updateRefund = (req, res, next) => {
 //     const orderId = req.params.orderId;
@@ -132,4 +210,39 @@ const deleteRefund = ( req, res, next) => {
         });
 };
 
-module.exports = { getRefunds, getRefundById, addRefund, deleteRefund, updateRefund };
+
+const approveRefund = async (req, res, next) => {
+    const orderId = req.params.orderId;
+  
+    try {
+      const refund = await Refund.findOne({ orderId: orderId });
+      if (!refund) {
+        return res.status(404).json({ error: 'Refund not found' });
+      }
+  
+      // Create a new record in the acceptrefunds collection
+      const acceptedRefund = new AcceptRefund(refund.toObject());
+      await acceptedRefund.save();
+  
+      // Delete the record from the refunds collection
+      await Refund.deleteOne({ orderId: orderId });
+  
+      res.json({ message: 'Refund approved and moved to accepted refunds' });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+
+
+  const getAcceptedRefunds = (req, res, next) => {
+    AcceptRefund.find()
+      .then(response => {
+        res.json({ response });
+      })
+      .catch(error => {
+        res.status(500).json({ error: error.message });
+      });
+  };
+
+module.exports = { getRefunds, getRefundById, addRefund, deleteRefund, updateRefund, approveRefund, getAcceptedRefunds };

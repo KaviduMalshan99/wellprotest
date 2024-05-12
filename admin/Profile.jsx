@@ -1,114 +1,231 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import profileImage from '../src/assets/profile.png';
-import './Profile.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "../Frontend/user/UserProfile";
+import { useAuthStore } from "../src/store/useAuthStore";
+import { useNavigate } from "react-router-dom";
+import Header from "../Frontend/Header/Header";
+import Footer from "../Frontend/Footer/Footer";
+import '../Frontend/user/UserProfile.scss'
 
-const Profile = () => {
+function UserProfile() {
+  const navigate = useNavigate();
+  const { logout, user: sessionUser } = useAuthStore((state) => ({
+    logout: state.logout,
+    user: state.user,
+  }));
+  const UserId = sessionUser?.UserId;
+
   const [user, setUser] = useState(null);
-  const [editMode, setEditMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3001/api/customer/1`);
-        setUser(response.data.customer);
-      } catch (error) {
-        console.error('Error fetching user:', error);
-      }
-    };
+    if (!UserId) {
+      console.error("UserId is undefined");
+      setError("UserId is not available");
+      return;
+    }
+    fetchUser(UserId);
+  }, [UserId]);
 
-    fetchUser();
-  }, []);
-
-  const handleEdit = () => {
-    setEditMode(true);
-  };
-
-  const handleSave = async () => {
+  const fetchUser = async (UserId) => {
+    setIsLoading(true);
     try {
-      // Make an API call to update the data in the database
-      await axios.post(`http://localhost:3001/api//updatecustomer`, {
-        userId: user.UserId,
-        firstName: user.FirstName,
-        lastName: user.Lastname,
-        email: user.Email,
-        contact: user.Contact,
-        password: user.Password,
-      });
-
-      // Set the state to indicate that it's no longer in edit mode
-      setEditMode(false);
+      const response = await axios.get(
+        `http://localhost:3001/api/customer/${UserId}`
+      );
+      setUser(response.data.customer);
+      setError(null);
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error("Error fetching user:", error);
+      setError("Failed to fetch user data");
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  if (!user) {
-    return <p>Loading...</p>;
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleUpdate = async () => {
+    const userToUpdate = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      contact: user.contact,
+      email: user.email,
+      profileUrl: user.profileUrl,
+      oldPassword: user.oldPassword,
+      newPassword: user.newPassword,
+    };
+    //
+    setIsLoading(true);
+    try {
+      const res = await axios.post(
+        `http://localhost:3001/api/updatecustomer/${UserId}`,
+        userToUpdate
+      );
+      setIsEditing(false);
+      setError(null);
+      alert(res.data.message);
+      setUser((prev) => ({ ...prev, oldPassword: "", newPassword: "" }));
+    } catch (error) {
+      console.error("Error updating user:", error);
+      setError(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
+  if (!user || isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const handleDelete = async () => {
+    setIsLoading(true);
+    try {
+      await axios.delete(`http://localhost:3001/api/deletecustomer/${UserId}`);
+      setIsLoading(false);
+      alert("User deleted successfully");
+      logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      setError("Failed to delete user");
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className='mainContainer'>
-      <h3>Main Details</h3>
-      {/* Main Profile Section */}
-      <div className="mainProfileSection">
-        <div className="profileImageContainer">
-          <img
-            src={user.ProfileUrl || profileImage}
-            alt="Profile"
-            className="profileImage"
-          />
-        </div>
-        <div className="profileDetails">
-          <div className='d1'>
-            <p>Name: </p>
-            <p>Email: </p>
-            <p>Contact: </p>
-            <p>Password: </p>
+    <div>
+
+      <div className="userpropath">ADMIN - Profile</div>
+      <div className="usermain" style={{ padding: "20px" }}>
+
+        <div className="upfirst">
+          <div className="uplblsec">
+            <label className="uplbls">First Name:</label>
+            <label className="uplbls">Last Name:</label>
+            <label className="uplbls">Contact No:</label>
+            <label className="uplbls">Email:</label>
+            <label className="uplbls">Role:</label>
+            <label className="uplbls">Profile Image:</label>
+            <label className="uplbls">Old Password:</label>
+            <label className="uplbls">New Password:</label>
           </div>
-          <div className="d2">
-            {editMode ? (
-              <>
-                <input
-                  type="text"
-                  value={user.FirstName}
-                  onChange={(e) => setUser({ ...user, FirstName: e.target.value })}
+          <div className="upintextsec">
+            <input
+              type="text"
+              name="firstName"
+              value={user.firstName || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="text"
+              name="lastName"
+              value={user.lastName || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="text"
+              name="contact"
+              value={user.contact || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="text"
+              name="email"
+              value={user.email || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="text"
+              name="profileUrl"
+              value={user.role || ""}
+
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="text"
+              name="profileUrl"
+              value={user.profileUrl || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+
+            <input
+              type="password"
+              name="oldPassword"
+              value={user.oldPassword || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+            <input
+              type="password"
+              name="newPassword"
+              value={user.newPassword || ""}
+              onChange={handleInputChange}
+              readOnly={!isEditing}
+              className="upfinp"
+            />
+          </div>
+          <div className="imgnbtnsecup">
+            <div className="upimgsec">
+              {user.profileUrl ? (
+                <img
+                  src={user.profileUrl}
+                  alt={`${user.firstName}'s profile`}
+                  className="uuprofile-image"
                 />
-                <input
-                  type="text"
-                  value={user.Email}
-                  onChange={(e) => setUser({ ...user, Email: e.target.value })}
-                />
-                <input
-                  type="text"
-                  value={user.Contact}
-                  onChange={(e) => setUser({ ...user, Contact: e.target.value })}
-                />
-                <input
-                  type="text"
-                  value={user.Password}
-                  onChange={(e) => setUser({ ...user, Password: e.target.value })}
-                />
-              </>
+              ) : (
+                <div>No profile image available</div>
+              )}
+            </div>
+
+            {isEditing ? (
+              <button className="editupbtn" onClick={handleUpdate}>Update</button>
             ) : (
-              <>
-                <p>{user.FirstName || 'No details uploaded'}</p>
-                <p>{user.Email || 'No details uploaded'}</p>
-                <p>{user.Contact || 'No details uploaded'}</p>
-                <p>{user.Password || 'No details uploaded'}</p>
-              </>
-            )}
-          </div>
+              <button onClick={handleEdit} className="editupbtn">Edit</button>
+            )}</div>
+
         </div>
+        <div className="upsecond" style={{ marginTop: "20px" }}>
+          <button className='logoutbtnup' onClick={handleDelete}>Delete Account</button>
+        </div>
+        <div className="logout">
+          <button className='logoutbtnup' onClick={handleLogout}>Logout</button>
+        </div>
+
       </div>
 
-      {editMode ? (
-        <button onClick={handleSave}>Save</button>
-      ) : (
-        <button onClick={handleEdit}>Edit</button>
-      )}
     </div>
   );
-};
+}
 
-export default Profile;
+export default UserProfile;

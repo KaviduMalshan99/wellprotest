@@ -1,20 +1,17 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Importing useNavigate hook
+
+import { Link } from 'react-router-dom'; // Importing useNavigate hook
 import './Orders.css';
 
 const Orders = () => {
-  const navigate = useNavigate(); // Initializing navigate function
-
-  const handleRefundClick = () => {
-    // Redirect to the Refund page when the button is clicked
-    navigate('/refundorder');
-  };
+  
 
   return (
     <div className='mainContainer'>
       {/* Button triggering the refund */}
-      <button type="button" className='obutton' onClick={handleRefundClick}>Refund Orders</button>
-      <button type="button" className='obutton' >Orders</button>
+      <Link to="/admin/refundorder"><button type="button" className='obutton' >Refund Orders</button></Link>
+
+      <Link to="/admin/OrderTable"><button type="button" className='obutton' >Orders</button></Link>
+
       <button type="button" className='obutton' >Cancel Orders</button>
 
     </div>

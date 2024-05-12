@@ -1,0 +1,133 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.main4 {
+    background-color: whitesmoke;
+    height: 1000px;
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center {
+    margin-bottom: 20px;
+}
+
+.center .btn1 {
+    position: absolute; /* Position the button absolutely within the .center container */
+    top: 5%; /* Position at the top */
+    left: 2%; /* Position at the left */
+    padding: 8px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.popupform {
+    background-color: white;
+    width: 600px;
+    padding: 20px 30px;
+    box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    margin: 0 auto;
+}
+
+.popupform h2 {
+    text-align: center;
+    color: black;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.popupform h3 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: black;
+}
+
+.form-element {
+    margin-bottom: 15px;
+    font-weight:bold;
+}
+
+.form-element label {
+    font-size: 15px;
+    font-weight: lighter;
+    color: black;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-element input,
+.form-element textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.rating {
+    margin-left: -420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.rating .star {
+    cursor: pointer;
+    font-size: 24px;
+    color: #ffc107;
+    transition: transform 0.2s;
+}
+
+.rating .star:hover {
+    transform: scale(1.2);
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.preview-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.btn2{
+    margin-top: 20px;
+    margin-left: 430px;
+    padding: 10px 30px;
+    border-radius: 20px;
+    background-color: black;
+    color: white;
+}
+
+.btn2:hover{
+    background-color: rgb(157, 147, 147);
+    color: white;
+
+}

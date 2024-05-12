@@ -2,6 +2,7 @@ import  { useState, useEffect } from 'react';
 import axios from 'axios';
 import './User.css';
 import { Link } from 'react-router-dom';
+import AuthAPI from '../src/api/AuthAPI';
 
 const Users = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -11,7 +12,7 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/customer');
+        const response = await AuthAPI.fetchCustomers();
         setUsers(response.data.customers);
       } catch (error) {
         console.error('Error fetching users:', error);

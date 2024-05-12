@@ -1,0 +1,57 @@
+.MainFaqemail {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .MainFaqemail h2 {
+    margin-top: -0.05px;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  .MailFaqemail .faqemailform {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+  
+  .faqform-group {
+    margin-bottom: 15px;
+    margin-top: 20px;
+  }
+  
+  .faqemailform .faqlabel {
+    font-weight: lighter;
+
+  }
+  
+  input,
+  textarea {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding is included in width */
+  }
+  
+   .faqemailsubmit {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 20px;
+    background-color: #000000;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 40px;
+    margin-left: 200px;
+  }
+  
+  .faqemailsubmit:hover {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  

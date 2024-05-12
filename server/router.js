@@ -3,6 +3,12 @@ const router = express.Router();
 const contraller = require('./contraller');
 const { route } = require('./app');
 
+
+
+
+
+const { addCoupon, validateCoupon, getAllCoupons,deactivateCoupon } = require('./CouponController');
+
 const catagoryContraller = require('./CatagoryController');
 const customerContraller = require('./CustomerController');
 const orderContraller = require('./OrderController');
@@ -33,6 +39,18 @@ const {
     getNextId
   } = require('./WarehouseController');
 
+const OrderCancellationController = require('./OrderCancellationController');
+const messageController = require('./DelayOrderChatController');
+const trackingController = require('./OrderTrackingController');
+
+const cartController = require('./AddtocartContraller')
+const shippingMethodController = require('./ShippingMethodController');
+
+
+
+const authMiddleware = require("../server/middleware/authMiddleware");
+const USER_ROLES = require("../server/constants/roles");
+
 
 router.get('/users',contraller.getUsers);
 router.post('/createuser',contraller.addUser);
@@ -46,21 +64,39 @@ router.post('/addcategories',catagoryContraller.addCategory);
 router.post('/deletecategories/:id',catagoryContraller.deleteCategory);
 router.post('/updatecategory/:id', catagoryContraller.updateCategory);
 
+//addtocart
+router.get('/cart/:customerId',  cartController.getCart);
+router.post('/cart/add', cartController.addToCart);
+router.put('/updatecart',  cartController.updateCartItem);
+router.delete('/deletecart/:cartId', cartController.removeCartItem);
+
+
 //customer
-router.get('/customer',customerContraller.getCustomer);
-router.post('/addcustomer',customerContraller.addCustomer);
-router.post('/updatecustomer',customerContraller.updateCustomer);
-router.post('/deletecustomer',customerContraller.deleteCustomer);
-router.get('/customer/:userId', customerContraller.getCustomerById);
+router.get(
+    "/customer",
+    authMiddleware([USER_ROLES.ADMIN]),
+    customerContraller.getCustomer
+);
+
+router.post("/addcustomer", customerContraller.addCustomer);
+router.post("/updatecustomer/:UserId", customerContraller.updateCustomer);
+router.delete("/deletecustomer/:UserId", customerContraller.deleteCustomer);
+router.post("/login", customerContraller.login); // Ensure this is a POST, not GET
+router.post("/register", customerContraller.register);
+router.get("/customer/:userId", customerContraller.getCustomerById);
+router.get("/customer/email/:email", customerContraller.getCustomerByEmail);
 
 //order
 router.get('/orders',orderContraller.getOrders);
-router.post('/addorders',orderContraller.addOrder);
-router.post('/updateorders',orderContraller.updateOrder);
-router.post('/deleteorders',orderContraller.deleteOrder);
+
 router.post('/orders/sendemail', orderContraller.sendOrderStatusEmail);
 router.put("/updatestatus", orderContraller.updateOrderStatus);
 router.put("/updateContactStatus/:orderId", orderContraller.updateContactStatus);
+
+router.post('/addOrder',orderContraller.addOrder);
+router.put('./updateOrder',orderContraller.updateOrder);
+router.delete('/deleteOrder/:orderId',orderContraller.deleteOrder);
+router.get('/getOrder/:orderId',orderContraller.getOrderById);
 
 //product
 router.get('/products',productContraller.getProducts);
@@ -72,13 +108,16 @@ router.delete('/deleteproduct/:ProductId',productContraller.deleteProduct);
 
 //review
 router.get('/reviews',reviewcontroller.getReview);
+router.get('/review/:ReviewID',reviewcontroller.getReviewById)
 router.post('/addreviews',reviewcontroller.addReview);
-router.post('/updatereview',reviewcontroller.updateReview);
-router.delete('/deletereview',reviewcontroller.deleteReview);
+router.post('/updatereview/:ReviewID',reviewcontroller.updateReview);
+router.delete('/deletereview/:ReviewID',reviewcontroller.deleteReview);
 
 //faq
 router.get('/faqs',faqcontroller.getFaq);
 router.post('/addfaqs',faqcontroller.addFaq);
+router.delete('/deletefaq/:FaqID',faqcontroller.deleteFaq);
+router.get('/faq/:FaqID', faqcontroller.getFaqById);
 
 //refund
 router.post('/addrefund', RefundController.addRefund);
@@ -86,6 +125,9 @@ router.get('/refunds', RefundController.getRefunds);
 router.delete('/deleterefund/:id', RefundController.deleteRefund);
 router.put('/updaterefund/:orderId', RefundController.updateRefund);
 router.get('/refund/:orderId', RefundController.getRefundById);
+router.put('/approverefund/:orderId', RefundController.approveRefund);
+router.get('/acceptrefunds', RefundController.getAcceptedRefunds);
+
 
 
 // //refundemail
@@ -104,7 +146,6 @@ router.delete('/suppliers/:id', SupplierRegController.deleteSupplier);
 //suplierstock
 router.post('/addstock', SupplierStockController.addSupplierStock);
 router.get('/getstock', SupplierStockController.getStock);
-router.delete('/supplierstock/:supstockId', SupplierStockController.deleteStockBySupStockId);
 
 //Warehouse
 // router.get("/oders", OrdersTableController.getOrdersTable);
@@ -148,5 +189,45 @@ router.post('/dispatchedOrders', dispatchedOrderController.createDispatchedOrder
 router.post('/adjustStockQuantities', CurrentStockController.adjustStockQuantities);
 
 router.delete('/dispatchedOrders', dispatchedOrderController.deleteAllDispatchedOrders);
+
+
+
+// Shipping Methods
+router.post('/shippingMethods', shippingMethodController.addShippingMethod);
+router.get('/shippingMethods', shippingMethodController.getShippingMethods);
+router.put('/shippingMethods/:id', shippingMethodController.updateShippingMethod);
+router.delete('/shippingMethods/:id', shippingMethodController.deleteShippingMethod);
+
+// Coupon routes
+router.post('/addcoupon', addCoupon);
+router.get('/coupons', getAllCoupons)
+router.post('/validatecoupon', validateCoupon);
+router.post('/deactivateCoupon', deactivateCoupon);
+
+//AddCancellation
+router.post('/addOrderCancellation', OrderCancellationController.addOrderCancellation);
+router.get('/getOrderCancellation',OrderCancellationController.getOrderCancellation);
+router.delete('/deleteOrderCancellation/:OrderID', OrderCancellationController.deleteOrderCancellation);
+
+//delayOrderChat
+
+router.get('/getAllMessages', messageController.getAllCustomerMessages);
+router.post('/createMessage', messageController.createCustomerMessage);
+router.put('/updateMessage/:id', messageController.updateCustomerMessage);
+router.delete('/deleteMessage/:id', messageController.deleteCustomerMessage);
+router.get('/getMessagesByOrderId/:orderId', messageController.getMessagesByOrderId);
+router.get('/getOrderIds', messageController.getOrderIds);
+
+//Tracking
+
+router.post('/tracking', trackingController.addTrackingEntry);
+router.get('/tracking/:orderId', trackingController.getTrackingByOrderId);
+router.get('/tracking', trackingController.getTrackingDetails);
+router.delete('/tracking/:orderId', trackingController.deleteTrackingDetails);
+router.put('/tracking/:orderId',trackingController.updateTrackingStatus);
+
+router.get('/orders', orderContraller.getOrders);
+router.post('/orders', orderContraller.addOrder);
+
 
 module.exports = router;

@@ -56,6 +56,10 @@
   }
   
   .collection {
+    margin-right: 0rem;
+  }
+
+  .info{
     margin-right: 3rem;
   }
   
@@ -73,13 +77,15 @@
     font-weight: bold;
     margin-bottom: 1rem;
     color: #ffffff;
+    margin-left: 0rem;
+    margin-right: 10rem;
   }
   
   .copyright {
     color: #ffffff;
     font-size: 12px;
     margin-top: 1rem;
-    padding: 1rem;
+    padding: 1rem 0rem 1rem 0rem;
     border-top: 1px solid #ffffff;
     width: 100%;
     text-align: center;

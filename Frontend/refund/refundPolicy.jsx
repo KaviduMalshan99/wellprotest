@@ -9,12 +9,13 @@ import { Link, useNavigate } from 'react-router-dom'; // Importing useNavigate h
 
 
 const RefundPolicy = () => {
-    
+    const navigate = useNavigate();
+
 
     return (
         <div>
             <div className="rnmh">Refund</div>
-        <div className="rnlp">Home &gt; Refund</div>
+            <div className="rnlp">Home &gt; Refund</div>
 
         <div className="rnmbtnss">
                 <button id="transparent-buttonrr" onClick={() => navigate(`/refundPolicy`)}>
@@ -24,7 +25,7 @@ const RefundPolicy = () => {
                 <button id="transparent-buttonrr" onClick={() => navigate(`/refund`)}>
 
                     Refund Now
-                </button></Link >
+                </button>
             </div> 
 
             <Footer/>
