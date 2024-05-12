@@ -25,7 +25,7 @@ import Categories from '../admin/Categories';
 import Products from '../admin/Product';
 import Users from '../admin/Users';
 import Orders from '../admin/Orders';
-import Ratings from '../admin/Ratings';
+import Ratings from '../admin/Reviews';
 import Overview from '../admin/Overview';
 import Suppliers from '../admin/Suppliers';
 import Warehouse from '../admin/Warehouse';

@@ -89,12 +89,13 @@ app.post('/send-email', async (req, res) => {
       to: email,
       subject: subject,
       text: `
+        Message: ${message}
         Product ID: ${productId}
         Sizes: ${sizes}
         Colors: ${colors}
         Quantity: ${quantity}
         Price: ${price}
-        Message: ${message}
+        
       `
     };
   
