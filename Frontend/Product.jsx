@@ -1,3 +1,17 @@
+import  { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './Product.css';
+import { Link } from 'react-router-dom';
+import Footer from './Footer/Footer';
+import Header from './Header/Header';
+import { useCart } from './CartContext';
+
+import LOGOO from '../src/assets/logoorange.png'
+import { PropagateLoader } from 'react-spinners'; 
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const Product = () => {
   const [loading, setLoading] = useState(true);
   const { id } = useParams(); 
@@ -11,6 +25,9 @@ const Product = () => {
   const [availableColors, setAvailableColors] = useState([]);
   const [originalPrice, setOriginalPrice] = useState(null);
   
+  
+
+
   useEffect(() => {
     const fetchProductById = async (productId) => {
       try {
@@ -51,12 +68,15 @@ const Product = () => {
     setQuantity(quantity + 1);
   };
 
+  
+
   const handleSizeClick = (size) => {
     setSelectedSize(size);
     const colors = product.Variations
       .filter(variation => variation.size === size)
       .map(variation => variation.color);
     setAvailableColors(colors);
+
   };
 
   const handleColorClick = (color) => {
@@ -68,6 +88,7 @@ const Product = () => {
         ...prevProduct,
         Price: selectedVariation.price // Update the price to the variation's price
       }));
+      
     } else {
       // If no variation is found, revert to the original price
       setProduct(prevProduct => ({
@@ -76,6 +97,7 @@ const Product = () => {
       }));
     }
   };
+  
 
   if (!product) {
     return <div>Loading...</div>;
@@ -124,7 +146,10 @@ const Product = () => {
     }
   };
 
+
+
   const handleAddToCart = () => {
+
     if (!selectedSize) {
       alert("Please select a size.");
       return;
@@ -135,6 +160,8 @@ const Product = () => {
       return;
     }
 
+  
+    // Find the variation that matches the selected color and size
     const selectedVariation = product.Variations.find(variation =>
       variation.name === selectedColor && variation.size === selectedSize
     );
@@ -159,136 +186,264 @@ const Product = () => {
     });
     navigate('/cart');
   };
+  
+    if (selectedVariation.count === 0) {
+      alert("This product is currently out of stock.");
+      return;
+    }
+  
+    // Prepare the item object based on the selected variation
+    const itemToAdd = {
+      id: product.ProductId,
+      name: product.ProductName,
+      price: parseFloat(selectedVariation.price),
+      image: selectedVariation.images[0], // Assuming the first image is the primary one
+      size: selectedSize,
+      color: selectedColor,
+      quantity: quantity,
+      availableCount: selectedVariation.count
+    };
+  
+    // Dispatch the action to add the item to the cart
+    dispatch({
+      type: 'ADD_ITEM',
+      item: itemToAdd
+    });
+  
+    toast.success('Product added to cart successfully');
+  };
+  
 
+  
+  
+
+  // Render product details once loaded
   return (
     <div>
+
       <Header/>
+      
+      
       <p className='main1'>
         <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link>
         <i className="fas fa-angle-right" /> <Link to="/product/:id">{product.ProductName} </Link>
       </p>
 
+
       {loading && (
-        <div className="loader-container">
-          <div className="loader-overlay">
-            <img src={LOGOO} alt="Logo" className="loader-logo" />
-            <PropagateLoader color={'#ff3c00'} loading={true} />
-          </div>
+      <div className="loader-container">
+        <div className="loader-overlay">
+          <img src={LOGOO} alt="Logo" className="loader-logo" />
+          <PropagateLoader color={'#ff3c00'} loading={true} />
         </div>
-      )}
+      </div>
+    )}
 
       {!loading && (
-        <div className="product-container">
-          {/* Left Section */}
-          <div className="left-section">
-            <div className="main-image">
-              <img src={selectedImage || product.ImgUrls[0]} alt={product.ProductName} />
+
+      <div className="product-container">
+        {/* Left Section */}
+        <div className="left-section">
+          <div className="main-image">
+            <img src={selectedImage || product.ImgUrls[0]} alt={product.ProductName} />
+          </div>
+          {Array.isArray(product.ImgUrls) && (
+            <div className="small-images">
+              {product.ImgUrls.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={product.ProductName}
+                  onClick={() => handleImageClick(image)}
+                />
+              ))}
             </div>
-            {Array.isArray(product.ImgUrls) && (
-              <div className="small-images">
-                {product.ImgUrls.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={product.ProductName}
-                    onClick={() => handleImageClick(image)}
-                  />
-                ))}
-              </div>
-            )}
+          )}
+        </div>
+
+        {/* Right Section */}
+        <div className="right-section">
+          <p className='product_title'>{product.ProductName}</p>
+          <p className='product_price'>LKR.{getPriceRange()}</p>
+
+
+
+
+          <div className="ratings1">
+            <div className="stars1">
+              {Array.from({ length: product.rating }, (_, index) => (
+                <i key={index} className="fas fa-star"></i>
+              ))}
+              {/* Render half star if rating is not an integer */}
+              {product.rating % 1 !== 0 && <i className="fas fa-star-half"></i>}
+            </div>
+            <span>({product.reviews} Reviews)</span>
           </div>
 
-          {/* Right Section */}
-          <div className="right-section">
-            <p className='product_title'>{product.ProductName}</p>
-            <p className='product_price'>LKR.{getPriceRange()}</p>
-
-            <div className="ratings1">
-              <div className="stars1">
-                {Array.from({ length: product.rating }, (_, index) => (
-                  <i key={index} className="fas fa-star"></i>
-                ))}
-                {/* Render half star if rating is not an integer */}
-                {product.rating % 1 !== 0 && <i className="fas fa-star-half"></i>}
-              </div>
-              <span>({product.reviews} Reviews)</span>
+          
+      
+         
+          {product.QuickDeliveryAvailable && (
+            <div className="quickdelivery">
+              <label>Quick Delivery Available - This product can be delivered within 1 week.</label>
+              
             </div>
+          )}
 
-            {product.QuickDeliveryAvailable && (
-              <div className="quickdelivery">
-                <label>Quick Delivery Available - This product can be delivered within 1 week.</label>
-              </div>
-            )}
+{product.Variations && product.Variations.some(variation => variation.size) && (
+  <div className="sizebutton">
+    <p>Sizes</p>
+    {product.Variations
+      .reduce((uniqueSizes, variation) => {
+        if (!uniqueSizes.includes(variation.size)) {
+          uniqueSizes.push(variation.size);
+        }
+        return uniqueSizes;
+      }, [])
+      .map((size, index) => (
+        <button
+          key={index}
+          className={selectedSize === size ? 'selected' : ''}
+          onClick={() => handleSizeClick(size)}
+        >
+          {size}
+        </button>
+      ))}
+    {selectedSize && (
+      <button className="clear-button" onClick={() => setSelectedSize(null)}>
+        Clear Size
+      </button>
+    )}
+  </div>
+)}
 
-            {product.Variations && product.Variations.some(variation => variation.size) && (
-              <div className="sizebutton">
-                <p>Sizes</p>
-                {product.Variations
-                  .reduce((uniqueSizes, variation) => {
-                    if (!uniqueSizes.includes(variation.size)) {
-                      uniqueSizes.push(variation.size);
-                    }
-                    return uniqueSizes;
-                  }, [])
-                  .map((size, index) => (
-                    <button
-                      key={index}
-                      className={selectedSize === size ? 'selected' : ''}
-                      onClick={() => handleSizeClick(size)}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                {selectedSize && (
-                  <button className="clear-button" onClick={() => setSelectedSize(null)}>
-                    Clear Size
-                  </button>
-                )}
-              </div>
-            )}
 
-            {selectedSize && (
-              <div className="color-section">
-                <p>Colors</p>
-                {product.Variations
-                  .filter(variation => variation.size === selectedSize)
-                  .map((variation, index) => (
-                    <button
-                      key={index}
-                      className={selectedColor === variation.name ? 'selected' : ''}
-                      onClick={() => handleColorClick(variation.name)}
-                      value={variation.name}
-                    >
-                      {variation.name}
-                    </button>
-                  ))}
-              </div>
-            )}
+{selectedSize && (
+  <div className="color-section">
+    <p>Colors</p>
+    {product.Variations
+      .filter(variation => variation.size === selectedSize)
+      .map((variation, index) => (
+        <button
+          key={index}
+          className={selectedColor === variation.name ? 'selected' : ''}
+          onClick={() => handleColorClick(variation.name)}
+          value={variation.name}
+        >
+          {variation.name}
+        </button>
+      ))}
+  </div>
+)}
 
-            {/* Quantity */}
-            <label>Quantity:</label>
-            <div className="quantity-selector">
-              <button onClick={decrementQuantity}>-</button>
-              <span>{quantity}</span>
-              <button onClick={incrementQuantity}>+</button>
+
+
+          
+      
+         
+          {product.QuickDeliveryAvailable && (
+            <div className="quickdelivery">
+              <label>Quick Delivery Available - This product can be delivered within 1 week.</label>
+              
             </div>
+          )}
 
-            <div className="abs">
-              {/* Add to Cart Button */}
-              <div className="addcart">
-                <button onClick={handleAddToCart}>Add to Cart</button>
-              </div>
-              <ToastContainer />
-              {/* Buy Now Button */}
-              <div className="buyNow">
-                <button onClick={handleBuyNow}>Buy Now</button>
-              </div>
+{product.Variations && product.Variations.some(variation => variation.size) && (
+  <div className="sizebutton">
+    <p>Sizes</p>
+    {product.Variations
+      .reduce((uniqueSizes, variation) => {
+        if (!uniqueSizes.includes(variation.size)) {
+          uniqueSizes.push(variation.size);
+        }
+        return uniqueSizes;
+      }, [])
+      .map((size, index) => (
+        <button
+          key={index}
+          className={selectedSize === size ? 'selected' : ''}
+          onClick={() => handleSizeClick(size)}
+        >
+          {size}
+        </button>
+      ))}
+    {selectedSize && (
+      <button className="clear-button" onClick={() => setSelectedSize(null)}>
+        Clear Size
+      </button>
+    )}
+  </div>
+)}
+{!product.Variations.some(variation => variation.size) && (
+  <div className="color-section">
+    <p>Colors</p>
+    {product.Variations.map((variation, index) => (
+      <button
+        key={index}
+        className={selectedColor === variation.name ? 'selected' : ''}
+        onClick={() => handleColorClick(variation.name)}
+        value={variation.name}
+      >
+        {variation.name}
+      </button>
+    ))}
+  </div>
+)}
+
+{selectedSize && (
+  <div className="color-section">
+    <p>Colors</p>
+    {product.Variations
+      .filter(variation => variation.size === selectedSize)
+      .map((variation, index) => (
+        <button
+          key={index}
+          className={selectedColor === variation.name ? 'selected' : ''}
+          onClick={() => handleColorClick(variation.name)}
+          value={variation.name}
+        >
+          {variation.name}
+        </button>
+      ))}
+  </div>
+)}
+
+
+
+          {/* Quantity */}
+          <label>Quantity:</label>
+          <div className="quantity-selector">
+            <button onClick={decrementQuantity}>-</button>
+            <span>{quantity}</span>
+            <button onClick={incrementQuantity}>+</button>
+          </div>
+
+
+
+
+
+          <div className="abs">
+            {/* Add to Cart Button */}
+            <div className="addcart">
+              <button onClick={handleAddToCart}>Add to Cart</button>
+            </div>
+            <ToastContainer />
+
+
+            {/* Buy Now Button */}
+            <div className="buyNow">
+              <button onClick={handleBuyNow}>Buy Now</button>
             </div>
           </div>
         </div>
+      </div>
+
       )}
 
+  
+
       <Footer/>
+      
     </div>
   );
 };

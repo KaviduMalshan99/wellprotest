@@ -7,6 +7,7 @@ import Koko from '../../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header/Header';
+
 import { PropagateLoader } from 'react-spinners'; 
 import Footer from '../Footer/Footer';
 import LOGOO from '../../src/assets/logoorange.png'
@@ -108,98 +109,192 @@ useEffect(() => {
     };
 
 
-    return (
-      <>
-        {loading && (
-          <div className="loader-container">
-            <div className="loader-overlay">
-              <img src={LOGOO} alt="Logo" className="loader-logo" />
-              <PropagateLoader color={'#ff3c00'} loading={true} />
-            </div>
-          </div>
-        )}
+  return (
+
+
+    <>
+    {loading && (
+      <div className="loader-container">
+        <div className="loader-overlay">
+          <img src={LOGOO} alt="Logo" className="loader-logo" />
+          <PropagateLoader color={'#ff3c00'} loading={true} />
+        </div>
+      </div>
+    )}
+
+      {!loading && (
     
-        {!loading && (
-          <div>
-            <Header />
-            <p className='menmain'>SHOP MENS</p>
-            <p className='menmain1'>
-              <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" /><Link to="/menbag"> BAGS </Link><i className="fas fa-angle-right" />
-            </p>
-    
-            <div className="menmid">
-              <div className="menfilter">
-                <h2 className='menfiltertitle'>Filter Options</h2>
-                <div className="pricefilter">
-                  <p className='fittertitles'>Price Range:</p>
-                  <div className='minmaxdiv'>
-                    <input
-                      type="number"
-                      placeholder="Min Price"
-                      value={minPrice}
-                      onChange={handleMinPriceChange}
-                    /> -
-                    <input
-                      type="number"
-                      placeholder="Max Price"
-                      value={maxPrice}
-                      onChange={handleMaxPriceChange}
-                    />
+    <div>
+
+      
+
+      
+      <Header/>
+      <p className='menmain'>SHOP MENS</p>
+      <p className='menmain1'>
+        <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" /><Link to="/menbag"> BAGS </Link><i className="fas fa-angle-right" />
+      </p>
+
+
+      
+
+        <div className="menmid">
+          <div className="menfilter">
+            <h2 className='menfiltertitle'>Filter Options</h2>
+            
+            
+            
+            <div className="pricefilter">
+
+              <p className='fittertitles'>Price Range:</p>
+                <div className='minmaxdiv'>
+                  <input
+                    type="number"
+                    placeholder="Min Price"
+                    value={minPrice}
+                    onChange={handleMinPriceChange}
+                  /> -
+                  <input
+                    type="number"
+                    placeholder="Max Price"
+                    value={maxPrice}
+                    onChange={handleMaxPriceChange}
+                  />
+                </div>
+
+                <div className="sortprice">
+                  {/* Sorting */}
+                  <p className='fittertitles'>Sort By:</p>
+                  <div className='sortminmax'>
+                    <button className='btnsortminmax' onClick={() => handleSortChange('maxToMin')}>Price: Low to High</button>
+                    <button className='btnsortminmax' onClick={() => handleSortChange('minToMax')}>Price: High to Low</button>
                   </div>
-                  <div className="sortprice">
-                    {/* Sorting */}
-                    <p className='fittertitles'>Sort By:</p>
-                    <div className='sortminmax'>
-                      <button className='btnsortminmax' onClick={() => handleSortChange('maxToMin')}>Price: Low to High</button>
-                      <button className='btnsortminmax' onClick={() => handleSortChange('minToMax')}>Price: High to Low</button>
+                </div>
+            </div>
+
+            <div className="ratingsFilter">
+    <p className='fittertitles'>Ratings:</p>
+    <div className='ratingsOptions'>
+      <label>
+        <div className='startoption1'>
+          <input
+            type="checkbox"
+            value={5}
+            onChange={handleRatingChange}
+          />
+        </div>
+        <div className='startoption2'>
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+      </label>
+      <label>
+        <div className='startoption1'>
+          <input
+            type="checkbox"
+            value={4}
+            onChange={handleRatingChange}
+          />
+        </div>
+        <div className='startoption2'>
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+      </label>
+      <label>
+        <div className='startoption1'>
+          <input
+            type="checkbox"
+            value={3}
+            onChange={handleRatingChange}
+          />
+        </div>
+        <div className='startoption2'>
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+      </label>
+      <label>
+        <div className='startoption1'>
+          <input
+            type="checkbox"
+            value={2}
+            onChange={handleRatingChange}
+          />
+        </div>
+        <div className='startoption2'>
+          <FontAwesomeIcon icon={faStar} />
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+      </label>
+      <label>
+        <div className='startoption1'>
+          <input
+            type="checkbox"
+            value={1}
+            onChange={handleRatingChange}
+          />
+        </div>
+        <div className='startoption2'>
+          <FontAwesomeIcon icon={faStar} />
+        </div>
+      </label>
+    </div>
+  </div>
+
+
+        </div>
+
+        <div className="men">
+          {filteredData.map(record => (
+            <div className="box" key={record.ProductId}>
+              <div className="imgage">
+                <img src={record.ImgUrls[0]} alt="" />
+                <div className="overlay">
+                  <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
+
+                <div className="overlay2">
+                  <img src={record.ImgUrls[1]} alt="" />
+                </div>
+                <div className="overlay3">
+                <Link to={`/product/${record.ProductId}`}><p >VIEW MORE</p></Link>
+                </div>
+              </div>
+              <div className="informations">
+                <div className="title">{record.ProductName}</div>
+                <div className="price">LKR.{(Math.min(...record.Variations.map(variation => variation.price))).toFixed(2)} </div>
+                <div className="ratings">
+                  <div className="paymentsimg">
+                    <div className='p01'>
+                      or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with <img src={Mint} className='intpay' />
+                    </div>
+                    <div className='p02'>
+                      or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with<img src={Koko} className='kokopay' />
                     </div>
                   </div>
                 </div>
-                <div className="ratingsFilter">
-                  <p className='fittertitles'>Ratings:</p>
-                  <div className='ratingsOptions'>
-                    {/* Checkbox Inputs for Ratings */}
-                  </div>
-                </div>
-              </div>
-              <div className="men">
-                {filteredData.map(record => (
-                  <div className="box" key={record.ProductId}>
-                    <div className="imgage">
-                      <img src={record.ImgUrls[0]} alt="" />
-                      <div className="overlay2">
-                        <img src={record.ImgUrls[1]} alt="" />
-                      </div>
-                      <div className="overlay3">
-                        <Link to={`/product/${record.ProductId}`}><p>VIEW MORE</p></Link>
-                      </div>
-                    </div>
-                    <div className="informations">
-                      <div className="title">{record.ProductName}</div>
-                      <div className="price">LKR.{(Math.min(...record.Variations.map(variation => variation.price))).toFixed(2)} </div>
-                      <div className="ratings">
-                        <div className="paymentsimg">
-                          <div className='p01'>
-                            or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with <img src={Mint} className='intpay' />
-                          </div>
-                          <div className='p02'>
-                            or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with<img src={Koko} className='kokopay' />
-                          </div>
-                        </div>
-                      </div>
-                      {/* Remove the following line if 'price' is not a property of 'record' */}
-                      <div className="price">{record.price}</div>
-                    </div>
-                  </div>
-                ))}
+                <div className="price">{record.price}</div>
               </div>
             </div>
-            <Footer />
-          </div>
-        )}
-      </>
-    );
-                } 
+          ))}
+        </div>
+      </div>
+
+
+      <Footer/>
+      
+      
+    </div>
+      )}
+    </>
+  );
+};
 
 
 export default MenBag;

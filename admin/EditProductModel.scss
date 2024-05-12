@@ -137,6 +137,9 @@ $background-color_2: red;
             padding: 5px 20px;
             margin-left: 35%;
             text-align: center;
+
+            margin-top: 70px;
+            margin-bottom: 20px;
         }
 
         .variants {
@@ -149,11 +152,19 @@ $background-color_2: red;
                 width: calc((100% - 50px) / 3);
                 display: flex;
                 flex-direction: column;
+            flex-direction: row; // Allows the items to wrap to the next line
+            gap: 20px; 
+            
+
+            > div.variant { 
+                display: flex;
                 align-items: flex-start;
                 padding: 10px;
                 border: 1px solid #ccc; 
                 border-radius: 10px; 
                 background-color: #ccc;
+
+                margin-top: 70px;
                 
 
                 h4{
@@ -165,6 +176,7 @@ $background-color_2: red;
                     height: auto; 
                     margin-top: 10px; 
                     margin-left: 25%;
+
                 }
 
                 button {
@@ -174,8 +186,145 @@ $background-color_2: red;
                     border: none; 
                     border-radius: 5px; 
                     cursor: pointer; 
-                    margin-left: 20%;
+
+                    margin-left: 15%;
                 }
+            }
+        }
+
+        .variantslect{
+            select{
+                margin-left: 20px;
+                border-radius: 5px;
+                width: 95%;
+            }
+        }
+
+        .manysizemanycolor{
+            margin-top: 20px;
+
+
+            .q1{
+                margin-left: 25px;
+            }
+
+            input{
+                margin-left: 40px;
+                width: 50%;
+                border-radius: 5px;
+            }
+
+            button{
+                margin-left: 45%;
+            }
+        }
+
+        .onlycolors{
+
+            .onlycolorsec{
+                margin-left: 25px;
+                margin-top: 20px;
+            }
+        }
+
+        .mainbox--quickdelivary{
+            margin-top: 20px;
+            
+            div{
+                
+                input{
+                    height: 20px;
+                    margin-top: -35px;
+                }
+            }
+        }
+
+        .mainbox-areas{
+            margin-top: 20px;
+
+            .catdiv{
+
+                display: flex;
+                flex-direction: row;
+                margin-left: 40px;
+                align-items: center;
+
+                select{
+                    width: 450px;
+                }
+
+                button{
+                    height: 40px;
+                    margin-top: -10px;
+                }
+            }
+        }
+
+        .selectedareas{
+            margin-left: 20%;
+            margin-top: 20px;
+
+            ul{
+                display: flex;
+                gap: 50px;
+                list-style: circle;
+
+                li{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    
+                    
+
+                    button{
+                        height: 30px;
+                        width: 100px;
+                    }
+                }
+            }
+
+
+        }
+
+        .desc{
+            margin-top: 25px;
+
+            textarea{
+                margin-left: 5%;
+                width: 85%;
+                height: 200px;
+                padding: 20px;
+            }
+        }
+
+        .mainbox-desc{
+            margin-top: 25px;
+
+
+            .image-container{
+
+                display: flex;
+                flex-direction: row;
+                
+                .imh{
+                    display: flex;
+                    flex-direction: column;
+                    margin-left: 5%;
+                    gap: 10px;
+
+
+                    img{
+                        height: 150px;
+                        width: 150px;
+                        border-radius: 5px;
+                    }
+                    
+                    button{
+                        height: 40px;
+                    }
+                }
+
+                
             }
         }
     }
