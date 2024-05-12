@@ -83,31 +83,7 @@ useEffect(() => {
 
   
 
-    // Function to handle minimum price change
-    const handleMinPriceChange = (event) => {
-      setMinPrice(event.target.value);
-    };
-  
-    // Function to handle maximum price change
-    const handleMaxPriceChange = (event) => {
-      setMaxPrice(event.target.value);
-    };
-
-    // Function to handle sorting change
-    const handleSortChange = (order) => {
-      setSortOrder(order);
-    };
-
-    // Function to handle rating change
-    const handleRatingChange = (event) => {
-      const rating = event.target.value;
-      if (event.target.checked) {
-        setSelectedRatings((prevRatings) => [...prevRatings, rating]);
-      } else {
-        setSelectedRatings((prevRatings) => prevRatings.filter((r) => r !== rating));
-      }
-    };
-
+   
 
     // Function to handle minimum price change
     const handleMinPriceChange = (event) => {
