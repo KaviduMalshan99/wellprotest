@@ -48,14 +48,13 @@ const OrderTable = () => {
             address: order.address,
             address02: order.address02,
             city: order.city,
-            State: order.State,
             postalCode: order.postalCode,
             additionalDetails: order.additionalDetails,
             shippingMethod: order.shippingMethod,
             paymentMethod: order.paymentMethod,
             couponCode: order.couponCode,
-            productName: order.productName,
-            productId: order.productId,
+            ProductName: order.ProductName,
+            id: order.id,
             quantity: order.quantity,
             size: order.size,
             color: order.color,
@@ -186,7 +185,7 @@ const OrderTable = () => {
                         <td>{order.firstName} {order.lastName}</td>
                         <td>{order.country}</td>
                         <td>{order.paymentMethod}</td>
-                        <td>{order.productId}</td>
+                        <td>{order.id}</td>
                         <td>{order.orderDate.toLocaleDateString()}</td>
                         <td>
                             <button className="view-more-btn" onClick={() => navigate(`/admin/OrderDetails/${order.orderId}`)}>View More</button>

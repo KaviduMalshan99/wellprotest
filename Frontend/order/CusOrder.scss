@@ -1,0 +1,79 @@
+.orders-list {
+    margin: 20px auto; // Centrally aligns the order list with automatic margins
+    max-width: 80%; // Limits the width and creates side gaps
+    display: flex;
+    flex-direction: column;
+    align-items: center; // Center the cards horizontally
+
+    .order-card {
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        width: 100%; // Take full width of the container
+        padding: 20px;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: scale(1.03); // Gentle zoom on hover
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .order-image {
+            flex-shrink: 0;
+            margin-right: 30px;
+            width: 120px;
+            height: 120px;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 10px;
+            }
+        }
+
+        .order-details {
+            flex-grow: 1;
+            margin-right: auto; // Push everything to the right
+
+            h5 {
+                font-size: 1.4rem;
+                color: #333;
+                margin-bottom: 10px;
+            }
+
+            p {
+                font-size: 1.1rem;
+                color: #666;
+                margin: 5px 0;
+            }
+        }
+
+        .order-actions {
+            display: flex;
+            flex-direction: column;
+
+            button {
+                background-color: #007BFF; // Bootstrap primary blue
+                border: none;
+                border-radius: 5px;
+                color: white;
+                font-weight: 600;
+                text-transform: uppercase;
+                padding: 12px 20px;
+                cursor: pointer;
+                transition: background 0.3s;
+
+                &:hover {
+                    background-color: #0056b3; // Darken on hover
+                }
+
+                &:not(:last-child) {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}

@@ -11,6 +11,7 @@ import LOGOO from '../src/assets/logoorange.png'
 import { PropagateLoader } from 'react-spinners'; 
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useCheckout } from '../Frontend/order/CheckoutContext';
 import { useAuthStore } from "../src/store/useAuthStore";
 
 
@@ -26,11 +27,11 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [availableColors, setAvailableColors] = useState([]);
   const [originalPrice, setOriginalPrice] = useState(null);
+  const { setCheckoutInfo } = useCheckout();
   const { user } = useAuthStore(); 
 
   const userId = user?.UserId;
-  
-  
+    
 
   useEffect(() => {
     const fetchProductById = async (productId) => {
@@ -108,12 +109,26 @@ const Product = () => {
   }
 
   const handleBuyNow = () => {
-    // Use the selectedImage if available, otherwise fallback to the first image in the array
-    const finalImageUrl = selectedImage || product.ImgUrls[0];
-    const encodedImageUrl = encodeURIComponent(finalImageUrl);
-    const checkoutUrl = `/checkout?id=${id}&Productname=${product.ProductName}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${encodedImageUrl}`;
+    
+    const dataToPass = {
+      id,  // Ensure this is the right property name!
+      ProductName: product.ProductName,
+      quantity,
+      size: selectedSize,
+      color: selectedColor,
+      price: product.Price,
+      image: selectedImage || product.ImgUrls[0]
+    };
 
-    navigate(checkoutUrl);
+    console.log("Passing data to checkout:", dataToPass);  // Debug log
+    setCheckoutInfo(dataToPass);
+    navigate('/checkout');
+    // Use the selectedImage if available, otherwise fallback to the first image in the array
+    // const finalImageUrl = selectedImage || product.ImgUrls[0];
+    // const encodedImageUrl = encodeURIComponent(finalImageUrl);
+    // const checkoutUrl = `/checkout?id=${id}&Productname=${product.ProductName}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${encodedImageUrl}`;
+
+    // navigate(checkoutUrl);
   };
 
   const getPriceRange = () => {
