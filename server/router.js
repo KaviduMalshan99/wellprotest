@@ -19,6 +19,10 @@ const RefundController = require('./RefundController');
 const SupplierRegController = require('./SupplierRegController');
 const SupplierStockController = require('./SupplierStockController');
 
+const OrderCancellationController = require('./OrderCancellationController');
+const messageController = require('./DelayOrderChatController');
+const trackingController = require('./OrderTrackingController');
+
 const cartController = require('./AddtocartContraller')
 const shippingMethodController = require('./ShippingMethodController');
 
@@ -132,7 +136,30 @@ router.get('/coupons', getAllCoupons)
 router.post('/validatecoupon', validateCoupon);
 router.post('/deactivateCoupon', deactivateCoupon);
 
+//AddCancellation
+router.post('/addOrderCancellation', OrderCancellationController.addOrderCancellation);
+router.get('/getOrderCancellation',OrderCancellationController.getOrderCancellation);
+router.delete('/deleteOrderCancellation/:OrderID', OrderCancellationController.deleteOrderCancellation);
 
+//delayOrderChat
+
+router.get('/getAllMessages', messageController.getAllCustomerMessages);
+router.post('/createMessage', messageController.createCustomerMessage);
+router.put('/updateMessage/:id', messageController.updateCustomerMessage);
+router.delete('/deleteMessage/:id', messageController.deleteCustomerMessage);
+router.get('/getMessagesByOrderId/:orderId', messageController.getMessagesByOrderId);
+router.get('/getOrderIds', messageController.getOrderIds);
+
+//Tracking
+
+router.post('/tracking', trackingController.addTrackingEntry);
+router.get('/tracking/:orderId', trackingController.getTrackingByOrderId);
+router.get('/tracking', trackingController.getTrackingDetails);
+router.delete('/tracking/:orderId', trackingController.deleteTrackingDetails);
+router.put('/tracking/:orderId',trackingController.updateTrackingStatus);
+
+router.get('/orders', orderContraller.getOrders);
+router.post('/orders', orderContraller.addOrder);
 
 
 module.exports = router;
