@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
+import { CheckoutProvider } from '../Frontend/order/CheckoutContext';  // Adjust the path as necessary
 
 // Frontend components
 
@@ -13,6 +15,7 @@ import Refund from '../Frontend/refund/refund';
 import RefundEdit from '../Frontend/refund/refundEdit';
 import RefundPolicy from '../Frontend/refund/refundPolicy';
 import Checkout from '../Frontend/order/Checkout';
+import CustomerOrders from '../Frontend/order/CustomerOrders';
 
 import MenBag from '../Frontend/Header/MenBag';
 import MenShoes from '../Frontend/Header/MenShoes';
@@ -66,6 +69,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <CartProvider>
         <Router>
+        <CheckoutProvider>
+
           <Routes>
 
             <Route element={<CheckLoginStatus/>}>
@@ -150,6 +155,7 @@ function App() {
               <Route path='supplierreg' element={<SupplierReg />} />
               <Route path='supplierstock' element={<SupplierStok />} />
               <Route path='OrderTable' element={<OrderTable />} />
+              <Route path='coupon' element={<AdminDashboard />} />
               <Route path='OrderDetails/:orderId' element={<OrderDetails />} />
               <Route path='Shipping' element={<ShippingMethodManager />} />
 
@@ -164,6 +170,7 @@ function App() {
             <Route path='/product/:id' element={<Product />} />
             <Route path='/cart' element={<Cart />} />
             <Route path='/checkout' element={<Checkout />} />
+            <Route path='/CustomerOrders' element={<CustomerOrders />} />
             <Route path='/refund' element={<Refund />} />
             <Route path='/refundedit' element={<RefundEdit />} />
             <Route path='/refundpolicy' element={<RefundPolicy />} />
@@ -177,6 +184,8 @@ function App() {
 
             
           </Routes>
+          </CheckoutProvider>
+
         </Router>
       </CartProvider>
     </QueryClientProvider>

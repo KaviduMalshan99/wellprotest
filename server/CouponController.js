@@ -18,6 +18,7 @@ const validateCoupon = async (req, res) => {
         if (!coupon) {
             return res.status(404).json({ message: "Coupon not found or not valid for your country." });
         }
+        await deactivateCoupon({ code }); // Assuming deactivateCoupon accepts an object with code
         res.json(coupon);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -25,16 +26,15 @@ const validateCoupon = async (req, res) => {
 };
 
 // New method to deactivate the coupon once the order is successfully placed
-const deactivateCoupon = async (req, res) => {
-    const { code } = req.body;
+const deactivateCoupon = async ({ code }) => {
     try {
         const coupon = await Coupon.findOneAndUpdate({ code }, { isActive: false }, { new: true });
         if (!coupon) {
-            return res.status(404).send({ message: "Coupon not found." });
+            return { success: false, message: "Coupon not found." };
         }
-        res.send(coupon);
+        return { success: true, coupon };
     } catch (error) {
-        res.status(500).send(error);
+        return { success: false, error: error.message };
     }
 };
 

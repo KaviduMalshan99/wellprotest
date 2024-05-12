@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema({
         type: Date,
         default: Date.now // Automatically set orderDate to current date and time when an order is created
     },
-    UserId:Number,
+    customerId:Number,
     ContactStatus: {
         type:String,
         default : "Not contacted",
@@ -34,7 +34,7 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     contactNumber: {
-        type: String,
+        type: Number,
         required: true
     },
     State: {
@@ -64,11 +64,11 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     couponCode: String,
-    productName: {
+    ProductName: {
         type: String,
         required: true
     },
-    productId: {
+    id: {
         type: String,
         required: true
     },
@@ -95,7 +95,7 @@ const orderSchema = new mongoose.Schema({
         required: true,
         min: [0, 'Total must be a non-negative number'] // Ensuring total cannot be negative
     },
-    imageUrl: String,
+    image: [String],
     Status: {
         type: String,
         default: 'pending'

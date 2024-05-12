@@ -2,12 +2,7 @@ const express = require('express');
 const router = express.Router();
 const contraller = require('./contraller');
 const { route } = require('./app');
-
-
-
-
 const { addCoupon, validateCoupon, getAllCoupons,deactivateCoupon } = require('./CouponController');
-
 const catagoryContraller = require('./CatagoryController');
 const customerContraller = require('./CustomerController');
 const orderContraller = require('./OrderController');
@@ -65,6 +60,8 @@ router.post('/addOrder',orderContraller.addOrder);
 router.put('./updateOrder',orderContraller.updateOrder);
 router.delete('/deleteOrder/:orderId',orderContraller.deleteOrder);
 router.get('/getOrder/:orderId',orderContraller.getOrderById);
+router.get('/orders/customer/:customerId', orderContraller.getOrdersByCustomerId); // This should match the endpoint you call in your React component.
+
 
 //product
 router.get('/products',productContraller.getProducts);

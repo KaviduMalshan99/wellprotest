@@ -17,6 +17,7 @@ const getOrders = (req, res, next) => {
 
 const addOrder = (req, res, next) => {
     const {
+        customerId,
         country,
         email,
         firstName,
@@ -31,14 +32,14 @@ const addOrder = (req, res, next) => {
         shippingMethod,
         paymentMethod,
         couponCode,
-        productName,
-        productId,
+        ProductName,
+        id,
         quantity,
         size,
         color,
         price,
         total,
-        imageUrl,
+        image,
         Status,
         ContactStatus 
     } = req.body;
@@ -52,6 +53,7 @@ const addOrder = (req, res, next) => {
     const order = new Order({
         orderId,
         orderDate,
+        customerId,
         country,
         email,
         firstName,
@@ -66,28 +68,32 @@ const addOrder = (req, res, next) => {
         shippingMethod,
         paymentMethod,
         couponCode,
-        productName,
-        productId,
+        ProductName,
+        id,
         quantity,
         size,
         color,
         price,
         total,
-        imageUrl,
+        image,
         Status,
         ContactStatus 
     });
 
-   order.save()
+    order.save()
     .then(order => {
-        sendEmail(order.toObject())  // Convert Mongoose model instance to a JS object
+        sendEmail(order.toObject())
             .then(() => res.status(201).json({ message: "Order placed and email sent!", order }))
             .catch(emailError => {
                 console.error("Email send error:", emailError);
                 res.status(201).json({ message: "Order placed but email could not be sent", order });
             });
     })
-    .catch(error => res.status(500).json({ error: error.message }));
+    .catch(error => {
+        console.error("Database save error:", error);
+        res.status(500).json({ error: "Failed to save order", details: error.toString() });
+    });
+
 
 };
 
@@ -129,4 +135,15 @@ const getOrderById = async (req, res, next) => {
     }
 };
 
-module.exports = { getOrders, addOrder, updateOrder, deleteOrder, getOrderById };
+// Function to fetch orders by customer ID
+const getOrdersByCustomerId = async (req, res) => {
+    const { customerId } = req.params;
+    try {
+        const orders = await Order.find({ customerId }).sort({ orderDate: -1 });
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = { getOrders, addOrder, updateOrder, deleteOrder, getOrderById, getOrdersByCustomerId };

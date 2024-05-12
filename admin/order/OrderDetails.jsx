@@ -82,17 +82,17 @@ const OrderDetails = () => {
 
                         {/* Display additional details */}
                         <label>Product Image</label>
-                        {orderDetails.imageUrl ? (
-                            <img src={orderDetails.imageUrl} alt="Product" style={{ maxWidth: '200px' }} />
+                        {orderDetails.image ? (
+                            <img src={orderDetails.image} alt="Product" style={{ maxWidth: '200px' }} />
                         ) : (
                             <p>No image available</p>
                         )}
 
                         <label>Product Name:</label>
-                        <input type="text" name="productName" value={orderDetails.productName} readOnly />
+                        <input type="text" name="productName" value={orderDetails.ProductName} readOnly />
 
                         <label>Product ID:</label>
-                        <input type="text" name="productId" value={orderDetails.productId} readOnly />
+                        <input type="text" name="productId" value={orderDetails.id} readOnly />
 
                         <label>Quantity:</label>
                         <input type="text" name="quantity" value={orderDetails.quantity} readOnly />
