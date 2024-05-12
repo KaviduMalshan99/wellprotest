@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import Footer from '../Footer/Footer'
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './refundNow.css';
 import { useNavigate, Link } from 'react-router-dom';
-import Footer from '../Footer/Footer';
 
 const Refund = () => {
     const [newRefund, setNewRefund] = useState({ orderId: '', customerName: '', customerEmail: '', reason: '', imgUrls: [] });
