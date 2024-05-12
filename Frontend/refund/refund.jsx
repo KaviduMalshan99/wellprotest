@@ -10,7 +10,7 @@ import Header from '../Header/Header';
 
 
 const Refund = () => {
-    const [newRefund, setNewRefund] = useState({ orderId: '',  productId: '', customerName: '', customerEmail: '', reason: '', imgUrls: [] });
+    const [newRefund, setNewRefund] = useState({ orderId: '',  id: '', customerName: '', customerEmail: '', reason: '', imgUrls: [] });
     const [selectedImage, setSelectedImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
     const [errors, setErrors] = useState({});
@@ -120,7 +120,7 @@ const Refund = () => {
             axios.post('http://localhost:3001/api/addrefund', newRefund)
                 .then(response => {
                     toast.success('Refund added successfully!');
-                    setNewRefund({ orderId: '', productId: '', customerName: '', customerEmail: '', reason: '', imgUrls: [] });
+                    setNewRefund({ orderId: '', id: '', customerName: '', customerEmail: '', reason: '', imgUrls: [] });
                     navigate(`/refundedit/${newRefund.orderId}`);
                 })
                 .catch(error => {
@@ -169,9 +169,9 @@ const Refund = () => {
                                         <div className="rnmcontit">Product ID</div>
                                     </td>
                                     <td className="rnmconttd">
-                                        <input type="text" className="rnmconinp" name="productId" placeholder="Enter Product ID" value={newRefund.productId} onChange={handleInputChange} required/>
-                                        {errors.orderId && (
-                                          <div className="error-messager">{errors.productId}</div>
+                                        <input type="text" className="rnmconinp" name="id" placeholder="Enter Product ID" value={newRefund.id} onChange={handleInputChange} required/>
+                                        {errors.id && (
+                                          <div className="error-messager">{errors.id}</div>
                                         )}
                                     </td>
                                 </tr>
