@@ -36,7 +36,9 @@
 }
 
 /* Adjust the width and height of the box */
+/* Adjust the width and height of the box */
 .box {
+    position: relative;
     flex: 0 0 calc(20% - 20px); 
     margin-bottom: 40px;
     margin-right: 55px; 
@@ -47,16 +49,7 @@
 .box img {
     border-radius: 10px;
     width: 250px;
-    height: 300px
-}
-
-.overlay {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    margin-top: -180px;
-    opacity: 0;
-    gap: 5px;
+    height: 300px;
 }
 
 .overlay i,
@@ -79,41 +72,58 @@
 
 .overlay2 {
     position: absolute;
-    margin-top: -70px;
+    top: 38.2%;
+    left: 57.8%;
+    transform: translate(-50%, -50%);
     opacity: 0;
-    font-size: 18px;
     cursor: pointer;
+    transition: opacity 0.3s ease;
 }
 
-.overlay2 a {
+.overlay3 a {
     text-decoration: none;
     color: black;
 }
 
-.overlay2 p {
+.overlay3 p {
+    position: absolute;
+    top: 60%;
+    left: 60%;
+    transform: translateX(-50%);
     padding: 7px 20px;
     background-color: #fff;
     border-radius: 5px;
-    margin-left: 55px;
     font-weight: 500;
+    z-index: 1; 
+    width: 100px;
+    text-align: center;
 }
 
-.overlay2 p:hover {
+.overlay3 {
+    opacity: 0;
+}
+
+.box:hover .overlay3 {
+    opacity: 1;
+}
+
+.box:hover .overlay2 {
+    opacity: 1;
+}
+
+.overlay2 img {
+    width: 252px;
+    height: 302px;
+    object-fit: cover;
+    border-radius: 10px; 
+}
+
+.overlay3 p:hover {
     background-color: black;
     color: #fff;
+    display: block;
 }
 
-.imgage:hover .overlay {
-    opacity: 1;
-    margin-left: 1%;
-    transition: 0.7s;
-}
-
-.imgage:hover .overlay2 {
-    opacity: 1;
-    margin-bottom: 5%;
-    transition: 0.7s;
-}
 
 .paymentsimg {
     text-align: left;

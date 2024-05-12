@@ -41,9 +41,6 @@ app.use(cors());  //resourse share karanna denawa back end to frontend
 app.use(express.json());   //data json file walata convert karanwa
 app.use(express.static('public'));
 
-// app.use(cors({
-//     origin: 'http://localhost:5173'
-//   }));
   
 
 const uri = 'mongodb+srv://wellwornsl:wellwornsl123@wellwornsl.ytwnfha.mongodb.net/test?retryWrites=true&w=majority';
@@ -122,7 +119,7 @@ app.post('/sendemail', async (req, res) => {
     });
 
     let mailOptions = {
-        from: 'nirmalsubashana3@gmail.com',
+        from: '"WellWorn Private Limited" <nirmalsubashana3@gmail.com>',
         to: email,
         subject: subject,
         text: message

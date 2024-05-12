@@ -7,10 +7,13 @@ import Koko from '../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from './Header/Header';
+import LOGOO from '../src/assets/logoorange.png'
+import { PropagateLoader } from 'react-spinners';
 
 import Footer from './Footer/Footer';
 
 const Women = () => {
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -34,6 +37,7 @@ const Women = () => {
         console.log('Filtered Data:', filteredData); // Log filtered data
         
         setData(filteredData);
+        setTimeout(() => setLoading(false),2000);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -108,6 +112,17 @@ useEffect(() => {
 
 
   return (
+    <>
+    {loading && (
+      <div className="loader-container">
+        <div className="loader-overlay">
+          <img src={LOGOO} alt="Logo" className="loader-logo" />
+          <PropagateLoader color={'#ff3c00'} loading={true} />
+        </div>
+      </div>
+    )}
+
+    {!loading && (
     <div>
       <Header/>
       <p className='menmain'>SHOP WOMENS</p>
@@ -261,11 +276,12 @@ useEffect(() => {
             <div className="box" key={record.ProductId}>
               <div className="imgage">
                 <img src={record.ImgUrls[0]} alt="" />
-                <div className="overlay">
-                  <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
-                </div>
+                
                 <div className="overlay2">
-                  <Link to={`/product/${record.ProductId}`}><p>VIEW MORE</p></Link>
+                  <img src={record.ImgUrls[1]} alt="" />
+                </div>
+                <div className="overlay3">
+                <Link to={`/product/${record.ProductId}`}><p >VIEW MORE</p></Link>
                 </div>
               </div>
               <div className="informations">
@@ -291,6 +307,8 @@ useEffect(() => {
 
       <Footer/>
     </div>
+    )}
+    </>
   );
 };
 

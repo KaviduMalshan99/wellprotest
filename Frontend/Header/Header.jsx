@@ -1,11 +1,15 @@
-import './Header.css';
+
+import './Header.scss';
 import Logo from '../../src/assets/logo.png';
 import { Link } from 'react-router-dom';
 import { useCart } from '../CartContext';
 
+
 const Header = () => {
-    const { state } = useCart();
-    const numberOfDistinctProducts = state.items.length;
+    
+    const { cartItems } = useCart(); // Use the cart context
+    const numberOfDistinctProducts = cartItems.length;
+    
 
     return (
         <div className="mmainheader">
@@ -14,10 +18,27 @@ const Header = () => {
             </div>
             <div className="hcenter-section">
                 <ul>
-                    <li><Link to='/' className="hhui2">Home</Link></li>
-                    <li><Link to='/men' className="hhui2">Men</Link></li>
-                    <li><Link to="/women" className="hhui2">Women</Link></li>
-                    <li><Link to='/men' className="hhex">Exclusive</Link></li>
+
+                    <li>
+                        <Link to='/' className="hhui2">Home</Link>
+                    </li>
+                    <li className="dropdown">
+                        <Link to='/men' className="hhui2">Men</Link>
+                        <div className="dropdown-content">
+                            <Link to='/menbag'>Bags</Link>
+                            <Link to='/menshoes'>Shoes</Link>
+                        </div>
+                    </li>
+                    <li className="dropdown">
+                        <Link to="/women" className="hhui2">Women</Link>
+                        <div className="dropdown-content">
+                            <Link to='/womenbags'>Bags</Link>
+                            <Link to='/womenshoes'>Shoes</Link>
+                        </div>
+                    </li>
+                    <li>
+                        <Link to='/men' className="hhex">Exclusive</Link>
+                    </li>
                 </ul>
             </div>
             <div className="hright-section">
@@ -28,10 +49,14 @@ const Header = () => {
                             <i className="fa fa-search"></i>
                         </form>
                     </li>
-                    <li><div className="hhui22"><Link to="/login" onClick={() => console.log('Login link clicked')}>
+
+                    <li>
+                        <div className="hhui22">
+                            <Link to="/login" onClick={() => console.log('Login link clicked')}>
                                 <i className="far fa-user-circle fa-xl" style={{ color: '#ffffff' }}></i>
                             </Link>
-                            </div></li>
+                        </div>
+                    </li>
                     <li>
                         <div className="hhui22">
                             <Link to='/cart'>

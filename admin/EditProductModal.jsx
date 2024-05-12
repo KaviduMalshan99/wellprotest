@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import './EditProductModel.scss';
+import { height } from '@mui/system';
 
 const resizeAndConvertToBase64 = (file, maxWidth, maxHeight) => {
   return new Promise((resolve, reject) => {
@@ -269,15 +270,7 @@ const EditProductModal = ({ closeModal, product }) => {
     console.log("Updated Sizes after removal:", newSizes);
   };
 
-  
 
-  const handleEdit = (variation, e) => {
-    e.preventDefault();
-    setEditedVariation({
-      ...variation,
-      image: variation.images.length > 0 ? variation.images[0] : null
-    });
-  };
 
   return (
     <div className="editModelContainer">
@@ -347,7 +340,7 @@ const EditProductModal = ({ closeModal, product }) => {
             </div>
           </div>
 
-          <div className="mainbox">
+          <div className="variantslect">
             <div>
               <label>4) Select Variant Type:</label>
               <select value={productData.VariantType} onChange={handleVariantChange}>
@@ -359,29 +352,29 @@ const EditProductModal = ({ closeModal, product }) => {
           </div>
 
           {productData.VariantType && (
-            <div className="mainbox">
+            <div className="manysizemanycolor">
               {productData.VariantType === "Many Sizes with Many Colors" && (
                 <div>
                   <label>5) Many Sizes with Many Colors:</label>
                   <div>
-                    <label>Add Size:</label>
+                    <label className='q1'>Add Size:</label>
                     <input type="text" value={sizeInput} onChange={(e) => setSizeInput(e.target.value)} placeholder="Enter size" />
-                    <label>Color Name:</label>
+                    <label className='q1'>Color Name:</label>
                     <input type="text" value={selectedColorName} onChange={(e) => setSelectedColorName(e.target.value)} placeholder="Enter color name" />
-                    <label>Available Count:</label>
+                    <label className='q1'>Available Count:</label>
                     <input type="number" value={selectedColorCount} onChange={(e) => setSelectedColorCount(parseInt(e.target.value, 10))} placeholder="Enter available count" />
-                    <label>Price:</label>
+                    <label className='q1'>Price:</label>
                     <input type="number" value={selectedColorPrice} onChange={(e) => setSelectedColorPrice(parseFloat(e.target.value))} placeholder="Enter price" />
                     <input type="file" onChange={handleAddImage} accept="image/*" multiple />
                     <div>
                       {selectedColorImages.map((image, index) => (
                         <div key={index}>
-                          <img src={image} alt={`Color Image ${index}`} />
+                          <img src={image} alt={`Color Image ${index}`} style={{height:'150px',width:'150px', marginLeft:'45%'}} />
                           <button onClick={() => handleRemoveImage(index)}>Remove Image</button>
                         </div>
                       ))}
                     </div>
-                    <button onClick={handleAddSize}>Add Size and Color Details</button>
+                    <button onClick={handleAddSize}>Add Variant</button>
                   </div>
 
 
@@ -414,9 +407,9 @@ const EditProductModal = ({ closeModal, product }) => {
                 </div>
               )}
               {productData.VariantType === "Only Colors" && (
-                <div>
+                <div className='onlycolors'>
                   <label>5) Only Colors:</label>
-                  <div>
+                  <div className='onlycolorsec'>
                     <label>Color Name:</label>
                     <input
                       type="text"
@@ -443,7 +436,7 @@ const EditProductModal = ({ closeModal, product }) => {
                     <div>
                       {selectedColorImages.map((image, index) => (
                         <div key={index}>
-                          <img src={image} alt={`Color Image ${index}`} />
+                          <img src={image} alt={`Color Image ${index}`} style={{height:'50px',width:'50px',marginLeft:'45%'}} />
                           <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
                         </div>
                       ))}
@@ -503,28 +496,32 @@ const EditProductModal = ({ closeModal, product }) => {
 
 
 
-          <div className="mainbox">
+          <div className="mainbox--quickdelivary">
             <div>
               <label>6) Quick Delivery Available:</label>
               <input type="checkbox" name="QuickDeliveryAvailable" checked={editedProduct.QuickDeliveryAvailable} onChange={handleCheckboxChange} />
             </div>
           </div>
 
-          <div className="mainbox">
+          <div className="mainbox-areas">
             <div>
               <label>7) Areas:</label>
-              <div className='catdiv'>
-                <select value={selectedOption} onChange={handleOptionChange} >
-                  <option value="" className='optcat'>Select Areas</option>
-                  <option value="Sri Lanka">Sri Lanka</option>
-                  <option value="International">International</option>
-                  <option value="Exclusive">Exclusive</option>
-                </select>
+              <div className='catdiv'> 
+                <div>
+                  <select value={selectedOption} onChange={handleOptionChange} >
+                    <option value="" className='optcat'>Select Areas</option>
+                    <option value="Sri Lanka">Sri Lanka</option>
+                    <option value="International">International</option>
+                    <option value="Exclusive">Exclusive</option>
+                  </select>
+                </div>
+                <div>
                 <button className='catbtn' type="button" onClick={handleAddOption}>Add Option</button>
+                </div>
               </div>
             </div>
 
-            <div className='selectedclass'>
+            <div className='selectedareas'>
               {/* Display selected options */}
               <ul>
                 {selectedOptions.map((option, index) => (
@@ -544,7 +541,7 @@ const EditProductModal = ({ closeModal, product }) => {
             </div>
           </div>
 
-          <div className="mainbox">
+          <div className="mainbox-desc">
             <div>
               <label>10) Default Images:</label>
               <div className='imagess'>

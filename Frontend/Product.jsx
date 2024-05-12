@@ -7,9 +7,17 @@ import Footer from './Footer/Footer';
 import Header from './Header/Header';
 import { useCart } from './CartContext';
 
+import LOGOO from '../src/assets/logoorange.png'
+import { PropagateLoader } from 'react-spinners'; 
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useAuthStore } from "../src/store/useAuthStore";
+
+
 const Product = () => {
+  const [loading, setLoading] = useState(true);
   const { id } = useParams(); 
-  const {dispatch} =useCart();
+  const {refreshCart} =useCart();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
@@ -18,6 +26,11 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [availableColors, setAvailableColors] = useState([]);
   const [originalPrice, setOriginalPrice] = useState(null);
+  const { user } = useAuthStore(); 
+
+  const userId = user?.UserId;
+  
+  
 
   useEffect(() => {
     const fetchProductById = async (productId) => {
@@ -31,7 +44,11 @@ const Product = () => {
 
         setProduct(productData); // Update the state with fetched product data
         console.log('Product Details:', productData); // Log product details to console
-        
+
+        setTimeout(() => setLoading(false),2000);
+        console.log('Available Sizes:', productData.Sizes);
+        console.log('Available Colors:', productData.Colors);
+
       } catch (error) {
         console.error('Error fetching product:', error);
         // Handle the error as needed, e.g., display an error message
@@ -63,6 +80,7 @@ const Product = () => {
       .filter(variation => variation.size === size)
       .map(variation => variation.color);
     setAvailableColors(colors);
+
   };
 
   const handleColorClick = (color) => {
@@ -84,17 +102,17 @@ const Product = () => {
     }
   };
   
-  
-  
-
-
 
   if (!product) {
     return <div>Loading...</div>;
   }
 
   const handleBuyNow = () => {
-    const checkoutUrl = `/checkout?id=${id}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${product.ImgUrls[0]}`;
+    // Use the selectedImage if available, otherwise fallback to the first image in the array
+    const finalImageUrl = selectedImage || product.ImgUrls[0];
+    const encodedImageUrl = encodeURIComponent(finalImageUrl);
+    const checkoutUrl = `/checkout?id=${id}&Productname=${product.ProductName}&quantity=${quantity}&size=${selectedSize}&color=${selectedColor}&price=${product.Price}&image=${encodedImageUrl}`;
+
     navigate(checkoutUrl);
   };
 
@@ -132,38 +150,68 @@ const Product = () => {
     }
   };
 
-
+  
 
   const handleAddToCart = () => {
+    // Validation
+    
+
     if (!selectedColor) {
-      alert("Please select a color.");
-      return;
+        toast.error("Please select a color.");
+        return;
     }
-    // Find the variation that matches the selected color and size (if size is provided).
+
+    // Find the variation that matches the selected color and size
     const selectedVariation = product.Variations.find(variation =>
-      variation.name === selectedColor && (selectedSize ? variation.size === selectedSize : true)
-    );
+      variation.name === selectedColor && (!product.Variations.some(v => v.size) || variation.size === selectedSize)
+  );
 
     if (!selectedVariation) {
-      alert("Selected variation not available.");
-      return;
+        toast.error("Selected variation not available.");
+        return;
     }
 
-    dispatch({
-      type: 'ADD_ITEM',
-      item: {
-        id: product.ProductId,
+    if (selectedVariation.count === 0) {
+        toast.error("This product is currently out of stock.");
+        return;
+    }
+
+    const randomNumber = Math.floor(10000 + Math.random() * 90000); // Generate a random 5-digit number
+    const cartId = `CART_${randomNumber}`;
+
+
+    // Prepare the item object based on the selected variation
+    const itemToAdd = {
+        cartId,
+        productId: product._id,
         name: product.ProductName,
         price: parseFloat(selectedVariation.price),
-        image: selectedVariation.images[0],  
-        size: selectedVariation.size || "Free Size",  
+        image: selectedVariation.images[0],
+        size: selectedSize,
         color: selectedColor,
         quantity: quantity,
-        availableCount: selectedVariation.count
-      }
-    });
-    navigate('/cart');
-  };
+        availableCount: selectedVariation.count,
+        customerId: userId  
+    };
+
+    console.log("product : ",itemToAdd)
+
+    axios.post('http://localhost:3001/api/cart/add', itemToAdd)
+        .then(response => {
+            if (response.status === 200) {
+                toast.success('Product added to cart successfully');
+                refreshCart();
+            } else {
+                toast.error('Failed to add product to cart');
+            }
+        })
+        .catch(error => {
+            console.error('Failed to add product to cart:', error);
+            toast.error('Failed to add product to cart');
+        });
+};
+
+  
 
   
   
@@ -173,10 +221,24 @@ const Product = () => {
     <div>
 
       <Header/>
+      
+      
       <p className='main1'>
         <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link>
         <i className="fas fa-angle-right" /> <Link to="/product/:id">{product.ProductName} </Link>
       </p>
+
+
+      {loading && (
+      <div className="loader-container">
+        <div className="loader-overlay">
+          <img src={LOGOO} alt="Logo" className="loader-logo" />
+          <PropagateLoader color={'#ff3c00'} loading={true} />
+        </div>
+      </div>
+    )}
+
+      {!loading && (
 
       <div className="product-container">
         {/* Left Section */}
@@ -204,6 +266,8 @@ const Product = () => {
           <p className='product_price'>LKR.{getPriceRange()}</p>
 
 
+
+
           <div className="ratings1">
             <div className="stars1">
               {Array.from({ length: product.rating }, (_, index) => (
@@ -214,6 +278,64 @@ const Product = () => {
             </div>
             <span>({product.reviews} Reviews)</span>
           </div>
+
+          
+      
+         
+          {product.QuickDeliveryAvailable && (
+            <div className="quickdelivery">
+              <label>Quick Delivery Available - This product can be delivered within 1 week.</label>
+              
+            </div>
+          )}
+
+{product.Variations && product.Variations.some(variation => variation.size) && (
+  <div className="sizebutton">
+    <p>Sizes</p>
+    {product.Variations
+      .reduce((uniqueSizes, variation) => {
+        if (!uniqueSizes.includes(variation.size)) {
+          uniqueSizes.push(variation.size);
+        }
+        return uniqueSizes;
+      }, [])
+      .map((size, index) => (
+        <button
+          key={index}
+          className={selectedSize === size ? 'selected' : ''}
+          onClick={() => handleSizeClick(size)}
+        >
+          {size}
+        </button>
+      ))}
+    {selectedSize && (
+      <button className="clear-button" onClick={() => setSelectedSize(null)}>
+        Clear Size
+      </button>
+    )}
+  </div>
+)}
+
+
+{selectedSize && (
+  <div className="color-section">
+    <p>Colors</p>
+    {product.Variations
+      .filter(variation => variation.size === selectedSize)
+      .map((variation, index) => (
+        <button
+          key={index}
+          className={selectedColor === variation.name ? 'selected' : ''}
+          onClick={() => handleColorClick(variation.name)}
+          value={variation.name}
+        >
+          {variation.name}
+        </button>
+      ))}
+  </div>
+)}
+
+
 
           
       
@@ -297,11 +419,15 @@ const Product = () => {
 
 
 
+
+
           <div className="abs">
             {/* Add to Cart Button */}
             <div className="addcart">
               <button onClick={handleAddToCart}>Add to Cart</button>
             </div>
+            <ToastContainer />
+
 
             {/* Buy Now Button */}
             <div className="buyNow">
@@ -311,13 +437,12 @@ const Product = () => {
         </div>
       </div>
 
-      <hr/>
-
-      <br/><br/><br/>
+      )}
 
   
 
       <Footer/>
+      
     </div>
   );
 };
