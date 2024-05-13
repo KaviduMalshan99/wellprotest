@@ -1,6 +1,6 @@
-
 import './Header.scss';
 import Logo from '../../src/assets/logo.png';
+
 import { Link } from 'react-router-dom';
 import { useCart } from '../CartContext';
 import Menbag from '../../src/assets/menbag.png'
@@ -8,12 +8,24 @@ import MenShoe from '../../src/assets/Menshoe.png'
 import WomenBag from '../../src/assets/womenbag.png'
 import WomenShoe from '../../src/assets/womenshoe.png'
 
+import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '../CartContext';
+import { useAuthStore } from '../../src/store/useAuthStore';
 
 const Header = () => {
-
-    const { cartItems } = useCart(); // Use the cart context
+    const { cartItems } = useCart();
     const numberOfDistinctProducts = cartItems.length;
+    const navigate = useNavigate();
+    const { isAuthenticated, user } = useAuthStore();  // Extracting user info from the store
 
+    const handleUserIconClick = () => {
+        // Redirect based on authentication status
+        if (isAuthenticated) {
+            navigate('/profilee');  // Adjust this path if necessary
+        } else {
+            navigate('/login');
+        }
+    };
 
     return (
         <div className="mmainheader">
@@ -22,10 +34,7 @@ const Header = () => {
             </div>
             <div className="hcenter-section">
                 <ul>
-
-                    <li>
-                        <Link to='/' className="hhui2">Home</Link>
-                    </li>
+                    <li><Link to='/' className="hhui2">Home</Link></li>
                     <li className="dropdown">
                         <Link to='/men' className="hhui2">Men</Link>
                         <div className="dropdown-content">
@@ -64,9 +73,7 @@ const Header = () => {
                             
                         </div>
                     </li>
-                    <li>
-                        <Link to='/men' className="hhex">Exclusive</Link>
-                    </li>
+                    <li><Link to='/men' className="hhex">Exclusive</Link></li>
                 </ul>
             </div>
             <div className="hright-section">
@@ -77,12 +84,12 @@ const Header = () => {
                             <i className="fa fa-search"></i>
                         </form>
                     </li>
-
                     <li>
-                        <div className="hhui22">
-                            <Link to="/login" onClick={() => console.log('Login link clicked')}>
+                        <div className="hhui22" onClick={handleUserIconClick}>
+                            {isAuthenticated && user?.profileUrl ?
+                                <img src={user.profileUrl} alt="User" style={{ width: '30px', height: '30px', borderRadius: '50%' }} /> :
                                 <i className="far fa-user-circle fa-xl" style={{ color: '#ffffff' }}></i>
-                            </Link>
+                            }
                         </div>
                     </li>
                     <li>

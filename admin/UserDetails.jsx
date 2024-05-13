@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import profileImage from '../src/assets/profile.png';
@@ -11,7 +11,7 @@ const UserDetails = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/customer/${id}`);
+        const response = await axios.get(`http://localhost:3001/api/customer/${UserId}`);
         setUser(response.data.customer);
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -30,10 +30,10 @@ const UserDetails = () => {
       <div className="header">
         <h1>User Details</h1>
         <Link to="/users" className="backButton">
-        <i className='fa-solid fa-angles-left'/> 
+          <i className='fa-solid fa-angles-left' />
         </Link>
       </div>
-      
+
       <h3>Main Details</h3>
       {/* Main Profile Section */}
       <div className="mainProfileSection">
@@ -44,7 +44,7 @@ const UserDetails = () => {
             className="profileImage"
           />
         </div>
-        
+
         <div className="profileDetails">
           <div className='d1'>
             <p>User Id:  </p>
@@ -55,11 +55,11 @@ const UserDetails = () => {
           </div>
 
           <div className="d2">
-            <input type="text"  value={user.UserId || 'No details uploaded'} /> 
-            <input type="text"  value={`${user.FirstName || 'No details uploaded'} ${user.Lastname || 'No details uploaded'}`} />
-            <input type="text" value={user.Email || 'No details uploaded'} /> 
-            <input type="text"  value={user.Contact || 'No details uploaded'} /> 
-            <input type="text"  value={user.Password || 'No details uploaded'}/>
+            <input type="text" value={user.UserId || 'No details uploaded'} />
+            <input type="text" value={`${user.FirstName || 'No details uploaded'} ${user.Lastname || 'No details uploaded'}`} />
+            <input type="text" value={user.Email || 'No details uploaded'} />
+            <input type="text" value={user.Contact || 'No details uploaded'} />
+            <input type="text" value={user.Password || 'No details uploaded'} />
           </div>
         </div>
       </div>
