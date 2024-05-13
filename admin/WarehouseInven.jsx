@@ -52,8 +52,8 @@ function WarehouseInvDetails() {
         // Send an email notification if stock quantity is less than 25% of max capacity
         const threshold = maxQuantity * 0.25;
         if (stock.stockquantity < threshold) {
-          sendNotificationEmail(stock.productId, stock.stockquantity);
-          sendNotification(stock.productId, stock.stockquantity);
+         // sendNotificationEmail(stock.productId, stock.stockquantity);
+          sendNotification(stock.productId, stock.stockquantity,stock.productName, stock.sizes, stock.colors);
         }
   
         // Display a toast message if the stock exceeds the maxQuantity
@@ -68,12 +68,15 @@ function WarehouseInvDetails() {
     });
   }, [stocks]);
 
-  const sendNotification = (productId, stockQty) => {
+  const sendNotification = (productId, stockQty,productName, sizes,colors) => {
     const notificationData = {
       warehouseId: id,
       productId,
       stockQty,
-      message: `Product ID: ${productId}, Warehouse ID: ${id} => has low stock: ${stockQty} items left!`
+      productName,
+      sizes,
+      colors,
+      message: `Product ID: ${productId}, product-Name:${productName}, product-size: ${sizes}, product-color: ${colors}, Warehouse ID: ${id} => has low stock: ${stockQty} items left!`
     };
   
     // Post the notification data to the backend
@@ -92,17 +95,17 @@ function WarehouseInvDetails() {
   
   
 
-  const sendNotificationEmail = (id, amount) => {
+  //const sendNotificationEmail = (id, amount) => {
     // Add your EmailJS credentials and parameter details
-    emailjs.send("service_smyt8zd", "template_n96sx1q", {
-      product_id: id,
-      stock_level: amount,
-      to_name: "Warehouse Manager",
-      to_email: "wellwornsl@gmail.com",
-    }, "b_3EbwZJHsdFLGsRI")
-    .then(response => console.log('Email successfully sent!', response.status, response.text))
-    .catch(error => console.error('Failed to send email.', error));
-  };
+    //emailjs.send("service_smyt8zd", "template_n96sx1q", {
+     // product_id: id,
+     // stock_level: amount,
+     // to_name: "Warehouse Manager",
+     // to_email: "wellwornsl@gmail.com",
+   // }, "b_3EbwZJHsdFLGsRI")
+    //.then(response => console.log('Email successfully sent!', response.status, response.text))
+   // .catch(error => console.error('Failed to send email.', error));
+  //};
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
@@ -151,12 +154,12 @@ function WarehouseInvDetails() {
       <ToastContainer />
       <div className="wheinmt">
         <div className="whinmtit">WAREHOUSE SECTION
-          <Link to="/warehouse" className="whinbkbtn1">Go Warehouse Page</Link>
+          <Link to="/warehouse" className="whinbkbtn1">Warehouses</Link><Link to="/current-stock" className="whinbkbtn1">Current Stock</Link>
         </div>
       </div>
       <div className="whintitle">Inventory Details {id}</div>
       <div className="filter-container">
-        <select className="filter-select" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
+        <select className="whinsrch" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
           <option value="productId">ProductID</option>
           <option value="productName">Product Name</option>
           <option value="sizes">ProductSize</option>

@@ -14,10 +14,15 @@
     color: black;
     font-weight: 600;
 }
+.wraebtnset{
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+}
 
 .waddbtnplc {
     margin-top: 50px;
-    margin-left: 0px;
+    
 }
 
 .waddbtn {
@@ -73,11 +78,11 @@
 }
 
 .whtd {
-    border-radius: 10px 0 0 10px;
-    border-spacing: 0 40px;
+    
+    /* border-spacing: 0 40px; */
     text-align: center;
     width: 75%;
-    padding: 10px;
+    padding: 20px;
 }
 
 .whtd th {
@@ -92,7 +97,7 @@
     background: #b7dbff;
 }
 
-.whvim {
+.whvim {    
     font-size: 12px;
     padding: 20px 20px;
     border: transparent;

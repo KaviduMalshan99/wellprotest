@@ -149,17 +149,17 @@ const OrdersTable = () => {
   return (
     <div className="whinm">
       <div className="wmtitle">Order Section</div>
-      <div className="whintitle">Order Details <Link to="/warehouse" className="whinbkbtn1">Go Warehouse Page</Link></div>
+      <div className="whintitle">Order Details <Link to="/warehouse" className="whinbkbtn1">Warehouses</Link><Link to="/current-stock" className="whinbkbtn1">Current Stock</Link></div>
       <div className="filter-search-container">
         <input className="whinsrch" placeholder="Search..." value={searchTerm} onChange={handleSearchChange} />
-        <select className="filter-select" onChange={handleFilterChange}>
+        <select className="whinsrch" onChange={handleFilterChange}>
           <option value="orderId">Order ID</option>
           <option value="productId">Product ID</option>
           <option value="location">Location</option>
           <option value="status">Status</option>
           <option value="ContactStatus">Contact Status</option>
         </select>
-        <button className="whinorbtn" onClick={handleContactClick}>Contact Selected</button>
+        <button className="whinorbtn" onClick={handleContactClick}>Send Emails Selected</button>
       </div>
       
         <table className="whtt">
