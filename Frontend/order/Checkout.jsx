@@ -1,26 +1,33 @@
 import React, { useState, useEffect } from 'react'; // Add useEffect import
-import { useLocation,Link } from 'react-router-dom';
+import { useLocation,useNavigate  } from 'react-router-dom';
 import './paymentscss.scss';
 import axios from 'axios';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import koko from '../../src/assets/koko.png'
 import Webxpay from '../../src/assets/Webxpay-logo.jpg'
-
+import {useAuthStore} from "../../src/store/useAuthStore"
+import { useCheckout } from '../../Frontend/order/CheckoutContext';
+import { createRoot } from 'react-dom/client';
+import Letterhead from './Letterhead';  
+import OrderConfirmationModal from './Modal';
+import {PropagateLoader} from 'react-spinners';
+import LOGOO from '../../src/assets/logoorange.png'
 
 
 
 function Checkout() {
+  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const customerId = queryParams.get('UserId');
-  const productName = queryParams.get('Productname');
-  const productId = queryParams.get('id');
   const quantity = parseInt(queryParams.get('quantity'), 10);
-  const size = queryParams.get('size');
   const price = parseFloat(queryParams.get('price'));
-  const image = decodeURIComponent(queryParams.get('image'));
-  const color = queryParams.get('color');
+  const [orderPlaced, setOrderPlaced] = useState(false); // Ensure this state is correctly declared
+  const [loading,setLoading] = useState(true);
+  const {user} =useAuthStore();
+  const { checkoutData } = useCheckout();
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState({});
   const [subtotal, setSubtotal] = useState(0);
   const [shippingMethods, setShippingMethods] = useState([]);
@@ -31,14 +38,63 @@ function Checkout() {
   const [validationError, setValidationError] = useState('');
   const [discount, setDiscount] = useState(0);  // default discount
   const [total, setTotal] = useState(0);
-  const [orderPlaced, setOrderPlaced] = useState(false);
+  
+  const handleDownloadPDF = async () => {
+    const orderData = {
+      ...formData,
+      customer: user?.UserId,
+      id: checkoutData.id,
+      ProductName: checkoutData.ProductName,
+      quantity: checkoutData.quantity,
+      size: checkoutData.size,
+      color: checkoutData.color,
+      price: checkoutData.price,
+      image: checkoutData.image,
+      couponCode: couponCode,  // Include coupon code
+      discount: discount,
+      total: subtotal + (selectedShippingMethod ? selectedShippingMethod.price : 0) + discount
+    };
+
+    const element = document.createElement("div");
+    document.body.appendChild(element);
+
+    const root = createRoot(element);
+    root.render(<Letterhead order={orderData} />);
+
+    setTimeout(async () => {
+      const canvas = await html2canvas(element);
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, 'PNG', 0, 0);
+      pdf.save('order-confirmation.pdf');
+
+      ReactDOM.unmountComponentAtNode(element);
+      document.body.removeChild(element);
+    }, 500);
+  };
+
+  const handleContinueShopping = () => {
+    navigate('/');  // Adjust the path as necessary
+  };
+  useEffect(() => {
+    console.log("Received checkout data:", checkoutData); 
+    setTimeout(() => setLoading(false),2000);
+    if (!checkoutData.id) {
+      console.log("No data found, redirecting...");  // Debug log
+      navigate('/');
+    }
+  }, [checkoutData, navigate]);
+
+  const userId = user?.UserId;
+  console.log("customerid: ",userId);
+  
 
 
   const [formData, setFormData] = useState({
     country: '',
     email: '',
     firstName: '',
-    firstName: '',
+    lastName: '',
     contactNumber: '',
     State: '',
     address: '',
@@ -172,12 +228,33 @@ function Checkout() {
     'India': /^\d{10}$/
 };
 
+
+
+
+
+
 const handleProceedClick = async () => {
+  setIsLoading(true); // Start loading
+
+  try {
+    // Place your order submission logic here
+    console.log("Processing order...");
+    // Simulate a delay for async operation
+    setTimeout(() => {
+      console.log("Order processed");
+      setOrderPlaced(true);
+      setIsLoading(false);
+    }, 2000);
+  } catch (error) {
+    console.error("Failed to process order:", error);
+    setIsLoading(false);
+  }
+
 
   const newErrors = {};
   Object.keys(formData).forEach(key => {
       validateField(key, formData[key]);  // This will update the error state
-      if (errors[key]) {  // Check if there are existing errors
+      if (errors[key]) {
           newErrors[key] = errors[key];
       }
   });
@@ -185,9 +262,9 @@ const handleProceedClick = async () => {
   if (Object.keys(newErrors).length > 0) {
     setErrors(newErrors);
     alert('Please correct the errors before submitting.');
+    setIsLoading(false); // Stop loading if there are errors
     return;
-}
-  const contactNumberWithCode = getCountryCode(formData.country) + formData.contactNumber;
+  }
   const isValidContactNumber = countryContactNumberRegex[formData.country]?.test(formData.contactNumber);
   if (!isValidContactNumber) {
       setErrors(errors => ({ ...errors, contactNumber: `Please enter a valid contact number for ${formData.country}.` }));
@@ -234,34 +311,58 @@ const handleProceedClick = async () => {
 
 
     if (Object.keys(errors).every(key => !errors[key])) {
+
         const orderData = {
             ...formData,
-            contactNumber: getCountryCode(formData.country) + formData.contactNumber,
-            customerId: customerId,
-            productName: productName,
-            productId: productId,
-            quantity: quantity,
-            size: size,
-            color: color,
-            price: price,
-            total: total.toFixed(2),
-            imageUrl: image,
-            couponCode: couponCode 
+            // contactNumber: getCountryCode(formData.country) + formData.contactNumber,
+            customerId: user?.UserId,
+      id: checkoutData.id,
+      ProductName: checkoutData.ProductName,
+      quantity: checkoutData.quantity,
+      size: checkoutData.size,
+      color: checkoutData.color,
+      price: checkoutData.price,
+      image: checkoutData.image,
+      couponCode: couponCode,  // Include coupon code
+      discount: discount,
+      total: subtotal + (selectedShippingMethod ? selectedShippingMethod.price : 0) + discount
         };
 
-        try {
-            const response = await axios.post('http://localhost:3001/api/addOrder', orderData);
-            console.log("Order placed successfully", response.data);
+        axios.post('http://localhost:3001/api/addOrder', orderData)
+        .then(async response => {
+          console.log("Order placed successfully", response.data);
+          setOrderPlaced(true);
+          generatePDF(orderData);  // Pass orderData to the PDF generation function
+          if (couponCode) {
+                try {
+                    const deactivationResponse = await axios.post('http://localhost:3001/api/deactivateCoupon', { code: couponCode });
+                    console.log('Coupon deactivation:', deactivationResponse.data);
+                } catch (deactivationError) {
+                    console.error('Failed to deactivate coupon:', deactivationError.response.data);
+                }
+            }
             setValidationError('');
-            setOrderPlaced(true); // Set order placed to true on success
-            // Optionally clear the form or redirect the user
-        } catch (error) {
-            console.error('Error submitting order:', error);
-            setValidationError('Failed to submit order, please try again.');
-        }
+            setOrderPlaced(true);
+        })
+        .catch(error => {
+            console.error('Error submitting order:', error.response.data);
+            setValidationError('Failed to submit order. Error: ' + error.response.data.error);
+        });
     } else {
         alert('Please correct the errors before submitting.');
     }
+    setIsLoading(false); // Stop loading after order is processed or fails
+};
+
+const validateOrderData = () => {
+  const requiredFields = ['productName', 'productId', 'quantity', 'price', 'size', 'color'];
+  for (let field of requiredFields) {
+      if (!checkoutData[field]) {
+          console.error(`Validation error: Missing ${field}`);
+          return false;
+      }
+  }
+  return true;
 };
 
 useEffect(() => {
@@ -272,7 +373,7 @@ useEffect(() => {
         const firstMethod = response.data[0];
         setSelectedShippingMethod(firstMethod);
         setFormData(prev => ({ ...prev, shippingMethod: firstMethod.methodName }));
-        updateTotal(price * quantity, firstMethod.price);
+        updateTotal(checkoutData.price * checkoutData.quantity, firstMethod.price);
       }
     })
     .catch(err => console.error('Failed to fetch shipping methods', err));
@@ -305,130 +406,110 @@ const handleShippingChange = (method) => {
     }
   };
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
 
-    const tableColumn = ["Product Name", "Quantity", "Size", "Color", "Total"];
-    const tableRows = [];
-
-    // Single row for now; modify as necessary
-    tableRows.push([
-        productName,
-        quantity,
-        size,
-        color,
-        `LKR ${total.toFixed(2)}`
-    ]);
-
-    doc.autoTable(tableColumn, tableRows, { startY: 20 });
-    doc.text("Order Details", 14, 15);
-    doc.save(`order_${new Date().getTime()}.pdf`);
-};
-
-  return (
-    
-    <div className="checkout-container">
-            <Link to="/Men"><button type="button" className='bt01' >Home page</button></Link>
-
-      <div className="form-section">
-        <h2>Shipping Address</h2>
-        <div className="form-group">
-          <select name="country" value={formData.country} onChange={handleInputChange}>
-            <option value="">Select Country</option>
-            {countries.map((country, index) => (
-              <option key={index} value={country}>{country}</option>
-            ))}
-          </select>
-          {errors.country && <p className="error">{errors.country}</p>}
-        </div>
-        <div className="form-group">
-          <input type="email" name="email" placeholder='Email' value={formData.email} onChange={handleInputChange} required />
-          <p className="email-notice">This email will be used to send order confirmations and tracking updates.</p>
-          {errors.email && <p className="error">{errors.email}</p>}
-        </div>
-        <div className="name-group">
-          <div className="form-group half-width">
-            <input type="text" name="firstName" placeholder='First Name' value={formData.firstName} onChange={handleInputChange} required />
-            {errors.firstName && <p className="error">{errors.firstName}</p>}
-          </div>
-          <div className="form-group half-width">
-            <input type="text" name="lastName" placeholder='Last Name' value={formData.lastName} onChange={handleInputChange} required />
-            {errors.lastName && <p className="error">{errors.lastName}</p>}
-          </div>
-        </div>
-        <div className="form-group">
-          {/* Render input field with country code dynamically */}
-          <input 
-          type="tel"
-          name="contactNumber"
-          placeholder={formData.country ? `Enter contact number (${getCountryCode(formData.country)})` : 'Select a country first'}
-          value={getCountryCode(formData.country) + formData.contactNumber}
-          onChange={handleInputChange}
-          required
-          inputMode="numeric" // Ensures a numeric keyboard is displayed on mobile devices
-        />
-        {errors.contactNumber && <p className="error">{errors.contactNumber}</p>}
-
-        </div>
-        <div className="form-group">
-          <input type="text" name="State" placeholder='State / Province' value={formData.State} onChange={handleInputChange} required />
-          {errors.State && <p className="error">{errors.State}</p>}
-        </div>
-        <div className="form-group">
-          <input type="text" name="address" placeholder='Address' value={formData.address} onChange={handleInputChange} required />
-          {errors.address && <p className="error">{errors.address}</p>}
-        </div>
-        <div className="form-group">
-          <input type="text" name="address02" placeholder='Address-line 02 (Apartment,suite,etc.)' value={formData.address2} onChange={handleInputChange} />
-          {errors.address02 && <p className="error">{errors.address02}</p>}
-        </div>
-        <div className="name-group">
-          <div className="form-group half-width">
-            <input type="text" name="city" placeholder='City' value={formData.city} onChange={handleInputChange} required />
-            {errors.city && <p className="error">{errors.city}</p>}
-          </div>
-          <div className="form-group half-width">
-            <input type="text" name="postalCode" placeholder='Postal Code' value={formData.postalCode} onChange={handleInputChange} required />
-            {errors.postalCode && <p className="error">{errors.postalCode}</p>}
-          </div>
-        </div>
-        <div className='error'>
-          {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
-        </div>
-        <div className="additional-details">
-          <button onClick={toggleAdditionalDetails}>+</button>
-          <span>Add Additional Details</span>
-        </div>
-        {additionalDetailsExpanded && (
-          <div className="form-group">
-            <textarea
-              name="additionalDetails"
-              placeholder="Additional Details"
-              value={formData.additionalDetails}
-              onChange={handleInputChange}
-            ></textarea>
-          </div>
-        )}
-        {/* <div className="save-as-default">
-          <input type="checkbox" id="saveAsDefault" name="saveAsDefault" checked={formData.saveAsDefault} onChange={handleCheckboxChange} required />
-          <label htmlFor="saveAsDefault">Save as default</label>
-        </div> */}
-        <hr />
-        <h2>Shipping Method</h2>
-      <div className="shipping-method">
-        {shippingMethods.map(method => (
-          <div className="method" key={method._id}>
-            <input type="radio"
-              id={method._id}
-              name="shippingMethod"
-              checked={formData.shippingMethod === method.methodName}
-              onChange={() => handleShippingChange(method)}
-              required />
-            <label htmlFor={method._id}>{method.methodName} - LKR {method.price.toFixed(2)}</label>
-          </div>
-        ))}
+return(
+  <>
+  {loading && (
+    <div className="loader-container">
+      <div className="loader-overlay">
+        <img src={LOGOO} alt="Logo" className="loader-logo" />
+        <PropagateLoader color={'#ff3c00'} loading={true} />
       </div>
-        <h2>Payment Method</h2>
+    </div>
+  )}
+
+    {!loading && (
+  <div className="checkout-container">
+  <div className="form-section">
+    <h2>Shipping Address</h2>
+    <div className="form-group">
+      <select name="country" value={formData.country} onChange={handleInputChange}>
+        <option value="">Select Country</option>
+        {countries.map((country, index) => (
+          <option key={index} value={country}>{country}</option>
+        ))}
+      </select>
+      {errors.country && <p className="error">{errors.country}</p>}
+    </div>
+    <div className="form-group">
+      <input type="email" name="email" placeholder='Email' value={formData.email} onChange={handleInputChange} required />
+      <p className="email-notice">This email will be used to send order confirmations and tracking updates.</p>
+      {errors.email && <p className="error">{errors.email}</p>}
+    </div>
+    <div className="name-group">
+      <div className="form-group half-width">
+        <input type="text" name="firstName" placeholder='First Name' value={formData.firstName} onChange={handleInputChange} required />
+        {errors.firstName && <p className="error">{errors.firstName}</p>}
+      </div>
+      <div className="form-group half-width">
+        <input type="text" name="lastName" placeholder='Last Name' value={formData.lastName} onChange={handleInputChange} required />
+        {errors.lastName && <p className="error">{errors.lastName}</p>}
+      </div>
+    </div>
+    <div className="form-group">
+      <input 
+      type="tel"
+      name="contactNumber"
+      placeholder={formData.country ? `Enter contact number (${getCountryCode(formData.country)})` : 'Select a country first'}
+      value={getCountryCode(formData.country) + formData.contactNumber}
+      onChange={handleInputChange}
+      required
+      inputMode="numeric"
+      />
+      {errors.contactNumber && <p className="error">{errors.contactNumber}</p>}
+    </div>
+    <div className="form-group">
+      <input type="text" name="State" placeholder='State / Province' value={formData.State} onChange={handleInputChange} required />
+      {errors.State && <p className="error">{errors.State}</p>}
+    </div>
+    <div className="form-group">
+      <input type="text" name="address" placeholder='Address' value={formData.address} onChange={handleInputChange} required />
+      {errors.address && <p className="error">{errors.address}</p>}
+    </div>
+    <div className="form-group">
+      <input type="text" name="address02" placeholder='Address-line 02 (Apartment,suite,etc.)' value={formData.address2} onChange={handleInputChange} />
+      {errors.address02 && <p className="error">{errors.address02}</p>}
+    </div>
+    <div className="name-group">
+      <div className="form-group half-width">
+        <input type="text" name="city" placeholder='City' value={formData.city} onChange={handleInputChange} required />
+        {errors.city && <p className="error">{errors.city}</p>}
+      </div>
+      <div className="form-group half-width">
+        <input type="text" name="postalCode" placeholder='Postal Code' value={formData.postalCode} onChange={handleInputChange} required />
+        {errors.postalCode && <p className="error">{errors.postalCode}</p>}
+      </div>
+    </div>
+    <div className="additional-details">
+      <button onClick={toggleAdditionalDetails} className="details-button">+</button>
+      <span>Add Additional Details</span>
+    </div>
+    {additionalDetailsExpanded && (
+      <div className="form-group">
+        <textarea
+          name="additionalDetails"
+          placeholder="Additional Details"
+          value={formData.additionalDetails}
+          onChange={handleInputChange}
+        ></textarea>
+      </div>
+    )}
+    <hr />
+    <h2 className="section-title">Shipping Method</h2>
+    <div className="shipping-method">
+      {shippingMethods.map(method => (
+        <div className="method" key={method._id}>
+          <input type="radio"
+            id={method._id}
+            name="shippingMethod"
+            checked={formData.shippingMethod === method.methodName}
+            onChange={() => handleShippingChange(method)}
+            required />
+          <label htmlFor={method._id}>{method.methodName} - LKR {method.price.toFixed(2)}</label>
+        </div>
+      ))}
+    </div>
+        <h2 className="section-title">Payment Method</h2>
         <div className={`payment-method ${expandedPayment === 'koko' ? 'expanded' : ''}`} onClick={() => handleExpandPayment('koko')}>
           <div className="method-title">
             <input type="radio" id="koko" name="paymentMethod" />
@@ -463,8 +544,8 @@ const handleShippingChange = (method) => {
           </div>
         </div>
         <div className="coupon-code">
-          <h2>Coupon Code/Gift Card</h2>
-          <div className="form-group">
+          <h2 className="section-title">Coupon Code/Gift Card</h2>
+          <div className="form-group half-width">
             <label>Coupon Code:</label>
             <input type="text" value={couponCode} onChange={handleCouponCodeChange} />
           </div>
@@ -472,37 +553,51 @@ const handleShippingChange = (method) => {
         </div>
 
       </div>
-      <div className="order-summary">
-      <h2>Order Summary</h2>
-      <div className="product-item">
-          <div className="product-image-container">
-            <img src={image} alt="Product" className="product-image" />
-            <div className="quantity-badge">{quantity}</div>
-          </div>
-          <div className="product-info">
-            <div className="product-details">
-              <span className="product-name">{productName}</span>
-              <span className="product-price">LKR {price.toFixed(2)}</span>
-            </div>
-            <div className="product-meta">
-              <p>{color}</p>
-              <p>{size}</p>
-            </div>
-            <p className="product-subtotal">Subtotal <span className="mar">LKR {subtotal.toFixed(2)}</span></p>
-
-          </div>
-        </div>
-        <div className="order-costs">
-        <p><span>Shipping:</span> <span className="right-align">LKR {selectedShippingMethod ? selectedShippingMethod.price.toFixed(2) : '0.00'}</span></p>
-        <p><span>Discount:</span> <span className="right-align">LKR {discount.toFixed(2)}</span></p>
-        <p><span>Total:</span> <span className="right-align">LKR {total.toFixed(2)}</span></p>
-        </div>
-        <button type="button" className="proceed-btn" onClick={handleProceedClick}>Proceed</button>
-      </div>
-
+      <div className="order-summary" id="order-summary">
+  <h2>Order Summary</h2>
+  <div className="product-summary">
+  <div className="product-image-container">
+    <img src={checkoutData.image[0]} alt={checkoutData.ProductName} />
+    <div className="quantity-badge">{checkoutData.quantity}</div>
+  </div>
+  <div className="product-details">
+    <div className="title-and-price">
+      <h2>{checkoutData.ProductName}</h2>
+      <span className="price">LKR {checkoutData.price}.00</span>
     </div>
-    
-  );
+    <div className="attributes">
+      <span className="size">{checkoutData.size}</span>
+      <span className="color">{checkoutData.color}</span>
+    </div>
+    <div className="subtotal">
+      <span>Subtotal</span>
+      <span>LKR {subtotal.toFixed(2)}</span>
+    </div>
+  </div>
+</div>
+
+  <div className="order-costs">
+    <p><span>Shipping:</span> <span className="right-align">LKR {selectedShippingMethod ? selectedShippingMethod.price.toFixed(2) : '0.00'}</span></p>
+    <p><span>Discount:</span> <span className="right-align">LKR {discount.toFixed(2)}</span></p>
+    <p><span>Total:</span> <span className="right-align">LKR {total.toFixed(2)}</span></p>
+  </div>
+  <div className='error'>
+          {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
+        </div>
+        <button onClick={handleProceedClick} disabled={isLoading || orderPlaced}>
+        {isLoading ? "Processing..." : "Proceed"}
+      </button>
+    </div>
+{orderPlaced && (
+                <OrderConfirmationModal
+                    onContinue={handleContinueShopping}
+                    onDownload={handleDownloadPDF}
+                />
+            )}
+</div>
+  )}
+  </>
+)
 }
 
 export default Checkout;

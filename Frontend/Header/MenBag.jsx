@@ -7,7 +7,6 @@ import Koko from '../../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header/Header';
-
 import { PropagateLoader } from 'react-spinners'; 
 import Footer from '../Footer/Footer';
 import LOGOO from '../../src/assets/logoorange.png'
@@ -135,7 +134,6 @@ useEffect(() => {
         <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" /><Link to="/menbag"> BAGS </Link><i className="fas fa-angle-right" />
       </p>
 
-
       
 
         <div className="menmid">
@@ -256,9 +254,6 @@ useEffect(() => {
             <div className="box" key={record.ProductId}>
               <div className="imgage">
                 <img src={record.ImgUrls[0]} alt="" />
-                <div className="overlay">
-                  <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
-
                 <div className="overlay2">
                   <img src={record.ImgUrls[1]} alt="" />
                 </div>
@@ -286,7 +281,7 @@ useEffect(() => {
         </div>
       </div>
 
-
+          
       <Footer/>
       
       

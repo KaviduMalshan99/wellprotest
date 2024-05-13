@@ -7,6 +7,7 @@ const addSupplierStock = (req, res, next) => {
     const {
         StocksupplierName,
         supproductId,
+        supproductnamee,
         supstockId,
         stockPrice,
         supplyDate,
@@ -19,6 +20,7 @@ const addSupplierStock = (req, res, next) => {
     const supplierStock = new SupplierStock({
         StocksupplierName,
         supproductId,
+        supproductnamee,
         supstockId,
         stockPrice,
         supplyDate,

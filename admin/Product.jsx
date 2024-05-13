@@ -111,45 +111,33 @@ const Product = () => {
 
   return (
     <div className='ProductContainer'>
-      
-
-      <Notification/>
-
-      <div className="productsecondiv">
-
-        <h1 className='PRODUCTTITLE'>Products Section</h1>
-
-
-        <div className="search-bar">
-          <input
-            type="text"
-            placeholder="Search by Name or ID..."
-            className="search-input"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-          <button className="search-button">
-            <i className="fas fa-search" />
-          </button>
-        </div>
-        
-        <div className="addProductSection" > 
-          <button className='PRODUCTGenarate' onClick={generateExcel}>Generate Report</button>
-
-
-          <button type='button' className='PRODUCTADDPRO' onClick={toggleAddModal}>
-            <i className="fas fa-plus"></i>Add Products
-          </button>
-          <Modal open={isAddModalOpen} onClose={toggleAddModal} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{justifyContent:'center', width: '80%', maxWidth: '1000px', borderRadius:'10px',maxHeight: '85vh', overflowY: 'auto', backgroundColor: '#cfd2d2', padding: '20px',  }}>
-              <AddProductModel onClose={toggleAddModal} />
-            </div>
-          </Modal>
-
-        </div>
-
-      
-
+    <Notification/>
+    <div className="productsecondiv">
+      <h1 className='PRODUCTTITLE'>Products Section</h1>
+      <button className="report-button" onClick={generateExcel}>
+        Generate Report
+      </button>
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by Name or ID..."
+          className="search-input"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+        <button className="search-button">
+          <i className="fas fa-search" />
+        </button>
+      </div>
+      <div className="addProductSection">
+        <button type='button' className='PRODUCTADDPRO' onClick={toggleAddModal}>
+          <i className="fas fa-plus"></i> Add Products
+        </button>
+        <Modal open={isAddModalOpen} onClose={toggleAddModal} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <AddProductModel onClose={toggleAddModal} />
+        </Modal>
+      </div>
+      Showing {filteredProducts.length} products
       <div className="product-table-container">
         <table>
           <thead>
@@ -167,15 +155,14 @@ const Product = () => {
                 <td>{product.ProductId}</td>
                 <td>
                   {product.ImgUrls && product.ImgUrls.length > 0 ? (
-                      <img
-                        src={product.ImgUrls[0]}
-                        alt={product.ProductName}
-                        onLoad={() => console.log('Image loaded successfully')}
-                        onError={(e) => { e.target.src = 'placeholder-image-url'; }} 
-                      />
-                    ) : (
-                      <div>No Image</div>
-                    )}
+                    <img
+                      src={product.ImgUrls[0]}
+                      alt={product.ProductName}
+                      onError={(e) => { e.target.src = 'default-placeholder-image-url.png'; }} 
+                    />
+                  ) : (
+                    <div>No Image</div>
+                  )}
                 </td>
                 <td>{product.ProductName}</td>
                 <td>{`${Math.min(...product.Variations.map(variation => variation.price))} - ${Math.max(...product.Variations.map(variation => variation.price))}`}</td>
@@ -185,50 +172,19 @@ const Product = () => {
                 <td>
                   <button className="delete-btn" onClick={() => handleDelete(product.ProductId)}>Delete</button>
                 </td>
-
               </tr>
-            </thead>
-            <tbody>
-              {filteredProducts.map(product => (
-                <tr key={product.ProductId}>
-                  <td>{product.ProductId}</td>
-                  <td>
-                    {product.ImgUrls && product.ImgUrls.length > 0 ? (
-                        <img
-                          src={product.ImgUrls[0]}
-                          alt={product.ProductName}
-                          onLoad={() => console.log('Image loaded successfully')}
-                          onError={(e) => { e.target.src = 'placeholder-image-url'; }} 
-                        />
-                      ) : (
-                        <div>No Image</div>
-                      )}
-                  </td>
-                  <td>{product.ProductName}</td>
-                  <td>{`${Math.min(...product.Variations.map(variation => variation.price))} - ${Math.max(...product.Variations.map(variation => variation.price))}`}</td>
-                  <td>
-                    <button className="edit-btn" onClick={() => toggleEditModal(product.ProductId)}>Edit</button>
-                  </td>
-                  <td>
-                    <button className="delete-btn" onClick={() => handleDelete(product.ProductId)}>Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {isEditModalOpen && (
-          <Modal open={isEditModalOpen} onClose={toggleEditModal} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <div style={{justifyContent:'center', width: '80%', maxWidth: '1000px', borderRadius:'10px',maxHeight: '85vh', overflowY: 'auto', backgroundColor: '#cfd2d2', padding: '20px',  }}>
-            <EditProductModal closeModal={toggleEditModal} product={selectedProduct} />
-            </div>
-          </Modal>
-        )}
-
-        <ToastContainer/>
+            ))}
+          </tbody>
+        </table>
       </div>
+      {isEditModalOpen && (
+        <Modal open={isEditModalOpen} onClose={() => toggleEditModal()} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+          <EditProductModal closeModal={() => toggleEditModal()} product={selectedProduct} />
+        </Modal>
+      )}
+      <ToastContainer/>
     </div>
+  </div>
   )
 }
 

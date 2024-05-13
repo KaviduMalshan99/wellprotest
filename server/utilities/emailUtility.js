@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 
-const sendEmail = async (orderDetails) => {
+const sendEmaill = async (orderDetails) => {
     const {
         email,
         firstName,
@@ -13,11 +13,11 @@ const sendEmail = async (orderDetails) => {
         city,
         postalCode,
         country,
-        productName,
+        ProductName,
         quantity,
         size,
         color,
-        imageUrl
+        image
     } = orderDetails;
 
     try {
@@ -45,7 +45,7 @@ const sendEmail = async (orderDetails) => {
                 ${country}</p>
                 <p><strong>Product Details:</strong></p>
                 <ul>
-                    <li><strong>Product Name:</strong> ${productName}</li>
+                    <li><strong>Product Name:</strong> ${ProductName}</li>
                     <li><strong>Quantity:</strong> ${quantity}</li>
                     <li><strong>Size:</strong> ${size || 'Not specified'}</li>
                     <li><strong>Color:</strong> ${color || 'Not specified'}</li>
@@ -60,8 +60,8 @@ const sendEmail = async (orderDetails) => {
             `,
             attachments: [{
                 filename: 'ProductImage.jpg',
-                path: imageUrl, // Ensure this path is accessible and correct
-                cid: 'productimage' //same cid value as in the html img src
+                path: image[0], 
+                cid: 'productimage' 
             }]
         };
 
@@ -73,4 +73,4 @@ const sendEmail = async (orderDetails) => {
 };
 
 
-module.exports = { sendEmail };
+module.exports = { sendEmaill };

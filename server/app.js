@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const contraller = require('./contraller');
 const bodyParser = require('body-parser');
+
  
 app.use(cors());  //resourse share karanna denawa back end to frontend
 app.use(bodyParser.json({limit:'50mb'}));

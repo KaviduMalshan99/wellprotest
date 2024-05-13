@@ -54,8 +54,9 @@ const EditProductModal = ({ closeModal, product }) => {
   const [selectedColorImages, setSelectedColorImages] = useState([]);
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [editedVariation, setEditedVariation] = useState(null);
   const [localVariations, setLocalVariations] = useState(product.Variations || []);
+
+
   
 
   useEffect(() => {
@@ -346,7 +347,7 @@ const EditProductModal = ({ closeModal, product }) => {
               <select value={productData.VariantType} onChange={handleVariantChange}>
                 <option value="">Select Variant Type</option>
                 <option value="Many Sizes with Many Colors">Many Sizes with Many Colors</option>
-                <option value="Only Colors">Only Colors</option>
+                
               </select>
             </div>
           </div>
@@ -354,18 +355,27 @@ const EditProductModal = ({ closeModal, product }) => {
           {productData.VariantType && (
             <div className="manysizemanycolor">
               {productData.VariantType === "Many Sizes with Many Colors" && (
-                <div>
-                  <label>5) Many Sizes with Many Colors:</label>
-                  <div>
+                <div className='mz1'>
+                  <label> Many Sizes with Many Colors:</label>
+                  <div className='mzdiv'>
                     <label className='q1'>Add Size:</label>
-                    <input type="text" value={sizeInput} onChange={(e) => setSizeInput(e.target.value)} placeholder="Enter size" />
+                    <select
+                        value={sizeInput}
+                        onChange={(e) => setSizeInput(e.target.value)}
+                      >
+                        <option value="">Select Size</option>
+                        <option value="Freesize">Freesize</option>
+                        {Array.from({ length: 21 }, (_, i) => 30 + i).map(size => (
+                          <option key={size} value={size}>{size}</option>
+                        ))}
+                      </select>
                     <label className='q1'>Color Name:</label>
                     <input type="text" value={selectedColorName} onChange={(e) => setSelectedColorName(e.target.value)} placeholder="Enter color name" />
                     <label className='q1'>Available Count:</label>
                     <input type="number" value={selectedColorCount} onChange={(e) => setSelectedColorCount(parseInt(e.target.value, 10))} placeholder="Enter available count" />
                     <label className='q1'>Price:</label>
                     <input type="number" value={selectedColorPrice} onChange={(e) => setSelectedColorPrice(parseFloat(e.target.value))} placeholder="Enter price" />
-                    <input type="file" onChange={handleAddImage} accept="image/*" multiple />
+                    <input type="file" onChange={handleAddImage} accept="image/*" multiple className='imageinput' />
                     <div>
                       {selectedColorImages.map((image, index) => (
                         <div key={index}>
@@ -390,7 +400,7 @@ const EditProductModal = ({ closeModal, product }) => {
                             <span>Price: {color.price}</span>
                             <div>
                               {color.images.map((image, imgIndex) => (
-                                <img key={imgIndex} src={image} alt={`Color Image ${sizeIndex}-${colorIndex}-${imgIndex}`} />
+                                <img key={imgIndex} src={image} alt={`Color Image ${sizeIndex}-${colorIndex}-${imgIndex}`}  style={{height:"150px",width:"150px"}}/>
                               ))}
                             </div>
                             <button onClick={() => handleRemoveColor(sizeIndex, colorIndex)}>Remove Color</button>
@@ -406,62 +416,7 @@ const EditProductModal = ({ closeModal, product }) => {
                   
                 </div>
               )}
-              {productData.VariantType === "Only Colors" && (
-                <div className='onlycolors'>
-                  <label>5) Only Colors:</label>
-                  <div className='onlycolorsec'>
-                    <label>Color Name:</label>
-                    <input
-                      type="text"
-                      value={selectedColorName}
-                      onChange={(e) => setSelectedColorName(e.target.value)}
-                      placeholder="Enter color name"
-                    />
-                    <label>Available Count:</label>
-                    <input
-                      type="number"
-                      value={selectedColorCount}
-                      onChange={(e) => setSelectedColorCount(e.target.value)}
-                      placeholder="Enter available count"
-                    />
-                    <label>Price:</label>
-                    <input
-                      type="number"
-                      value={selectedColorPrice}
-                      onChange={(e) => setSelectedColorPrice(e.target.value)}
-                      placeholder="Enter price"
-                    />
-                    <input type="file" onChange={handleAddImage} accept="image/*" />
-                    {/* Display selected images for the current color */}
-                    <div>
-                      {selectedColorImages.map((image, index) => (
-                        <div key={index}>
-                          <img src={image} alt={`Color Image ${index}`} style={{height:'50px',width:'50px',marginLeft:'45%'}} />
-                          <button type="button" onClick={() => handleRemoveImage(index)}>Remove</button>
-                        </div>
-                      ))}
-                    </div>
-                    <button type="button" onClick={handleAddColor}>Add Color</button>
-                  </div>
-
-                  {/* Display added colors */}
-                  <div className='sd2'>
-                    {productData.Colors.map((color, index) => (
-                      <div key={index} className='size-item'>
-                        <span>Color Name:{color.name}</span>
-                        <span>Count: {color.count}</span>
-                        <span>Price:{color.price}</span>
-                        <div>
-                          {color.images.map((image, imgIndex) => (
-                            <img key={imgIndex} src={image} alt={`Color Image ${index}-${imgIndex}`} />
-                          ))}
-                        </div>
-                        <button type="button" onClick={() => handleRemoveColor(index)}>Remove</button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              
               
             </div>
           )}
@@ -483,12 +438,11 @@ const EditProductModal = ({ closeModal, product }) => {
                   <img 
                     src={image} 
                     alt={`Variation Image ${index}-${imgIndex}`} 
-                    style={{ maxWidth: '200px', maxHeight: '200px' }} // Adjust the max width and height as needed
+                    style={{ maxWidth: '150px', maxHeight: '150px',borderRadius:"5px" }} // Adjust the max width and height as needed
                   />
                 </div>
               ))}
             </div>
-            {/* Edit button */}
             <button onClick={() => handleRemoveVariation(index)}>Remove</button>
           </div>
         ))}
@@ -507,14 +461,14 @@ const EditProductModal = ({ closeModal, product }) => {
             <div>
               <label>7) Areas:</label>
               <div className='catdiv'> 
-                <div>
+                
                   <select value={selectedOption} onChange={handleOptionChange} >
                     <option value="" className='optcat'>Select Areas</option>
                     <option value="Sri Lanka">Sri Lanka</option>
                     <option value="International">International</option>
                     <option value="Exclusive">Exclusive</option>
                   </select>
-                </div>
+                
                 <div>
                 <button className='catbtn' type="button" onClick={handleAddOption}>Add Option</button>
                 </div>
@@ -545,10 +499,10 @@ const EditProductModal = ({ closeModal, product }) => {
             <div>
               <label>10) Default Images:</label>
               <div className='imagess'>
-                <div>
-                  <input type="file" accept="image/*" onChange={handleDefaultImageUpload} multiple /> {/* Allow selecting multiple images */}
-                </div>
-                <div className="image-container">
+                
+                <input type="file" accept="image/*" className='dfile' onChange={handleDefaultImageUpload} multiple /> {/* Allow selecting multiple images */}
+                
+                <div className="imagecon">
                   {selectedImages.map((imageUrl, index) => (
                     <div key={index} className='imh'>
                       <img className='dimg' src={imageUrl} alt={`Image ${index}`} />

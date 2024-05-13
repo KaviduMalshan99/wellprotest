@@ -3,12 +3,7 @@ const router = express.Router();
 const contraller = require('./contraller');
 const { route } = require('./app');
 
-
-
-
-
 const { addCoupon, validateCoupon, getAllCoupons,deactivateCoupon } = require('./CouponController');
-
 const catagoryContraller = require('./CatagoryController');
 const customerContraller = require('./CustomerController');
 const orderContraller = require('./OrderController');
@@ -18,6 +13,30 @@ const faqcontroller = require('./FaqController');
 const RefundController = require('./RefundController');
 const SupplierRegController = require('./SupplierRegController');
 const SupplierStockController = require('./SupplierStockController');
+const dispatchedOrderController = require('./DispatchedOrdersController')
+
+const CurrentStockController = require('./CurrentStockController');
+const {
+  createOrUpdateNotification,
+  getNotifications,
+} = require('./NotificationController');
+
+
+const AcceptedStockController = require('./AcceptedStockController');
+// const OrdersTableController = require('./OrdersTableController');
+const {
+    getWarehouse,
+    getAllWarehouses,
+    addWarehouse,
+    getWarehouseById,
+    updateWarehouse,
+    deleteWarehouse,
+    getNextId
+  } = require('./WarehouseController');
+
+const OrderCancellationController = require('./OrderCancellationController');
+const messageController = require('./DelayOrderChatController');
+const trackingController = require('./OrderTrackingController');
 
 const cartController = require('./AddtocartContraller')
 const shippingMethodController = require('./ShippingMethodController');
@@ -64,10 +83,17 @@ router.get("/customer/email/:email", customerContraller.getCustomerByEmail);
 
 //order
 router.get('/orders',orderContraller.getOrders);
+
+router.post('/orders/sendemail', orderContraller.sendOrderStatusEmail);
+router.put("/updatestatus", orderContraller.updateOrderStatus);
+router.put("/updateContactStatus/:orderId", orderContraller.updateContactStatus);
+
 router.post('/addOrder',orderContraller.addOrder);
 router.put('./updateOrder',orderContraller.updateOrder);
 router.delete('/deleteOrder/:orderId',orderContraller.deleteOrder);
 router.get('/getOrder/:orderId',orderContraller.getOrderById);
+router.get('/orders/customer/:customerId', orderContraller.getOrdersByCustomerId); // This should match the endpoint you call in your React component.
+
 
 //product
 router.get('/products',productContraller.getProducts);
@@ -118,6 +144,49 @@ router.delete('/suppliers/:id', SupplierRegController.deleteSupplier);
 router.post('/addstock', SupplierStockController.addSupplierStock);
 router.get('/getstock', SupplierStockController.getStock);
 
+//Warehouse
+// router.get("/oders", OrdersTableController.getOrdersTable);
+// router.post("/addorder", OrdersTableController.addOrdersTable);
+// router.put("/updateorder", OrdersTableController.updateOrdersTable);
+// router.delete("/deleteorder", OrdersTableController.deleteOrdersTable);
+// router.post('/orders/sendemail', OrdersTableController.sendOrderStatusEmail);
+// router.put("/updatestatus", OrdersTableController.updateOrdersTableStatus);
+// router.put("/updateContactStatus/:orderId", OrdersTableController.updateContactStatus);
+
+// Routes for warehouse operations
+router.get('/warehouse', getAllWarehouses);
+router.post('/addwarehouse', addWarehouse);
+router.get('/warehouse/:id', getWarehouse, getWarehouseById);
+router.patch('/updatewarehouse/:id', getWarehouse, updateWarehouse);
+router.delete('/deletewarehouse/:id', getWarehouse, deleteWarehouse);
+router.get('/nextId', getNextId);
+
+
+
+router.get('/stocks/:warehouseId', CurrentStockController.getStockByWarehouseId);
+router.post('/stocks', CurrentStockController.createProductStock);
+router.put('/stocks/:id', CurrentStockController.updateProductStock);
+router.delete('/stocks/:id', CurrentStockController.deleteProductStock);
+router.get('/stocks', CurrentStockController.getAllProductStocks);
+router.put('/dispatchOrder', CurrentStockController.dispatchOrder);
+
+
+router.post('/acceptstock/:id', CurrentStockController.acceptAndModifyStock);
+
+// Route to fetch all accepted stocks
+router.get('/acceptedstocks', AcceptedStockController.getAcceptedStocks);
+
+//Notifications Inventory
+
+router.post('/notifications', createOrUpdateNotification);
+router.get('/notifications', getNotifications);
+
+// Route to create a dispatched order
+router.post('/dispatchedOrders', dispatchedOrderController.createDispatchedOrder);
+router.post('/adjustStockQuantities', CurrentStockController.adjustStockQuantities);
+
+router.delete('/dispatchedOrders', dispatchedOrderController.deleteAllDispatchedOrders);
+
 
 
 // Shipping Methods
@@ -132,7 +201,30 @@ router.get('/coupons', getAllCoupons)
 router.post('/validatecoupon', validateCoupon);
 router.post('/deactivateCoupon', deactivateCoupon);
 
+//AddCancellation
+router.post('/addOrderCancellation', OrderCancellationController.addOrderCancellation);
+router.get('/getOrderCancellation',OrderCancellationController.getOrderCancellation);
+router.delete('/deleteOrderCancellation/:OrderID', OrderCancellationController.deleteOrderCancellation);
 
+//delayOrderChat
+
+router.get('/getAllMessages', messageController.getAllCustomerMessages);
+router.post('/createMessage', messageController.createCustomerMessage);
+router.put('/updateMessage/:id', messageController.updateCustomerMessage);
+router.delete('/deleteMessage/:id', messageController.deleteCustomerMessage);
+router.get('/getMessagesByOrderId/:orderId', messageController.getMessagesByOrderId);
+router.get('/getOrderIds', messageController.getOrderIds);
+
+//Tracking
+
+router.post('/tracking', trackingController.addTrackingEntry);
+router.get('/tracking/:orderId', trackingController.getTrackingByOrderId);
+router.get('/tracking', trackingController.getTrackingDetails);
+router.delete('/tracking/:orderId', trackingController.deleteTrackingDetails);
+router.put('/tracking/:orderId',trackingController.updateTrackingStatus);
+
+router.get('/orders', orderContraller.getOrders);
+router.post('/orders', orderContraller.addOrder);
 
 
 module.exports = router;

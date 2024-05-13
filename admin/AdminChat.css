@@ -1,0 +1,219 @@
+.AdminPanel {
+  display: flex;
+  justify-content: center; /* Center the admin panel horizontally */
+ 
+ 
+}
+
+.admin_chat_h1_serch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #ccc;
+  
+
+}
+.h2{
+  margin-left: 20px;
+  align-items: flex-start;
+}
+
+.admin_chat_h1_serch h1 {
+  margin: 0;
+}
+
+.Admin_chatOrderIdSearch {
+  display: flex;
+  align-items:flex-end;
+}
+.admin-container {
+  width: 70%; /* Set the width of the admin container */
+  margin: 20px;
+  height: 600px;
+  
+}
+
+.order-list {
+  flex: 1; /* Set flexible width for order list */
+  margin-right: 20px;
+ 
+  
+}
+
+.order-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border: 1px solid #000000;
+}
+
+.order-card {
+  cursor: pointer;
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: #d9d9d9;
+  border-radius: 5px;
+  border: 1px solid #000000;
+}
+
+.chat-box {
+  flex: 2; /* Set flexible width for chat box */
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+  min-height:500px;
+}
+
+.Admin_message-container {
+  border: 1px solid #000000;
+  padding: 10px;
+  width: calc(100% - 20px); /* Set width for message container */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+  background-color: #d9d9d9;
+  min-height:400px;;
+ 
+}
+
+.message {
+  width: 250px; /* Set width for messages */
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #d9d9d9;
+  align-self: flex-start;
+}
+
+.admin-message {
+  width: 200px; /* Set width for admin messages */
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #d9d9d9;
+  color: #000000;
+  align-self: flex-end;   
+  margin-right: 30px;
+}
+
+.wellworn-container{
+  display: flex;
+  align-items: center;
+  align-items: flex-start;
+}
+.wellworn-image{
+  width: 10%;
+  height: 10%;
+  margin-right:5px;
+  border-radius: 50px;
+
+}
+
+.chatTime{
+  align-self: flex-end;
+  margin-left: 60%;
+  font-size: 10px;
+  
+}
+
+.message-content {
+  width: 200px;
+  background-color: aqua;
+   margin-left: 20px;
+  padding-left: 10px;
+  border-radius: 5px;
+  
+}
+
+.edit-message{
+  background-color: aqua;
+  border: none;
+  display: flex;
+  align-self: table;
+  
+}
+
+.message-actions {
+  margin-top: 5px;
+}
+
+.input-container {
+  
+  width: 100%; /* Set width for input container, accounting for padding and border */
+}
+
+input[type="text"] {
+  width:100%; /* Adjust input width to fit container */
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+ 
+}
+
+.mainInput{
+  border: 1px solid black;
+}
+
+
+button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #000810;
+  color: #fff;
+  border: none;
+}
+
+/* Additional styling for edit and delete buttons (assuming you want to use image icons) */
+.message-actions{
+    margin-left: 80%;
+}
+.message-actions button {
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #d9d9d9;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  margin-left: 10px;
+  background-size: contain;
+}
+
+
+.massageEdit{
+    size: 40px;
+      padding: 15px 25px;
+      background-color: #d9d9d9;
+      background-color: transparent;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
+      border-radius: 10px;
+      background-image: url('./../src/assets/edit_icon.png'); /* Replace 'edit_icon.png' with your edit button image path */
+      background-size:contain;
+     
+
+}
+
+.massageDelete {
+      
+      
+  background-color: #d9d9d9;
+  background-color: transparent;
+  color: #fff;
+  border:none;
+  cursor: pointer;
+  margin-left: 10px;
+  border-radius: 10px;
+  background-image: url('./../src/assets/delete_icon.png'); /* Replace 'edit_icon.png' with your edit button image path */
+  background-size:contain;
+  
+  
+}
+

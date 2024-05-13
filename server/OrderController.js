@@ -1,6 +1,13 @@
 const { response } = require('express');
 const Order = require('./OrdersModel');
-const { sendEmail } = require('../server/utilities/emailUtility'); // Make sure this path is correct based on your project structure
+const { sendEmail } = require('../server/util/email_templates/orderStatusEmailTemplate'); // Make sure this path is correct based on your project structure
+// const sendEmail = require("./util/sendEmail");
+const orderStatusEmailTemplate = require("./util/email_templates/orderStatusEmailTemplate");
+
+
+
+
+const { sendEmaill } = require('../server/utilities/emailUtility'); // Make sure this path is correct based on your project structure
 
 // Function to generate order ID with the format OIDXXXXX
 function generateOrderId() {
@@ -17,6 +24,7 @@ const getOrders = (req, res, next) => {
 
 const addOrder = (req, res, next) => {
     const {
+        customerId,
         country,
         email,
         firstName,
@@ -31,14 +39,14 @@ const addOrder = (req, res, next) => {
         shippingMethod,
         paymentMethod,
         couponCode,
-        productName,
-        productId,
+        ProductName,
+        id,
         quantity,
         size,
         color,
         price,
         total,
-        imageUrl,
+        image,
         Status,
         ContactStatus 
     } = req.body;
@@ -52,6 +60,7 @@ const addOrder = (req, res, next) => {
     const order = new Order({
         orderId,
         orderDate,
+        customerId,
         country,
         email,
         firstName,
@@ -66,28 +75,32 @@ const addOrder = (req, res, next) => {
         shippingMethod,
         paymentMethod,
         couponCode,
-        productName,
-        productId,
+        ProductName,
+        id,
         quantity,
         size,
         color,
         price,
         total,
-        imageUrl,
+        image,
         Status,
         ContactStatus 
     });
 
-   order.save()
+    order.save()
     .then(order => {
-        sendEmail(order.toObject())  // Convert Mongoose model instance to a JS object
+        sendEmaill(order.toObject())
             .then(() => res.status(201).json({ message: "Order placed and email sent!", order }))
             .catch(emailError => {
                 console.error("Email send error:", emailError);
                 res.status(201).json({ message: "Order placed but email could not be sent", order });
             });
     })
-    .catch(error => res.status(500).json({ error: error.message }));
+    .catch(error => {
+        console.error("Database save error:", error);
+        res.status(500).json({ error: "Failed to save order", details: error.toString() });
+    });
+
 
 };
 
@@ -99,6 +112,81 @@ const updateOrder = (req, res, next) => {
         .then(updatedOrder => res.json({ updatedOrder }))
         .catch(error => res.status(500).json({ error: error.message }));
 };
+
+
+
+// In your backend controller
+const updateContactStatus = async (req, res) => {
+  const { orderId } = req.params;
+  try {
+    const updatedOrder = await Order.findOneAndUpdate(
+      { orderId },
+      { $set: { ContactStatus: "Informed" } },
+      { new: true }
+    );
+    if (updatedOrder) {
+      res.json({ success: true, message: "Contact status updated successfully", data: updatedOrder });
+    } else {
+      res.status(404).json({ success: false, message: "Order not found" });
+    }
+  } catch (error) {
+    console.error("Error updating contact status:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+  // Update Order Controller
+  const updateOrderStatus = async (req, res, next) => {
+    try {
+      const { orderId } = req.body;
+      const updateResult = await Order.findOneAndUpdate(
+        { orderId },
+        { $set: { Status: "Dispatched" } },
+        { new: true }
+      );
+  
+      if (updateResult) {
+        res.json({ success: true, message: "Order status updated successfully", data: updateResult });
+      } else {
+        res.status(404).json({ success: false, message: "Order not found" });
+      }
+    } catch (error) {
+      console.error("Order status update failed:", error.message);
+      res.status(500).json({ error });
+    }
+  };
+  
+  
+
+  // send email
+const sendOrderStatusEmail = async (req, res, next) => {
+    try {
+      const { toName, orderId, productName, Status, email } = req.body;
+  
+      const emailTemplate = orderStatusEmailTemplate(
+        toName,
+        orderId,
+        productName,
+        Status
+      );
+      sendEmail(email, "Order Status Update", emailTemplate);
+  
+      // change the contact status to "Informed"
+      await Order.findOneAndUpdate(
+        { orderId: orderId },
+        { $set: { ContactStatus: "Informed" } },
+        { new: true }
+      );
+  
+      res.json({ success: true, message: "Email sent successfully" });
+    } catch (error) {
+      res.json({ error });
+    }
+  };
+
+
+
 
 const deleteOrder = (req, res, next) => {
     const orderId = req.params.orderId;
@@ -129,4 +217,15 @@ const getOrderById = async (req, res, next) => {
     }
 };
 
-module.exports = { getOrders, addOrder, updateOrder, deleteOrder, getOrderById };
+// Function to fetch orders by customer ID
+const getOrdersByCustomerId = async (req, res) => {
+    const { customerId } = req.params;
+    try {
+        const orders = await Order.find({ customerId }).sort({ orderDate: -1 });
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+module.exports = { getOrders, addOrder, updateOrder, deleteOrder, getOrderById,updateContactStatus , sendOrderStatusEmail,updateOrderStatus, getOrdersByCustomerId };

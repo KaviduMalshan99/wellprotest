@@ -82,14 +82,14 @@ function Suppliers() {
         toast.error('Failed to delete supplier');
       })
       .finally(() => {
-        // Close the confirmation dialog
+        
         setShowConfirm(false);
       });
   };
   
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Update editedSupplier state as user types in the input fields
+    // Update editedSupplier state as admin types
     setEditedSupplier(prevState => ({
       ...prevState,
       [name]: value
