@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
+import "./WarehouseEdit.css"
 
 function WarehouseEdit() {
     const { id } = useParams(); // Grab the ID from the URL
@@ -95,7 +95,7 @@ function WarehouseEdit() {
     return (
         <div className="whadm">
             <div className="whamt">WAREHOUSE SECTION</div>
-            <button className="whbbtn" onClick={() => navigate('/warehouse')}>Go Warehouse Page</button>
+            <button className="whbbtn" onClick={() => navigate('/warehouse')}>Back</button>
             <div className="whadtxt">Edit Details</div>
             <div className="whmcon">
                 <table className="whadf">
@@ -138,7 +138,8 @@ function WarehouseEdit() {
                     </tbody>
                 </table>
             </div>
-            <div style={{ marginTop: '20px' }}>
+<div className="wareeditbtnpnl">
+            
                 <button className='whupbtnn' onClick={updateWarehouseData}>Update</button>
                 <button className="whdelbtn" onClick={deleteWarehouseData}>Delete</button>
             </div>

@@ -65,6 +65,7 @@ const WarehouseSection = () => {
           </div>
         </Modal>
       </div>
+      <div className="wraebtnset">
       <div className="waddbtnplc">
         <Link to="/orderstable" className="waaddbtn">
           Orders
@@ -73,7 +74,7 @@ const WarehouseSection = () => {
       <div className="waddbtnplc">
         <Link to="/warehouseorders" className="waaddbtn">
           New Stocks
-        </Link>
+        </Link></div>
       <div className="waddbtnplc">
         <Link to="/current-stock" className="waaddbtn">
           Current Stocks

@@ -1,0 +1,125 @@
+$color_1: red;
+$color_2: black;
+$color_3: white;
+$font-family_1: Poppins;
+$background-color_1: #F7FBFE;
+$background-color_2: #D9D9D9;
+
+@import "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap";
+* {
+	padding: 0;
+	margin: 0;
+	font-family: $font-family_1;
+	background-color: $background-color_1;
+}
+.errowhr {
+	display: flex;
+	font-size: 10px;
+	padding-left: 10px;
+	color: $color_1;
+	margin-top: -7px;
+}
+.whadm {
+	margin-top: 40px;
+	margin-left: 100px;
+	margin-right: 100px;
+	padding-left: 50px;
+	font-size: 40px;
+	color: $color_2;
+	margin-bottom: 50px;
+}
+.whbbtn {
+	margin-top: 30px;
+	font-size: 17px;
+	padding: 0.5em 2em;
+	border: transparent;
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+	background: #07223D;
+	color: $color_3;
+	border-radius: 4px;
+	&:hover {
+		background: rgb(2, 0, 36);
+		background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+	}
+	&:active {
+		transform: translate(0em, 0.2em);
+	}
+}
+.whamt {
+	font-size: 30px;
+	font-weight: 600;
+}
+.whadtxt {
+	margin-top: 30px;
+	font-size: 30px;
+	font-weight: 600;
+	margin-bottom: 30px;
+}
+.whadf {
+	width: 50%;
+	font-size: 20px;
+}
+.whainpt {
+	padding: 10px;
+	font-size: 15px;
+	width: 75%;
+	margin: 10px;
+	border-radius: 5px;
+	background-color: $background-color_2;
+	border-width: 0;
+}
+.whafl {
+	width: 150px;
+	text-align: left;
+	font-size: 20px;
+}
+.whaflcin {
+	font-weight: 800;
+	font-size: 20px;
+}
+button {
+	.whupbtn {
+		margin-right: 70px;
+		width: 20px;
+		margin-top: 30px;
+		font-size: 17px;
+		padding: 0.5em 2em;
+		border: transparent;
+		box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+		background: #07223D;
+		color: $color_3;
+		border-radius: 4px;
+	}
+}
+.whupbtn {
+	&:hover {
+		background: rgb(2, 0, 36);
+		background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+	}
+	&:active {
+		transform: translate(0em, 0.2em);
+	}
+}
+.whdelbtn {
+	margin-left: 70px;
+	margin-right: 70px;
+	margin-top: 30px;
+	font-size: 17px;
+	padding: 0.5em 2em;
+	border: transparent;
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+	background: #07223D;
+	color: $color_3;
+	border-radius: 4px;
+	&:hover {
+		background: rgb(2, 0, 36);
+		background: linear-gradient(176deg, rgba(2, 0, 36, 1) 0%, rgba(6, 6, 121, 1) 75%);
+	}
+	&:active {
+		transform: translate(0em, 0.2em);
+	}
+}
+.whupbtnn {
+	margin-bottom: 10px;
+	background: #000;
+}

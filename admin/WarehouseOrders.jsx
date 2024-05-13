@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './WarehouseOrders.css';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 function WarehouseOrders() {
     const [orders, setOrders] = useState([]);
@@ -90,30 +91,30 @@ function WarehouseOrders() {
         }
     };
 
-    const handleDelete = async (index) => {
-        const order = orders[index];
-        console.log(`Attempting to delete stock with supstockId: ${order.supstockId}`);
-        try {
-            // Make an API request to delete the stock by supstockId
-            const response = await axios.delete(`http://localhost:3001/api/supplierstock/${order.supstockId}`);
+    // const handleDelete = async (index) => {
+    //     const order = orders[index];
+    //     console.log(`Attempting to delete stock with supstockId: ${order.supstockId}`);
+    //     try {
+    //         // Make an API request to delete the stock by supstockId
+    //         const response = await axios.delete(`http://localhost:3001/api/supplierstock/${order.supstockId}`);
             
-            if (response.status === 200 || response.status === 204) {
-                // Remove the declined order from the state
-                const newOrders = [...orders];
-                newOrders.splice(index, 1);
-                setOrders(newOrders);
-                console.log('Stock deleted successfully:', order.supstockId);
-            } else {
-                console.error('Unexpected response status when deleting stock:', response);
-            }
-        } catch (error) {
-            console.error('Error deleting stock:', error.message || error);
-        }
-    };
+    //         if (response.status === 200 || response.status === 204) {
+    //             // Remove the declined order from the state
+    //             const newOrders = [...orders];
+    //             newOrders.splice(index, 1);
+    //             setOrders(newOrders);
+    //             console.log('Stock deleted successfully:', order.supstockId);
+    //         } else {
+    //             console.error('Unexpected response status when deleting stock:', response);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error deleting stock:', error.message || error);
+    //     }
+    // };
 
     return (
         <div>
-            <div className="wareordtit">Warehouse Orders</div>
+            <div className="wareordtit">Warehouse Orders<Link to="/current-stock" className="whinbkbtn1">Current Stock</Link><Link to="/warehouse" className="whinbkbtn">Warehouses</Link><Link to="/orderstable" className="whinbkbtn">Orders</Link></div>
             <div className="wareortable">
                 <table className='Waresuportab'>
                     <thead>
@@ -141,8 +142,8 @@ function WarehouseOrders() {
                                 <td>
                                     <div className="wreortabacbtn">
                                         <button className='waresupactbtn' onClick={() => handleAccept(index)}>Accept</button>
-                                        <button className='waresupactbtn' onClick={() => handleDecline(index)}>Decline</button>
-                                        <button className='view-more-delete' onClick={() => handleDelete(index)}>Delete</button>
+                                        <button className='view-more-delete' onClick={() => handleDecline(index)}>Decline</button>
+                                        {/* <button className='view-more-delete' onClick={() => handleDelete(index)}>Delete</button> */}
                                     </div>
                                 </td>
                             </tr>
