@@ -3,6 +3,10 @@ import './Header.scss';
 import Logo from '../../src/assets/logo.png';
 import { Link } from 'react-router-dom';
 import { useCart } from '../CartContext';
+import Menbag from '../../src/assets/menbag.png'
+import MenShoe from '../../src/assets/Menshoe.png'
+import WomenBag from '../../src/assets/womenbag.png'
+import WomenShoe from '../../src/assets/womenshoe.png'
 
 
 const Header = () => {
@@ -25,15 +29,39 @@ const Header = () => {
                     <li className="dropdown">
                         <Link to='/men' className="hhui2">Men</Link>
                         <div className="dropdown-content">
-                            <Link to='/menbag'>Bags</Link>
-                            <Link to='/menshoes'>Shoes</Link>
+                            <Link to='/menbag'>
+                            <div>
+                               <p style={{fontWeight:"bolder",marginLeft:"15px"}}>Men's Bags</p> 
+                                <img src={Menbag} style={{height:"120px",width:"120px"}}/>
+                            </div>
+                            </Link>
+                            <Link to='/menshoes'>
+                            <div>
+                                <p style={{fontWeight:"bolder",marginLeft:"15px"}}>Men's Shoes</p> 
+                                <img src={MenShoe} style={{height:"120px",width:"120px"}} />
+                            </div>
+                            </Link>
+                            
+                            
                         </div>
                     </li>
                     <li className="dropdown">
                         <Link to="/women" className="hhui2">Women</Link>
                         <div className="dropdown-content">
-                            <Link to='/womenbags'>Bags</Link>
-                            <Link to='/womenshoes'>Shoes</Link>
+                            <Link to='/womenbags'>
+                            <div>
+                               <p style={{fontWeight:"bolder",marginLeft:"15px"}}>Women's Bags</p> 
+                                <img src={WomenBag} style={{height:"120px",width:"120px"}} />
+                            </div>
+                            </Link>
+                            <Link to='/womenshoes'>
+                            <div>
+                               <p style={{fontWeight:"bolder",marginLeft:"15px"}}>Women's Shoes</p> 
+                                <img src={WomenShoe} style={{height:"120px",width:"120px"}} />
+                            </div>
+                            </Link>
+                            
+                            
                         </div>
                     </li>
                     <li>

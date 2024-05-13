@@ -7,7 +7,7 @@ const orderStatusEmailTemplate = require("./util/email_templates/orderStatusEmai
 
 
 
-const { sendEmail } = require('../server/utilities/emailUtility'); // Make sure this path is correct based on your project structure
+const { sendEmaill } = require('../server/utilities/emailUtility'); // Make sure this path is correct based on your project structure
 
 // Function to generate order ID with the format OIDXXXXX
 function generateOrderId() {
@@ -89,7 +89,7 @@ const addOrder = (req, res, next) => {
 
     order.save()
     .then(order => {
-        sendEmail(order.toObject())
+        sendEmaill(order.toObject())
             .then(() => res.status(201).json({ message: "Order placed and email sent!", order }))
             .catch(emailError => {
                 console.error("Email send error:", emailError);

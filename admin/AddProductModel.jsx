@@ -296,42 +296,6 @@ const AddProductModel = ({onClose}) => {
     }
   };
   
-
-    const handleAddColor = () => {
-      if (selectedColorName && selectedColorCount > 0 && selectedColorPrice && selectedColorImages.length > 0) {
-        // Create a new color object including name, count, price, and images
-        const newColor = {
-          name: selectedColorName,
-          count: selectedColorCount,
-          price: selectedColorPrice,
-          images: selectedColorImages
-        };
-    
-        // Update the product data state with the new color
-        setProductData(prevProductData => ({
-          ...prevProductData,
-          Colors: [...prevProductData.Colors, newColor],
-        }));
-    
-        // Clear the input fields after adding color
-        setSelectedColorName('');
-        setSelectedColorCount(0);
-        setSelectedColorPrice('');
-        setSelectedColorImages([]);
-      } else {
-        // Log an error if any of the required fields is missing
-        console.error("Please fill in all the required fields.");
-      }
-    };
-  
-    const handleRemoveColor = (index) => {
-      const newColors = [...productData.Colors];
-      newColors.splice(index, 1);
-      setProductData({
-        ...productData,
-        Colors: newColors,
-      });
-    };
     
 
   const handleRemoveSize = (index) => {
@@ -486,7 +450,6 @@ const AddProductModel = ({onClose}) => {
               <select value={productData.VariantType} onChange={handleVariantChange}>
                 <option value="">Select Variant Type</option>
                 <option value="Many Sizes with Many Colors">Many Sizes with Many Colors</option>
-                <option value="Only Colors">Only Colors</option>
               </select>
             </div>
           </div>
@@ -496,15 +459,19 @@ const AddProductModel = ({onClose}) => {
               {/* Render sections dynamically based on selected variant */}
               {productData.VariantType === "Many Sizes with Many Colors" && (
                 <div className='mz1'>
-                  <label>4) Many Sizes with Many Colors:</label>
+                  <label> Many Sizes with Many Colors:</label>
                   <div className='mzdiv'>
                     <label>Add Size:</label>
-                    <input
-                      type="text"
-                      value={sizeInput}
-                      onChange={(e) => setSizeInput(e.target.value)}
-                      placeholder="Enter size"
-                    />
+                    <select
+                        value={sizeInput}
+                        onChange={(e) => setSizeInput(e.target.value)}
+                      >
+                        <option value="">Select Size</option>
+                        <option value="Freesize">Freesize</option>
+                        {Array.from({ length: 21 }, (_, i) => 30 + i).map(size => (
+                          <option key={size} value={size}>{size}</option>
+                        ))}
+                      </select>
                     <label>Select Color:</label>
                       <select
                         value={selectedColor}
@@ -536,8 +503,8 @@ const AddProductModel = ({onClose}) => {
                         placeholder="Enter price"
                       />
 
-
-                    <input type="file" onChange={handleAddImage} accept="image/*" />
+                    <label>Images:</label>
+                    <input type="file" onChange={handleAddImage} accept="image/*" className='imageinput' />
                     {/* Display selected images for the current color */}
                     <div className='imgdiv'>
                       {selectedColorImages.map((image, index) => (
@@ -572,62 +539,7 @@ const AddProductModel = ({onClose}) => {
                   
                 </div>
               )}
-              {productData.VariantType === "Only Colors" && (
-                <div className='onlycolors'>
-                  <label>4) Only Colors:</label>
-                  <div>
-                    <label>Color Name:</label>
-                    <input
-                      type="text"
-                      value={selectedColorName}
-                      onChange={(e) => setSelectedColorName(e.target.value)}
-                      placeholder="Enter color name"
-                    />
-                    <label>Available Count:</label>
-                    <input
-                      type="number"
-                      value={selectedColorCount}
-                      onChange={(e) => setSelectedColorCount(e.target.value)}
-                      placeholder="Enter available count"
-                    />
-                    <label>Price:</label>
-                    <input
-                      type="number"
-                      value={selectedColorPrice}
-                      onChange={(e) => setSelectedColorPrice(e.target.value)}
-                      placeholder="Enter price"
-                    />
-                    <input type="file" onChange={handleAddImage} accept="image/*" />
-                    {/* Display selected images for the current color */}
-                    <div className='imgs'>
-                      {selectedColorImages.map((image, index) => (
-                        <div key={index}>
-                          <img src={image} alt={`Color Image ${index}`} />
-                          <button type="button" className='rmv' onClick={() => handleRemoveImage(index)}>Remove</button>
-                        </div>
-                      ))}
-                    </div>
-                    <button type="button" className='addbutton' onClick={handleAddColor}>Add Color</button>
-                  </div>
-
-                  {/* Display added colors */}
-                  <div className='sd2'>
-                    {productData.Colors.map((color, index) => (
-                      <div key={index} className='size-item'>
-                        <span>Color Name:{color.name}</span>
-                        <span>Count: {color.count}</span>
-                        <span>Price:{color.price}</span>
-                        <div>
-                          {color.images.map((image, imgIndex) => (
-                            <img key={imgIndex} src={image} alt={`Color Image ${index}-${imgIndex}`} />
-                          ))}
-                        </div>
-                        <button type="button" onClick={() => handleRemoveColor(index)}>Remove</button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              
 
             </div>
           )}
@@ -690,6 +602,7 @@ const AddProductModel = ({onClose}) => {
             
 
               <label>8) Default Images:</label>
+                <input type="file" className='dfile' onChange={handleAddDefaultImage} accept="image/*" />
                 <div className='imagecon'>
                   {defaultImages.map((image, index) => (
                     <div className='imh' key={index}>
@@ -699,7 +612,7 @@ const AddProductModel = ({onClose}) => {
                   ))}
                   
                 </div>
-                <input type="file" className='dfile' onChange={handleAddDefaultImage} accept="image/*" />
+                
             
           </div>
           

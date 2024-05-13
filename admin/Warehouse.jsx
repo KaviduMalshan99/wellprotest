@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Modal } from '@mui/material';
-import axios from 'axios';
-import { toast,ToastContainer } from 'react-toastify';
 import WarehouseAdd from '../admin/WarehouseAdd';
 import "./Warehouse.css";  // Ensure the CSS path is correct
 import { useNavigate } from 'react-router-dom';
-import './Product.css';
+
 
 const WarehouseSection = () => {
   const [warehouses, setWarehouses] = useState([]);
-  const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
