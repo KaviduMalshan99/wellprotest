@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminChat.css';
-import wellWornImage from '../src/assets/Wellwornlogo.jpg';
+//import wellWornImage from '../src/assets/Wellwornlogo.jpg';
 
 const AdminPanel = () => {
   const [orderIds, setOrderIds] = useState([]);

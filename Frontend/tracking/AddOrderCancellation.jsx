@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './OrderCancellation.css';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 function AddOrderCancellation({ onClose, orderId }) {
@@ -41,11 +42,17 @@ function AddOrderCancellation({ onClose, orderId }) {
       // Submit cancellation request to the backend
       const response = await axios.post(`http://localhost:3001/api/addOrderCancellation`, cancellationData);
       console.log("Cancellation submitted:", response.data);
+
+        // Delete the order from the database
+        await axios.delete(`http://localhost:3001/api/deleteOrder/${orderId}`);
+        console.log('Order deleted successfully');
+      toast.success('Order cancellation successful!', { autoClose: 3000 });
       // Close the popup after successful cancellation
       onClose();
     } catch (error) {
       console.error("Error submitting cancellation:", error);
       // Handle error state if needed
+      toast.error('Failed to cancel order', { autoClose: 3000 });
     }
   };
 

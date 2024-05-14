@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './OrdersTracking.css';
 
-const formatDate = (dateString) => {
+  const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toISOString().split('T')[0]; // Extract and return YYYY-MM-DD part
 };
@@ -10,6 +10,9 @@ const OrderTracking = () => {
   const [orders, setOrders] = useState([]);
   const [trackingEntries, setTrackingEntries] = useState([]);
   const [selectedOrderIds, setSelectedOrderIds] = useState(new Set());
+  const [searchQuery, setSearchQuery] = useState('');
+  //const [searchQuery, setSearchQuery] = useState('');
+  //const [searchTrackingQuery, setSearchTrackingQuery] = useState('');
 
   const fetchOrders = async () => {
     try {
@@ -85,8 +88,24 @@ const OrderTracking = () => {
     }
   };
 
+  const filteredOrders = orders.filter((order) =>
+    order.orderId.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredTrackingEntries = trackingEntries.filter((entry) =>
+    entry.orderId.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
-    <div>
+   
+      <div>
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by Order ID..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
     <div className="orders-container">
 
       <div className="left-panel">
@@ -102,7 +121,7 @@ const OrderTracking = () => {
         
         <tbody >
 
-          {orders.map((order) => (
+          {filteredOrders.map((order) => (
             <tr key={order._id}>
               <td>
                 <input
@@ -140,7 +159,7 @@ const OrderTracking = () => {
           </tr>
         </thead>
         <tbody >
-          {trackingEntries.map((entry) => (
+          {filteredTrackingEntries.map((entry) => (
             <tr key={entry._id}>
               <td>{entry.orderId}</td>
               <td>{formatDate(entry.orderDate)}</td>

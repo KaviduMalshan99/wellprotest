@@ -1,3 +1,4 @@
+
 const Message = require('./DelayOrderChatModel');
 
 
@@ -15,70 +16,62 @@ const getMessagesByOrderId = async (req, res) => {
 
 const getOrderIds = async (req, res) => {
   try {
-    const orders = await Message.distinct('orderId');
+    const orders = await Message.distinct(orderId);
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
-
 const getAllCustomerMessages = async (req, res) => {
   try {
-    const messages = await Message.find({ orderId: 'OID74640' }); // Fetch messages for specific order ID
+    const messages = await Message.find();
     res.json(messages);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
+
+
 
 const createCustomerMessage = async (req, res) => {
-  const message = new Message({
-    sender: req.body.sender,
-    message: req.body.message,
-    //orderId: 'O1234'
-      orderId: 'OID74640'
-     //orderId: 'O2345' // Hardcoded order ID
-  });
+  const { sender, message, orderId } = req.body;
+  const newMessage = new Message({ sender, message, orderId });
 
   try {
-    const newMessage = await message.save();
-    res.status(201).json(newMessage);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+    const savedMessage = await newMessage.save();
+    res.status(201).json(savedMessage);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 
+
 const updateCustomerMessage = async (req, res) => {
+  const { id } = req.params;
+  const { sender, message } = req.body;
+
   try {
-    const message = await Message.findById(req.params.id);
-    if (message == null) {
-      return res.status(404).json({ message: 'Message not found' });
-    }
-    if (req.body.sender != null) {
-      message.sender = req.body.sender;
-    }
-    if (req.body.message != null) {
-      message.message = req.body.message;
-    }
-    const updatedMessage = await message.save();
+    const updatedMessage = await Message.findByIdAndUpdate(id, { sender, message }, { new: true });
     res.json(updatedMessage);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 
 const deleteCustomerMessage = async (req, res) => {
+  const { id } = req.params;
   try {
-    await Message.findByIdAndDelete(req.params.id);
+    await Message.findByIdAndDelete(id);
     res.json({ message: 'Message deleted' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
-
 
 
 
 
 
 module.exports = { getAllCustomerMessages, createCustomerMessage, updateCustomerMessage, deleteCustomerMessage,getMessagesByOrderId, getOrderIds };
+
+

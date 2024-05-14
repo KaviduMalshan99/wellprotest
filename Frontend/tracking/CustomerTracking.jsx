@@ -3,30 +3,78 @@ import axios from 'axios';
 import AddOrderCancellation from './AddOrderCancellation';
 import DelayOrderInquiry from './DelayOrderInquiry.jsx';
 import './CustomerTracking.css';
+import { useParams, useNavigate } from 'react-router-dom';
+//import { useLocation } from 'react-router-dom';
+import Header from '../Header/Header.jsx';
+import Footer from '../Footer/Footer.jsx';
+import { useAuthStore } from '../../src/store/useAuthStore.js';
+
 
 const CustomerTracking = () => {
+  
   const [trackingInfo, setTrackingInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [showDelayOrderPopup, setShowDelayOrderPopup] = useState(false);
+  //const { orderId } = useParams(); // Retrieve orderId from URL
+  const navigate = useNavigate(); // Get navigate function 
+  const { orderId } = useParams(); // Retrieve orderId from URL
+  const [UserId, setCustomerId] = useState(null);
+  const {user}=useAuthStore();
 
-  const orderId = 'OID41499';
-
+    const userId =user?.UserId;
+    console.log("customerid :", userId)
+ 
   useEffect(() => {
     const fetchTrackingInfo = async () => {
+        try {
+            const { data } = await axios.get(`http://localhost:3001/api/tracking/${orderId}`);
+            setTrackingInfo(data.trackingEntry);
+            setLoading(false);
+        } catch (err) {
+            setError('Tracking information not available.');
+            setLoading(false);
+        }
+    };
+
+    const fetchCustomerId = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:3001/api/tracking/${orderId}`);
-        setTrackingInfo(data.trackingEntry);
-        setLoading(false);
-      } catch (err) {
-        setError('Tracking information not available.');
-        setLoading(false);
+        const { data } = await axios.get(`http://localhost:3001/api/order/${orderId}`);
+        setCustomerId(data.order.customerId);
+      } catch (error) {
+        console.error('Error fetching customer ID:', error);
       }
     };
 
-    fetchTrackingInfo();
+
+    const fetchOrderDetails = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:3001/api/order/${orderId}`);
+        setCustomerId(data.order.customerId);
+      } catch (error) {
+        console.error('Error fetching customer ID:', error);
+      }
+    };
+
+    if (orderId) {
+      fetchOrderDetails();
+      fetchCustomerId();
+      fetchTrackingInfo();
+    }
   }, [orderId]);
+
+   
+
+
+  useEffect(() => {
+    // Log orderId to console when it changes
+    console.log('Current orderId:', orderId);
+  }, [orderId]);
+
+  // const handlePopupClose = () => {
+  //   setShowDelayOrderPopup(false);
+  // };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -56,6 +104,7 @@ const CustomerTracking = () => {
   ];
   return (
     <div>
+      <Header/>
       <div className='costomerTracking'>
       <h2>Track Your Order</h2>
       <div>Order ID: {orderId}</div>
@@ -91,6 +140,8 @@ const CustomerTracking = () => {
                 )}
               </div>
             ))}
+
+            
           </div>
         </>
       )}
@@ -99,14 +150,16 @@ const CustomerTracking = () => {
         {showPopup && <AddOrderCancellation orderId={orderId} onClose={() => setShowPopup(false)} />}</div>
          <br/>
 
-         <div >
-            {/* Button for Delay Order Inquiry */}
+            <div >
+            
             <button className='buttonTracking' onClick={() => setShowDelayOrderPopup(true)}>Ask Order Inquiry</button>
-            {/* Popup for Delay Order Inquiry */}
-            {showDelayOrderPopup && <DelayOrderInquiry onClose={() => setShowDelayOrderPopup(false)} />}
-          </div>
+            {showDelayOrderPopup && <DelayOrderInquiry orderId={orderId} customerId={UserId} onClose={() => setShowPopup(false)} />}</div>
+           
+          
+  </div>
 
-      </div>
+    
+      <Footer/>
     </div>
   );
 };
