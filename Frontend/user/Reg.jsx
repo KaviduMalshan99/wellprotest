@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import "./Reg.css";
+import Header from '../Header/Header'
 
 const Reg = () => {
   const [formData, setFormData] = useState({
@@ -62,7 +63,9 @@ const Reg = () => {
   };
 
   return (
+
     <div>
+      <Header />
       <div className="regmtitle">REGISTRATION</div>
       <div className="uregmallitems">
         <form onSubmit={handleSubmit}>
@@ -101,6 +104,8 @@ const Reg = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                pattern="^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
+                title="Please enter a valid email address."
               />
             </div>
             <div>
@@ -113,6 +118,8 @@ const Reg = () => {
                 value={formData.contact}
                 onChange={handleChange}
                 required
+                pattern="[0-9]+"
+                title="Please enter numbers only."
               />
             </div>
             <div>
@@ -140,25 +147,27 @@ const Reg = () => {
               />
             </div>
             <div className="uregpricheck">
-              <input
-                type="checkbox"
-                name="privacyPolicy"
-                checked={formData.privacyPolicy}
-                onChange={handleChange}
-                required
-              />
+              <div className="rechk">
+                <input
+                  className='rechk'
+                  type="checkbox"
+                  name="privacyPolicy"
+                  checked={formData.privacyPolicy}
+                  onChange={handleChange}
+                  required
+                /></div>
               Accept privacy & Policy
             </div>
             <button type="submit" className="remubtn">
               Register
             </button>
-            Already have an account? Login
+            <Link to="/login">Already have an account? Login</Link>
           </div>
         </form>
       </div>
       {error && <div style={{ color: "red" }}>{error}</div>}
       <ToastContainer />
-    </div>
+    </div >
   );
 };
 

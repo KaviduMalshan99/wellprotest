@@ -51,13 +51,13 @@ function WarehouseOrders() {
                 warehouseId: order.warehousenameid,
                 stockquantity: order.stockquantity
             });
-    
+
             if (response.status === 200) {
                 // Remove from the orders array and add to the accepted stocks
                 const newOrders = [...orders];
                 newOrders.splice(index, 1);
                 setOrders(newOrders);
-    
+
                 const newAcceptedStock = response.data;
                 const updatedAcceptedStocks = [...acceptedStocks, newAcceptedStock];
                 setAcceptedStocks(updatedAcceptedStocks);
@@ -68,7 +68,7 @@ function WarehouseOrders() {
             console.error('Error updating stock', error);
         }
     };
-    
+
 
     const handleDecline = async (index) => {
         const order = orders[index];
@@ -76,7 +76,7 @@ function WarehouseOrders() {
         try {
             // Make an API request to delete the stock by supstockId
             const response = await axios.delete(`http://localhost:3001/api/supplierstock/${order.supstockId}`);
-            
+
             if (response.status === 200 || response.status === 204) {
                 // Remove the declined order from the state
                 const newOrders = [...orders];
@@ -97,7 +97,7 @@ function WarehouseOrders() {
     //     try {
     //         // Make an API request to delete the stock by supstockId
     //         const response = await axios.delete(`http://localhost:3001/api/supplierstock/${order.supstockId}`);
-            
+
     //         if (response.status === 200 || response.status === 204) {
     //             // Remove the declined order from the state
     //             const newOrders = [...orders];
@@ -114,7 +114,7 @@ function WarehouseOrders() {
 
     return (
         <div>
-            <div className="wareordtit">Warehouse Orders<Link to="/current-stock" className="whinbkbtn1">Current Stock</Link><Link to="/warehouse" className="whinbkbtn">Warehouses</Link><Link to="/orderstable" className="whinbkbtn">Orders</Link></div>
+            <div className="wareordtit">Warehouse Orders<Link to="/admin/current-stock" className="whinbkbtn1">Current Stock</Link><Link to="/admin/warehouse" className="whinbkbtn">Warehouses</Link><Link to="/admin/orderstable" className="whinbkbtn">Orders</Link></div>
             <div className="wareortable">
                 <table className='Waresuportab'>
                     <thead>

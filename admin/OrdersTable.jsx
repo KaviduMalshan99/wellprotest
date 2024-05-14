@@ -68,12 +68,12 @@ const OrdersTable = () => {
             product_id: order.productId,
             status: order.status
           };
-  
+
           // Replace with your actual Service ID, Template ID, and User ID
-          const SERVICE_ID = "service_smyt8zd";
-          const TEMPLATE_ID = "template_iq0gdfg";
-          const USER_ID = "b_3EbwZJHsdFLGsRI";
-  
+          const SERVICE_ID = "service_z79rnh4";
+          const TEMPLATE_ID = "template_yoxj24v";
+          const USER_ID = "BDspXYrHoiVoN8saf";
+
           // Send email notification
           try {
             await emailjs.send(SERVICE_ID, TEMPLATE_ID, emailTemplateParams, USER_ID);
@@ -81,7 +81,7 @@ const OrdersTable = () => {
           } catch (emailError) {
             console.error("Error sending email:", emailError);
           }
-  
+
           // Update contact status via API
           try {
             const response = await axios.put(`http://localhost:3001/api/updateContactStatus/${order.orderId}`);
@@ -95,51 +95,51 @@ const OrdersTable = () => {
             console.error("API error updating contact status:", apiError);
           }
         }
-  
+
         // If not in selectedOrderIds, return as is
         return order;
       });
-  
+
       // Resolve all promises to update the state
       const resolvedUpdatedOrders = await Promise.all(updatedOrdersPromises);
       setOrders(resolvedUpdatedOrders); // Update the orders state
       setSelectedOrderIds([]); // Clear selection
       alert("Selected contacts have been informed. Checkboxes are now cleared.");
-  
+
     } catch (error) {
       console.error("Error in handleContactClick:", error);
     }
   };
-  
+
 
   const handleDispatchClick = async (orderId) => {
-  try {
-    // First, update the order status to "Dispatched"
-    const response = await axios.put("http://localhost:3001/api/updatestatus", { orderId });
-    if (response.data.success) {
-      const updatedOrders = orders.map((order) =>
-        order.orderId === orderId ? { ...order, status: "Dispatched" } : order
-      );
-      setOrders(updatedOrders);
+    try {
+      // First, update the order status to "Dispatched"
+      const response = await axios.put("http://localhost:3001/api/updatestatus", { orderId });
+      if (response.data.success) {
+        const updatedOrders = orders.map((order) =>
+          order.orderId === orderId ? { ...order, status: "Dispatched" } : order
+        );
+        setOrders(updatedOrders);
 
-      // Find the order that was dispatched to get productId and quantity
-      const dispatchedOrder = orders.find(order => order.orderId === orderId);
-      if (dispatchedOrder) {
-        // Send data to the DispatchedOrders table
-        await axios.post("http://localhost:3001/api/dispatchedOrders", {
-          orderId: dispatchedOrder.orderId,
-          productId: dispatchedOrder.productId,
-          quantity: dispatchedOrder.quantity
-        });
-        console.log(`Dispatched order saved for order ID: ${orderId}`);
+        // Find the order that was dispatched to get productId and quantity
+        const dispatchedOrder = orders.find(order => order.orderId === orderId);
+        if (dispatchedOrder) {
+          // Send data to the DispatchedOrders table
+          await axios.post("http://localhost:3001/api/dispatchedOrders", {
+            orderId: dispatchedOrder.orderId,
+            productId: dispatchedOrder.productId,
+            quantity: dispatchedOrder.quantity
+          });
+          console.log(`Dispatched order saved for order ID: ${orderId}`);
+        }
+      } else {
+        console.error("Failed to update order status:", response.data.message);
       }
-    } else {
-      console.error("Failed to update order status:", response.data.message);
+    } catch (error) {
+      console.error("Error updating order status or saving dispatched order:", error);
     }
-  } catch (error) {
-    console.error("Error updating order status or saving dispatched order:", error);
-  }
-};
+  };
 
 
   const filteredOrders = orders.filter((order) =>
@@ -149,7 +149,7 @@ const OrdersTable = () => {
   return (
     <div className="whinm">
       <div className="wmtitle">Order Section</div>
-      <div className="whintitle">Order Details <Link to="/warehouse" className="whinbkbtn1">Warehouses</Link><Link to="/current-stock" className="whinbkbtn1">Current Stock</Link></div>
+      <div className="whintitle">Order Details <Link to="/admin/warehouse" className="whinbkbtn1">Warehouses</Link><Link to="/admin/current-stock" className="whinbkbtn1">Current Stock</Link></div>
       <div className="filter-search-container">
         <input className="whinsrch" placeholder="Search..." value={searchTerm} onChange={handleSearchChange} />
         <select className="whinsrch" onChange={handleFilterChange}>
@@ -161,53 +161,53 @@ const OrdersTable = () => {
         </select>
         <button className="whinorbtn" onClick={handleContactClick}>Send Emails Selected</button>
       </div>
-      
-        <table className="whtt">
-          <thead>
-            <tr>
-              <th>Select</th>
-              <th>Order ID</th>
-              <th>Product ID</th>
-              <th>Quantity</th>
-              <th>Location</th>
-              <th>Status</th>
-              <th>Contact Status</th>
+
+      <table className="whtt">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Order ID</th>
+            <th>Product ID</th>
+            <th>Quantity</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Contact Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredOrders.map((order) => (
+            <tr key={order.orderId}>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={selectedOrderIds.includes(order.orderId)}
+                  onChange={() => handleOrderSelect(order.orderId)}
+                />
+              </td>
+              <td>{order.orderId}</td>
+              <td>{order.productId}</td>
+              <td>{order.quantity}</td>
+              <td>{order.location}</td>
+              <td>
+                {order.status === "Dispatched" ? (
+                  "Dispatched"
+                ) : (
+                  order.canDispatch ? (
+                    <button
+                      className="whinbkbtn1"
+                      onClick={() => handleDispatchClick(order.orderId)}
+                    >
+                      Dispatch
+                    </button>
+                  ) : "Pending"
+                )}
+              </td>
+              <td>{order.ContactStatus}</td>
             </tr>
-          </thead>
-          <tbody>
-            {filteredOrders.map((order) => (
-              <tr key={order.orderId}>
-                <td>
-                  <input
-                    type="checkbox"
-                    checked={selectedOrderIds.includes(order.orderId)}
-                    onChange={() => handleOrderSelect(order.orderId)}
-                  />
-                </td>
-                <td>{order.orderId}</td>
-                <td>{order.productId}</td>
-                <td>{order.quantity}</td>
-                <td>{order.location}</td>
-                <td>
-                  {order.status === "Dispatched" ? (
-                    "Dispatched"
-                  ) : (
-                    order.canDispatch ? (
-                      <button
-                        className="whinbkbtn1"
-                        onClick={() => handleDispatchClick(order.orderId)}
-                      >
-                        Dispatch
-                      </button>
-                    ) : "Pending"
-                  )}
-                </td>
-                <td>{order.ContactStatus}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      
+          ))}
+        </tbody>
+      </table>
+
     </div>
   );
 };

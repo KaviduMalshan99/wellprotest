@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Modal } from '@mui/material';
 import WarehouseAdd from '../admin/WarehouseAdd';
@@ -25,14 +25,14 @@ const WarehouseSection = () => {
   }, []);
 
   const toggleAddModal = () => setIsAddModalOpen(!isAddModalOpen);
-  
+
 
   const navigate = useNavigate(); // Initializing navigate function
 
   const handleClick = () => {
     // Redirect to the Refund page when the button is clicked
     navigate('/warehouseorders');
-    
+
   };
   const handleOrdersTableClick = () => {
     // Redirect to the Refund page when the button is clicked
@@ -57,28 +57,28 @@ const WarehouseSection = () => {
           <i className="fas fa-plus"></i>Add New Warehouse
         </button>
         <Modal open={isAddModalOpen} onClose={toggleAddModal} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{justifyContent:'center', width: '80%', maxWidth: '1000px', borderRadius:'10px', maxHeight: '85vh', overflowY: 'auto', backgroundColor: '#cfd2d2', padding: '20px' }}>
+          <div style={{ justifyContent: 'center', width: '80%', maxWidth: '1000px', borderRadius: '10px', maxHeight: '85vh', overflowY: 'auto', backgroundColor: '#cfd2d2', padding: '20px' }}>
             <WarehouseAdd onClose={toggleAddModal} />
           </div>
         </Modal>
       </div>
       <div className="wraebtnset">
-      <div className="waddbtnplc">
-        <Link to="/orderstable" className="waaddbtn">
-          Orders
-        </Link>
+        <div className="waddbtnplc">
+          <Link to="/admin/orderstable" className="waaddbtn">
+            Orders
+          </Link>
+        </div>
+        <div className="waddbtnplc">
+          <Link to="/admin/warehouseorders" className="waaddbtn">
+            New Stocks
+          </Link></div>
+        <div className="waddbtnplc">
+          <Link to="/admin/current-stock" className="waaddbtn">
+            Current Stocks
+          </Link>
+        </div>
       </div>
-      <div className="waddbtnplc">
-        <Link to="/warehouseorders" className="waaddbtn">
-          New Stocks
-        </Link></div>
-      <div className="waddbtnplc">
-        <Link to="/current-stock" className="waaddbtn">
-          Current Stocks
-        </Link>
-      </div>
-      </div>
-      
+
       <div className="exwhtitle">Existing Warehouses</div>
       <center>
         <table className="whtd">
@@ -86,7 +86,7 @@ const WarehouseSection = () => {
             <tr>
               <th>ID</th>
               <th>Country</th>
-              
+
               <th>Actions</th>
             </tr>
           </thead>
@@ -95,16 +95,16 @@ const WarehouseSection = () => {
               <tr className="whvtr" key={warehouse.id}>
                 <td className="whvtd">{warehouse.id}</td>
                 <td className="whvtd">{warehouse.country}</td>
-                
+
                 <td className="whvtd">
-                  <Link to={`/edit-warehouse/${warehouse.id}`} className="waaddbtn">
+                  <Link to={`/admin/edit-warehouse/${warehouse.id}`} className="waaddbtn">
                     Edit
                   </Link>
                   {" | "}
-                  <Link to={`/warehouse-details/${warehouse.id}`} className="waaddbtn">
+                  <Link to={`/admin/warehouse-details/${warehouse.id}`} className="waaddbtn">
                     View More
                   </Link>
-                  
+
                 </td>
               </tr>
             ))}
