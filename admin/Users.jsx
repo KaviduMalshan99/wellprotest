@@ -23,18 +23,25 @@ const Users = () => {
   }, []);
 
   useEffect(() => {
-    // Filter users based on the search term
     const filtered = users.filter((user) => {
       const fullName = `${user.firstName} ${user.lastName}`;
-      return fullName.toLowerCase().includes(searchTerm.toLowerCase()) || user.email.toLowerCase().includes(searchTerm.toLowerCase());
+      return (
+        fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.UserId.toString().includes(searchTerm)
+      );
     });
 
     setFilteredUsers(filtered);
   }, [searchTerm, users]);
 
-  const handleSearch = () => {
-    // Filter users based on the search term
-    // The useEffect will handle the filtering, so you can leave this function empty
+  const handleDelete = async (userId) => {
+    try {
+      await AuthAPI.deleteCustomer(userId);
+      setUsers(users.filter(user => user.UserId !== userId));
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
   };
 
   return (
@@ -49,7 +56,7 @@ const Users = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
           />
-          <button className="search-button" onClick={handleSearch}>
+          <button className="search-button">
             <i className="fas fa-search" />
           </button>
         </div>
@@ -73,9 +80,12 @@ const Users = () => {
                 <td>{`${user.firstName} ${user.lastName}`}</td>
                 <td>{user.email}</td>
                 <td>
-                  <Link to={`/user/${user.UserId}`} className="view-more-button">
+                  <Link to={`/admin/customer/${user.UserId}`} className="view-more-button">
                     View More
                   </Link>
+                  <button className="delete-button" onClick={() => handleDelete(user.UserId)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

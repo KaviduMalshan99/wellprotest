@@ -39,6 +39,10 @@
   border-radius: 10px;
 }
 
+.rechk {
+  font-size: 20px;
+}
+
 .remubtn {
 
   color: white;
@@ -71,7 +75,7 @@
 
 .uregpricheck {
 
-  font-size: 17px;
+  font-size: 20px;
   display: flex;
   gap: 10px;
 }

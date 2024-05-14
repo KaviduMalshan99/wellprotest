@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from "react-router-dom";
 import axios from 'axios';
-import emailjs from 'emailjs-com';
+// import emailjs from 'emailjs-com';
 import "./WarehouseInven.css";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -15,7 +15,7 @@ function WarehouseInvDetails() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterBy, setFilterBy] = useState("productId");
   const [filteredInventory, setFilteredInventory] = useState([]);
-  
+
   useEffect(() => {
     fetchStocks();
   }, []);
@@ -37,7 +37,7 @@ function WarehouseInvDetails() {
         const maxQuantity = 60; // Assuming the full stock capacity is 60
         const percentage = Math.min((stock.stockquantity / maxQuantity) * 100, 100);
         progressBar.style.width = `${percentage}%`;
-  
+
         // Update backgroundColor based on the percentage
         if (percentage < 25) {
           progressBar.style.backgroundColor = "#ff0000";  // Red for less than 25%
@@ -48,14 +48,14 @@ function WarehouseInvDetails() {
         } else {
           progressBar.style.backgroundColor = "#00ff00";  // Green for 75% and above
         }
-  
+
         // Send an email notification if stock quantity is less than 25% of max capacity
         const threshold = maxQuantity * 0.25;
         if (stock.stockquantity < threshold) {
-         // sendNotificationEmail(stock.productId, stock.stockquantity);
-          sendNotification(stock.productId, stock.stockquantity,stock.productName, stock.sizes, stock.colors);
+          // sendNotificationEmail(stock.productId, stock.stockquantity);
+          sendNotification(stock.productId, stock.stockquantity, stock.productName, stock.sizes, stock.colors);
         }
-  
+
         // Display a toast message if the stock exceeds the maxQuantity
         if (stock.stockquantity > maxQuantity) {
           toast.warning(`Stock quantity for Product ID: ${stock.productId} exceeds the limit!`);
@@ -68,7 +68,7 @@ function WarehouseInvDetails() {
     });
   }, [stocks]);
 
-  const sendNotification = (productId, stockQty,productName, sizes,colors) => {
+  const sendNotification = (productId, stockQty, productName, sizes, colors) => {
     const notificationData = {
       warehouseId: id,
       productId,
@@ -78,7 +78,7 @@ function WarehouseInvDetails() {
       colors,
       message: `Product ID: ${productId}, product-Name:${productName}, product-size: ${sizes}, product-color: ${colors}, Warehouse ID: ${id} => has low stock: ${stockQty} items left!`
     };
-  
+
     // Post the notification data to the backend
     axios.post('http://localhost:3001/api/notifications', notificationData)
       .then(response => console.log('Notification sent!', response.status, response.data))
@@ -92,19 +92,19 @@ function WarehouseInvDetails() {
         }
       });
   };
-  
-  
+
+
 
   //const sendNotificationEmail = (id, amount) => {
-    // Add your EmailJS credentials and parameter details
-    //emailjs.send("service_smyt8zd", "template_n96sx1q", {
-     // product_id: id,
-     // stock_level: amount,
-     // to_name: "Warehouse Manager",
-     // to_email: "wellwornsl@gmail.com",
-   // }, "b_3EbwZJHsdFLGsRI")
-    //.then(response => console.log('Email successfully sent!', response.status, response.text))
-   // .catch(error => console.error('Failed to send email.', error));
+  // Add your EmailJS credentials and parameter details
+  //emailjs.send("service_smyt8zd", "template_n96sx1q", {
+  // product_id: id,
+  // stock_level: amount,
+  // to_name: "Warehouse Manager",
+  // to_email: "wellwornsl@gmail.com",
+  // }, "b_3EbwZJHsdFLGsRI")
+  //.then(response => console.log('Email successfully sent!', response.status, response.text))
+  // .catch(error => console.error('Failed to send email.', error));
   //};
 
   const handleSearchChange = (e) => {
@@ -154,7 +154,7 @@ function WarehouseInvDetails() {
       <ToastContainer />
       <div className="wheinmt">
         <div className="whinmtit">WAREHOUSE SECTION
-          <Link to="/warehouse" className="whinbkbtn1">Warehouses</Link><Link to="/current-stock" className="whinbkbtn1">Current Stock</Link>
+          <Link to="/admin/warehouse" className="whinbkbtn1">Warehouses</Link><Link to="/admin/current-stock" className="whinbkbtn1">Current Stock</Link>
         </div>
       </div>
       <div className="whintitle">Inventory Details {id}</div>
@@ -164,7 +164,7 @@ function WarehouseInvDetails() {
           <option value="productName">Product Name</option>
           <option value="sizes">ProductSize</option>
           <option value="colors">ProductColor</option>
-          <option value="stockquantity">Quantity</option> 
+          <option value="stockquantity">Quantity</option>
         </select>
         <input
           type="text"

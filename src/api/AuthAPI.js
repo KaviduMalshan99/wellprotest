@@ -14,6 +14,12 @@ class AuthAPI {
   static fetchCustomers() {
     return api.get("/api/customer");
   }
+
+  // Delete Customer
+  static deleteCustomer(userId) {
+    return api.delete(`/api/customers/${userId}`);
+  }
+  
 }
 
 export default AuthAPI;

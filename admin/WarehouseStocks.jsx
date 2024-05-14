@@ -6,7 +6,7 @@ import axios from 'axios';
 function WarehouseStocks() {
   const [stocks, setStocks] = useState([]);
   const [editIndex, setEditIndex] = useState(-1);
-  const [editStock, setEditStock] = useState({ productId: '', productName: '',sizes: [], colors: [], warehouseId: '', stockquantity: '' });
+  const [editStock, setEditStock] = useState({ productId: '', productName: '', sizes: [], colors: [], warehouseId: '', stockquantity: '' });
   const maxQuantity = 60;
 
   useEffect(() => {
@@ -33,7 +33,7 @@ function WarehouseStocks() {
 
   const handleCancelEdit = () => {
     setEditIndex(-1);
-    setEditStock({ productId: '',productName: '', sizes: [], colors: [], warehouseId: '', stockquantity: '' });
+    setEditStock({ productId: '', productName: '', sizes: [], colors: [], warehouseId: '', stockquantity: '' });
   };
 
   const handleUpdate = async () => {
@@ -64,48 +64,48 @@ function WarehouseStocks() {
     }));
   };
 
-/*   const adjustStocks = async () => {
-    try {
-        const response = await axios.post('http://localhost:3001/api/adjustStockQuantities');
-        if (response.data.success) {
-            alert('Stock quantities have been updated.');
-            fetchStocks(); // Refresh the stock data after adjustment
-        } else {
-            alert('Failed to update stock quantities.');
-        }
-    } catch (error) {
-        console.error('Error adjusting stock quantities:', error);
-        alert('Error adjusting stock quantities.');
-    }
-}; */
+  /*   const adjustStocks = async () => {
+      try {
+          const response = await axios.post('http://localhost:3001/api/adjustStockQuantities');
+          if (response.data.success) {
+              alert('Stock quantities have been updated.');
+              fetchStocks(); // Refresh the stock data after adjustment
+          } else {
+              alert('Failed to update stock quantities.');
+          }
+      } catch (error) {
+          console.error('Error adjusting stock quantities:', error);
+          alert('Error adjusting stock quantities.');
+      }
+  }; */
 
-const adjustStockAndClearDispatchedOrders = async () => {
-  try {
+  const adjustStockAndClearDispatchedOrders = async () => {
+    try {
       // Assume this function adjusts stock quantities based on dispatched orders
       const adjustmentResponse = await axios.post('http://localhost:3001/api/adjustStockQuantities');
       console.log('Stock adjustment response:', adjustmentResponse.data);
 
       if (adjustmentResponse.data.success) {
-          // Now delete all records from the DispatchedOrders table
-          const deleteResponse = await axios.delete('http://localhost:3001/api/dispatchedOrders');
-          console.log('Delete dispatched orders response:', deleteResponse.data);
-          fetchStocks();
+        // Now delete all records from the DispatchedOrders table
+        const deleteResponse = await axios.delete('http://localhost:3001/api/dispatchedOrders');
+        console.log('Delete dispatched orders response:', deleteResponse.data);
+        fetchStocks();
 
-          if (!deleteResponse.data.success) {
-              console.error('Failed to delete dispatched orders:', deleteResponse.data.message);
-          }
+        if (!deleteResponse.data.success) {
+          console.error('Failed to delete dispatched orders:', deleteResponse.data.message);
+        }
       } else {
-          console.error('Failed to adjust stock:', adjustmentResponse.data.message);
+        console.error('Failed to adjust stock:', adjustmentResponse.data.message);
       }
-  } catch (error) {
+    } catch (error) {
       console.error('Error in adjusting stock or deleting dispatched orders:', error);
-  }
-};
+    }
+  };
 
 
   return (
     <div>
-      <div className="wareordtit">Current Stocks <Link to="/warehouse" className="whinbkbtn">Warehouses</Link><Link to="/orderstable" className="whinbkbtn">Orders</Link><Link to="/warehouseorders" className="whinbkbtn">New Stock</Link></div>
+      <div className="wareordtit">Current Stocks <Link to="/admin/warehouse" className="whinbkbtn">Warehouses</Link><Link to="/admin/orderstable" className="whinbkbtn">Orders</Link><Link to="/admin/warehouseorders" className="whinbkbtn">New Stock</Link></div>
       <button onClick={adjustStockAndClearDispatchedOrders} className="whinbkbtn">Adjust Stock Quantities</button>
       <div className="wareortable">
         <table className='Waresuportab'>
