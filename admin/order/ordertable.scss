@@ -64,15 +64,15 @@
         }
 
         .search-bar {
-            margin-left: 22%;
-            margin-right: -22%;
+            margin-left: 30%;
+            margin-right: -52%;
             margin-top: 5%;
             border: 1px solid #ccc;
             border-radius: 4px;
             width: auto; // Adjust width to auto for flexibility
             flex-grow: 1; // Allow search bar to grow as needed
-            max-width: 200px; // Limit maximum width to maintain layout
-            max-height: 20px; // Limit maximum width to maintain layout
+            max-width: 30%; // Limit maximum width to maintain layout
+            max-height: 20%; // Limit maximum width to maintain layout
 
         }
     }

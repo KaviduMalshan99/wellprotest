@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Modal } from '@mui/material';
-import axios from 'axios';
-import { toast,ToastContainer } from 'react-toastify';
 import WarehouseAdd from '../admin/WarehouseAdd';
 import "./Warehouse.css";  // Ensure the CSS path is correct
 import { useNavigate } from 'react-router-dom';
-import './Product.css';
+
 
 const WarehouseSection = () => {
   const [warehouses, setWarehouses] = useState([]);
-  const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   useEffect(() => {
@@ -34,22 +31,22 @@ const WarehouseSection = () => {
 
   const handleClick = () => {
     // Redirect to the Refund page when the button is clicked
-    navigate('/warehouseorders');
+    navigate('/admin/warehouseorders');
     
   };
   const handleOrdersTableClick = () => {
     // Redirect to the Refund page when the button is clicked
-    navigate('/orderstable');
+    navigate('admin/orderstable');
   };
 
   const handleWarehouseInvenClick = () => {
     // Redirect to the Refund page when the button is clicked
-    navigate('/current-stock');
+    navigate('admin/current-stock');
   };
 
   const handleWarehouseEditClick = () => {
     // Redirect to the Refund page when the button is clicked
-    navigate('/edit-warehouse/${warehouse.id}');
+    navigate('admin/edit-warehouse/${warehouse.id}');
   };
 
   return (
@@ -65,6 +62,7 @@ const WarehouseSection = () => {
           </div>
         </Modal>
       </div>
+      <div className="wraebtnset">
       <div className="waddbtnplc">
         <Link to="/orderstable" className="waaddbtn">
           Orders
@@ -73,7 +71,7 @@ const WarehouseSection = () => {
       <div className="waddbtnplc">
         <Link to="/warehouseorders" className="waaddbtn">
           New Stocks
-        </Link>
+        </Link></div>
       <div className="waddbtnplc">
         <Link to="/current-stock" className="waaddbtn">
           Current Stocks

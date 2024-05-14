@@ -6,7 +6,18 @@ $background-color_2: red;
 
     display: flex;
     flex-direction: column;
+    background-color: #ccc;
+    width: 65%;
+    margin-top: 25px;
+    overflow-y: scroll;
+    height: 90%;
+
     
+    h1{
+        font-size: 25px;
+        text-align: center;
+        margin: 15px 0 15px 0;
+    }
     h2 {
         text-align: center;
         font-size: 30px;
@@ -170,12 +181,13 @@ $background-color_2: red;
             select{
                 margin-left: 20px;
                 border-radius: 5px;
-                width: 95%;
+                width: 65%;
             }
         }
 
         .manysizemanycolor{
             margin-top: 20px;
+            margin-left: 5%;
             
             .mzdiv{
 
@@ -190,22 +202,30 @@ $background-color_2: red;
                 }
     
                 button{
-                    margin-left: 45%;
+                    margin-left: 25%;
                 }
 
                 select{
                     border-radius: 5px;
-                    width: 52%;
+                    width: 50%;
                     margin-left: 4.5%;
                     border: 2px solid;
                 }
 
+                .imageinput{
+                    background: none;
+                }
+
                 .imgdiv{
+                    display: flex;
+                    flex-direction: row;
+                    gap: 35px;
 
                     img{
                         height: 150px;
                         width: 150px;
                         margin-left: 45%;
+                        border-radius: 5px;
                     }
                 }
 
@@ -435,6 +455,7 @@ $background-color_2: red;
             .dfile{
                 margin-top: 25px;
                 margin-left: 8%;
+                background: none;
             }
 
 

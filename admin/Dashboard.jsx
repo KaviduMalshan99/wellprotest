@@ -6,9 +6,7 @@ import moment from 'moment';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import AuthAPI from '../src/api/AuthAPI';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,AreaChart,Area  } from 'recharts';
-
-
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, AreaChart, Area } from 'recharts';
 
 
 
@@ -60,6 +58,9 @@ const Dashboard = () => {
     const [totalOrders, setTotalOrders] = useState(0);
     const [orderData, setOrderData] = useState([]);
     const [salesData, setSalesData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [chartDatas, setChartData] = useState([]);
+
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -75,46 +76,38 @@ const Dashboard = () => {
     }, []);
 
     useEffect(() => {
-      const fetchOrders = async () => {
-          try {
-              const response = await axios.get('http://localhost:3001/api/orders');
-              console.log('Orders API Response:', response.data); // Log the response data
-              const ordersData = response.data.response; // Access the 'response' property
-              const allOrders = response.data.response;
-
-              if (allOrders && Array.isArray(allOrders)) {
-                setTotalOrders(allOrders.length); // Update the totalOrders state with the count of all orders
-              } else {
-                  console.error('Invalid response data for all orders:', allOrders);
-              }
-
-              if (ordersData && Array.isArray(ordersData)) {
-                  // Filter orders based on today's date
-                  const today = new Date().toLocaleDateString('en-US');
-                  const todayOrders = ordersData.filter(order => {
-                      const orderDate = new Date(order.orderDate).toLocaleDateString('en-US');
-                      return orderDate === today;
-                  });
-                  setOrderCount(todayOrders.length);
-
-                  // Calculate today's revenue
-                  const revenue = todayOrders.reduce((total, order) => total + order.total, 0);
-                  setTodayRevenue(revenue);
-
-                  
-              } else {
-                  console.error('Invalid response data for orders:', ordersData);
-              }
-          } catch (error) {
-              console.error('Error fetching orders:', error);
-          }
-      };
-
-      fetchOrders();
-  }, []);
+        const fetchOrders = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/orders');
+                console.log('Orders API Response:', response.data); // Log the response data
+                const ordersData = response.data.orders; // Correctly access the 'orders' property
+    
+                if (ordersData && Array.isArray(ordersData)) {
+                    setTotalOrders(ordersData.length); // Update the totalOrders state with the count of all orders
+                    setLoading(false);
+                    // Filter orders based on today's date
+                    const today = new Date().toLocaleDateString('en-US');
+                    const todayOrders = ordersData.filter(order => {
+                        const orderDate = new Date(order.orderDate).toLocaleDateString('en-US');
+                        return orderDate === today;
+                    });
+                    setOrderCount(todayOrders.length);
+    
+                    // Calculate today's revenue
+                    const revenue = todayOrders.reduce((total, order) => total + (order.price * order.quantity), 0);
+                    setTodayRevenue(revenue);
+    
+                } else {
+                    console.error('Invalid response data for orders:', ordersData);
+                }
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+            }
+        };
+    
+        fetchOrders();
+    }, []);    
   
-  
-
     // State to store conversion rates
     const [conversionRates, setConversionRates] = useState({
         USD: 1.0,
@@ -123,17 +116,108 @@ const Dashboard = () => {
     });
 
     useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/orders');
+                const ordersData = response.data.orders; // Ensure this is the correct path
+    
+                if (ordersData && Array.isArray(ordersData)) {
+                    const today = new Date().toLocaleDateString('en-US');
+                    const todayOrders = ordersData.filter(order => 
+                        new Date(order.orderDate).toLocaleDateString('en-US') === today
+                    );
+                    
+                    const todayRevenue = todayOrders.reduce((total, order) => 
+                        total + (order.price * order.quantity), 0
+                    );
+    
+                    setOrderCount(todayOrders.length);
+                    setTotalOrders(ordersData.length);
+                    setTodayRevenue(todayRevenue);
+                    setOrderData(orderData);
+                } else {
+                    console.error('Orders data is not an array:', ordersData);
+                }
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+            }
+        };
+    
+        fetchOrders();
+    }, []);
+    
+    
+
+    // Filter orders for the past week
+    const today = new Date();
+    const startDate = moment(today).subtract(7, 'days').toDate();
+    const filteredOrders = orderData.filter(order => new Date(order.orderDate) >= startDate);
+
+    // Count orders for each day of the past week
+    const orderCounts = {};
+    filteredOrders.forEach(order => {
+        const orderDate = moment(order.orderDate).format('YYYY-MM-DD');
+        orderCounts[orderDate] = (orderCounts[orderDate] || 0) + 1;
+    });
+
+    // Convert orderCounts object to an array of objects for Recharts
+    const chartData = Object.keys(orderCounts).map(date => ({
+        date,
+        orders: orderCounts[date]
+    }));
+
+
+    useEffect(() => {
+        const fetchSalesData = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/orders');  // Assuming this endpoint gives you the order data
+                console.log("Orders API Response:", response.data); // Log the whole response to verify the structure
+    
+                const ordersData = response.data.orders;
+                if (ordersData && Array.isArray(ordersData)) {
+                    const dailyData = ordersData.reduce((acc, order) => {
+                        // Simplify the date to YYYY-MM-DD format for daily aggregation
+                        const date = moment(order.orderDate).format('YYYY-MM-DD');
+                        if (!acc[date]) {
+                            acc[date] = { totalSales: 0, orderCount: 0 };
+                        }
+                        // Assuming 'price' and 'quantity' are relevant for calculating total sales
+                        acc[date].totalSales += (order.price * order.quantity);
+                        acc[date].orderCount += 1;
+                        return acc;
+                    }, {});
+    
+                    // Convert the aggregated object into an array for charting
+                    const chartData = Object.keys(dailyData).map(date => ({
+                        date,
+                        totalSales: dailyData[date].totalSales,
+                        orders: dailyData[date].orderCount
+                    }));
+    
+                    setSalesData(chartData);
+                } else {
+                    console.error('Invalid order data:', ordersData);
+                }
+            } catch (error) {
+                console.error('Error fetching order data:', error);
+            }
+        };
+    
+        fetchSalesData();
+    }, []);
+    
+    
+
+    useEffect(() => {
         const fetchExchangeRate = async () => {
             try {
                 const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch exchange rates');
+                }
                 const data = await response.json();
-                const usdToLkrRate = data.rates.LKR; // Extract USD to LKR exchange rate from the response
-                const usdToInrRate = data.rates.INR; // Extract USD to INR exchange rate from the response
-                setConversionRates(prevRates => ({
-                    ...prevRates,
-                    LKR: usdToLkrRate,
-                    INR: usdToInrRate
-                }));
+                const { LKR, INR } = data.rates;
+                setConversionRates({ USD: 1.0, LKR, INR });
             } catch (error) {
                 console.error('Error fetching exchange rate:', error);
             }
@@ -142,90 +226,54 @@ const Dashboard = () => {
         fetchExchangeRate();
     }, []);
 
+
     useEffect(() => {
-      const intervalId = setInterval(() => {
-          setCurrentTime(moment().format('h:mm:ss A'));
-      }, 1000);
-      return () => clearInterval(intervalId);
-  }, []);
+        const intervalId = setInterval(() => {
+            setCurrentTime(moment().format('h:mm:ss A'));
+        }, 1000);
+        return () => clearInterval(intervalId);
+    }, []);
+
+    useEffect(() => {
+        const fetchWeeklyOrderData = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get('http://localhost:3001/api/orders');
+                const orders = response.data.orders;
+                const endDate = new Date();
+                const startDate = moment(endDate).subtract(7, 'days').toDate();
+
+                const filteredOrders = orders.filter(order => {
+                    const orderDate = new Date(order.orderDate);
+                    return orderDate >= startDate && orderDate <= endDate;
+                });
+
+                const dailyCounts = filteredOrders.reduce((acc, order) => {
+                    const dateKey = moment(order.orderDate).format('YYYY-MM-DD');
+                    if (!acc[dateKey]) {
+                        acc[dateKey] = 0;
+                    }
+                    acc[dateKey]++;
+                    return acc;
+                }, {});
+
+                const newChartData = Object.keys(dailyCounts).map(date => ({
+                    date: date,
+                    orders: dailyCounts[date]
+                }));
+
+                setChartData(newChartData);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching weekly order data:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchWeeklyOrderData();
+    }, []);
 
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-        try {
-            const response = await axios.get('http://localhost:3001/api/orders');
-            const ordersData = response.data.response;
-
-            // Store the orders data in state
-            setOrderData(ordersData);
-        } catch (error) {
-            console.error('Error fetching orders:', error);
-        }
-    };
-
-    fetchOrders();
-}, []);
-
-// Filter orders for the past week
-const today = new Date();
-const oneWeekAgo = new Date(today);
-oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-const pastWeekOrders = orderData.filter(order => new Date(order.orderDate) >= oneWeekAgo);
-
-// Count orders for each day of the past week
-const orderCounts = {};
-pastWeekOrders.forEach(order => {
-    const orderDate = new Date(order.orderDate).toLocaleDateString('en-US');
-    orderCounts[orderDate] = (orderCounts[orderDate] || 0) + 1;
-});
-
-// Convert orderCounts object to an array of objects for Recharts
-const chartData = Object.keys(orderCounts).map(date => ({
-    date,
-    orders: orderCounts[date]
-}));
-
-
-useEffect(() => {
-  const fetchSalesData = async () => {
-      try {
-          // Fetch sales data for the past week
-          const response = await axios.get('http://localhost:3001/api/orders');
-          const sales = response.data.salesData; // Assuming the response contains an array of sales data
-          
-          // Process the data to prepare it for the StackedAreaChart
-          const formattedData = sales.map(sale => ({
-              date: moment(sale.date).format('YYYY-MM-DD'), // Format date for X-axis
-              [sale.category]: sale.count // Use category as key and count as value
-          }));
-
-          // Group the data by date and sum the counts for each category
-          const groupedData = formattedData.reduce((acc, cur) => {
-              const date = cur.date;
-              const existingEntry = acc.find(entry => entry.date === date);
-              if (existingEntry) {
-                  Object.keys(cur).forEach(key => {
-                      if (key !== 'date') {
-                          existingEntry[key] = (existingEntry[key] || 0) + cur[key];
-                      }
-                  });
-              } else {
-                  acc.push(cur);
-              }
-              return acc;
-          }, []);
-
-          setSalesData(groupedData);
-      } catch (error) {
-          console.error('Error fetching sales data:', error);
-      }
-  };
-
-  fetchSalesData();
-}, []);
-
-
-  
 
     return (
         <div className='mainContainer'>
@@ -323,21 +371,26 @@ useEffect(() => {
 
             <div className="chartsdiv">
 
-              <div className='chart1'>
-                <p>Orders Vizualization</p>
-                  <LineChart width={450} height={300} data={chartData}>
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-                      <Line type="monotone" dataKey="orders" stroke="#8884d8" />
-                      <Tooltip />
-                      <Legend />
-                  </LineChart>
-              </div>
+            <div className='chart1'>
+                    <p>Orders Visualization</p>
+                    {loading ? (
+                        <p>Loading chart data...</p>
+                    ) : (
+                        <LineChart width={450} height={300} data={chartDatas}>
+                            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                            <XAxis dataKey="date" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Line type="monotone" dataKey="orders" stroke="#8884d8" />
+                        </LineChart>
+                    )}
+                </div>
+
 
               <div className='chart2'>
                   <p>Sales Visualization</p>
-                  <AreaChart width={450} height={300} data={salesData}>
+                  <AreaChart width={480} height={300} data={salesData} >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
                       <YAxis />

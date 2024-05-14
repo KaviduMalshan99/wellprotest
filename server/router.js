@@ -124,7 +124,7 @@ router.put('/updaterefund/:orderId', RefundController.updateRefund);
 router.get('/refund/:orderId', RefundController.getRefundById);
 router.put('/approverefund/:orderId', RefundController.approveRefund);
 router.get('/acceptrefunds', RefundController.getAcceptedRefunds);
-
+router.delete('/deleteAccrefund/:id', RefundController.deleteAccRefund);
 
 
 // //refundemail

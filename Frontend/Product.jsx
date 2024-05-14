@@ -109,7 +109,18 @@ const Product = () => {
   }
 
   const handleBuyNow = () => {
-    
+    if (!selectedSize) {
+      toast.error("Please select a size.");
+      return;
+    }
+    if (!selectedColor) {
+        toast.error("Please select a color.");
+        return;
+    }
+    if (quantity < 1) {
+        toast.error("Please adjust the quantity.");
+        return;
+    }
     const dataToPass = {
       id,  // Ensure this is the right property name!
       ProductName: product.ProductName,
@@ -304,124 +315,58 @@ const Product = () => {
             </div>
           )}
 
-{product.Variations && product.Variations.some(variation => variation.size) && (
-  <div className="sizebutton">
-    <p>Sizes</p>
-    {product.Variations
-      .reduce((uniqueSizes, variation) => {
-        if (!uniqueSizes.includes(variation.size)) {
-          uniqueSizes.push(variation.size);
-        }
-        return uniqueSizes;
-      }, [])
-      .map((size, index) => (
-        <button
-          key={index}
-          className={selectedSize === size ? 'selected' : ''}
-          onClick={() => handleSizeClick(size)}
-        >
-          {size}
-        </button>
-      ))}
-    {selectedSize && (
-      <button className="clear-button" onClick={() => setSelectedSize(null)}>
-        Clear Size
-      </button>
-    )}
-  </div>
-)}
+          {product.Variations && product.Variations.some(variation => variation.size) && (
+            <div className="sizebutton">
+              <p>Sizes</p>
+              {product.Variations
+                .reduce((uniqueSizes, variation) => {
+                  if (!uniqueSizes.includes(variation.size)) {
+                    uniqueSizes.push(variation.size);
+                  }
+                  return uniqueSizes;
+                }, [])
+                .map((size, index) => (
+                  <button
+                    key={index}
+                    className={selectedSize === size ? 'selected' : ''}
+                    onClick={() => handleSizeClick(size)}
+                  >
+                    {size}
+                  </button>
+                ))}
+              {selectedSize && (
+                <button className="clear-button" onClick={() => setSelectedSize(null)}>
+                  Clear Size
+                </button>
+              )}
+            </div>
+          )}
 
 
-{selectedSize && (
-  <div className="color-section">
-    <p>Colors</p>
-    {product.Variations
-      .filter(variation => variation.size === selectedSize)
-      .map((variation, index) => (
-        <button
-          key={index}
-          className={selectedColor === variation.name ? 'selected' : ''}
-          onClick={() => handleColorClick(variation.name)}
-          value={variation.name}
-        >
-          {variation.name}
-        </button>
-      ))}
-  </div>
-)}
+          {selectedSize && (
+            <div className="color-section">
+              <p>Colors</p>
+              {product.Variations
+                .filter(variation => variation.size === selectedSize)
+                .map((variation, index) => (
+                  <button
+                    key={index}
+                    className={selectedColor === variation.name ? 'selected' : ''}
+                    onClick={() => handleColorClick(variation.name)}
+                    value={variation.name}
+                  >
+                    {variation.name}
+                  </button>
+                ))}
+            </div>
+          )}
 
-
-
-          
-      
-         
           {product.QuickDeliveryAvailable && (
             <div className="quickdelivery">
               <label>Quick Delivery Available - This product can be delivered within 1 week.</label>
               
             </div>
           )}
-
-{product.Variations && product.Variations.some(variation => variation.size) && (
-  <div className="sizebutton">
-    <p>Sizes</p>
-    {product.Variations
-      .reduce((uniqueSizes, variation) => {
-        if (!uniqueSizes.includes(variation.size)) {
-          uniqueSizes.push(variation.size);
-        }
-        return uniqueSizes;
-      }, [])
-      .map((size, index) => (
-        <button
-          key={index}
-          className={selectedSize === size ? 'selected' : ''}
-          onClick={() => handleSizeClick(size)}
-        >
-          {size}
-        </button>
-      ))}
-    {selectedSize && (
-      <button className="clear-button" onClick={() => setSelectedSize(null)}>
-        Clear Size
-      </button>
-    )}
-  </div>
-)}
-{!product.Variations.some(variation => variation.size) && (
-  <div className="color-section">
-    <p>Colors</p>
-    {product.Variations.map((variation, index) => (
-      <button
-        key={index}
-        className={selectedColor === variation.name ? 'selected' : ''}
-        onClick={() => handleColorClick(variation.name)}
-        value={variation.name}
-      >
-        {variation.name}
-      </button>
-    ))}
-  </div>
-)}
-
-{selectedSize && (
-  <div className="color-section">
-    <p>Colors</p>
-    {product.Variations
-      .filter(variation => variation.size === selectedSize)
-      .map((variation, index) => (
-        <button
-          key={index}
-          className={selectedColor === variation.name ? 'selected' : ''}
-          onClick={() => handleColorClick(variation.name)}
-          value={variation.name}
-        >
-          {variation.name}
-        </button>
-      ))}
-  </div>
-)}
-
 
 
           {/* Quantity */}
@@ -431,9 +376,6 @@ const Product = () => {
             <span>{quantity}</span>
             <button onClick={incrementQuantity}>+</button>
           </div>
-
-
-
 
 
           <div className="abs">

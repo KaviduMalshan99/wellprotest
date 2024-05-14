@@ -114,6 +114,7 @@ const Product = () => {
     <Notification/>
     <div className="productsecondiv">
       <h1 className='PRODUCTTITLE'>Products Section</h1>
+      
       <div className="search-bar">
         <input
           type="text"
@@ -125,6 +126,8 @@ const Product = () => {
         <button className="search-button">
           <i className="fas fa-search" />
         </button>
+
+        
       </div>
       <div className="addProductSection">
         <button type='button' className='PRODUCTADDPRO' onClick={toggleAddModal}>
@@ -134,6 +137,15 @@ const Product = () => {
           <AddProductModel onClose={toggleAddModal} />
         </Modal>
       </div>
+
+      <button className="report-button" onClick={generateExcel}>
+        Generate Report
+        </button>
+
+        <p>
+        Showing {filteredProducts.length} products
+        </p>
+      
       <div className="product-table-container">
         <table>
           <thead>

@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './User.css';
 import { Link } from 'react-router-dom';
@@ -25,8 +25,8 @@ const Users = () => {
   useEffect(() => {
     // Filter users based on the search term
     const filtered = users.filter((user) => {
-      const fullName = `${user.FirstName} ${user.Lastname}`;
-      return fullName.toLowerCase().includes(searchTerm.toLowerCase()) || user.Email.toLowerCase().includes(searchTerm.toLowerCase());
+      const fullName = `${user.firstName} ${user.lastName}`;
+      return fullName.toLowerCase().includes(searchTerm.toLowerCase()) || user.email.toLowerCase().includes(searchTerm.toLowerCase());
     });
 
     setFilteredUsers(filtered);
@@ -70,10 +70,10 @@ const Users = () => {
             {filteredUsers.map((user) => (
               <tr key={user.UserId}>
                 <td>{user.UserId}</td>
-                <td>{`${user.FirstName} ${user.Lastname}`}</td>
-                <td>{user.Email}</td>
+                <td>{`${user.firstName} ${user.lastName}`}</td>
+                <td>{user.email}</td>
                 <td>
-                  <Link to={`/user/${user.UserId}`} className="view-more-button">
+                  <Link to={`/admin/users/${user.UserId}`} className="view-more-button">
                     View More
                   </Link>
                 </td>

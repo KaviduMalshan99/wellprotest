@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 
-const sendEmail = async (orderDetails) => {
+const sendEmaill = async (orderDetails) => {
     const {
         email,
         firstName,
@@ -73,4 +73,4 @@ const sendEmail = async (orderDetails) => {
 };
 
 
-module.exports = { sendEmail };
+module.exports = { sendEmaill };

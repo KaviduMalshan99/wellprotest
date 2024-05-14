@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
 import { CheckoutProvider } from '../Frontend/order/CheckoutContext';  // Adjust the path as necessary
 
 
@@ -56,6 +55,13 @@ import ShippingMethodManager from '../admin/order/ShippingMethodManager';
 
 import CustomerTracking from '../Frontend/tracking/CustomerTracking';
 import OrderTracking from '../admin/OrderTracking';
+import WarehouseOrders from '../admin/WarehouseOrders';
+import OrdersTable from '../admin/OrdersTable';
+import CurrentStock from '../admin/WarehouseStocks';
+import WarehouseEdit from '../admin/WarehouseEdit';
+import WarehouseDetails from '../admin/WarehouseInven';
+import UserDetails from '../admin/UserDetails'
+
 
 import OrderCancellationList from '../admin/OrderCancellationList';
 
@@ -175,7 +181,9 @@ function App() {
               <Route path='profile' element={<Profile />} />
               <Route path='categories' element={<Categories />} />
               <Route path='products' element={<Products />} />
-              <Route path='users' element={<Users />} />
+              <Route path='users' element={<Users />} 
+              
+              />
               <Route path='orders' element={<Orders />} />
               <Route path='rating' element={<Ratings />} />
               <Route path='supplier' element={<Suppliers />} />
@@ -199,6 +207,16 @@ function App() {
               <Route path='OrderCancellationList' element={<OrderCancellationList />} />
               <Route path='AdminChat' element={<AdminPanel />} />
               
+
+              <Route path='warehouse' element={<Warehouse />} />
+              <Route path="warehouseorders" element={<WarehouseOrders />} />
+              <Route path="orderstable" element={<OrdersTable />} />
+              <Route path="current-stock" element={<CurrentStock />} />
+              <Route path="edit-warehouse/:id" element={<WarehouseEdit />} />
+              <Route path="warehouse-details/:id" element={<WarehouseDetails />} />
+              <Route path='/admin/users/:userId' element={<UserDetails />} />
+
+
 
             </Route>
 
