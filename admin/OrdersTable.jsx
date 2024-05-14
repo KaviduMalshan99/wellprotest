@@ -153,12 +153,14 @@ const OrdersTable = () => {
       <div className="filter-search-container">
         <input className="whinsrch" placeholder="Search..." value={searchTerm} onChange={handleSearchChange} />
         <select className="whinsrch" onChange={handleFilterChange}>
+        <select className="whinsrch" onChange={handleFilterChange}>
           <option value="orderId">Order ID</option>
           <option value="productId">Product ID</option>
           <option value="location">Location</option>
           <option value="status">Status</option>
           <option value="ContactStatus">Contact Status</option>
         </select>
+        <button className="whinorbtn" onClick={handleContactClick}>Send Emails Selected</button>
         <button className="whinorbtn" onClick={handleContactClick}>Send Emails Selected</button>
       </div>
 

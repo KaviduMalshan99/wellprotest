@@ -105,7 +105,7 @@ const adjustStockAndClearDispatchedOrders = async () => {
 
   return (
     <div>
-      <div className="wareordtit">Current Stocks <Link to="/warehouse" className="whinbkbtn">Go Warehouse Page</Link></div>
+      <div className="wareordtit">Current Stocks <Link to="/warehouse" className="whinbkbtn">Warehouses</Link><Link to="/orderstable" className="whinbkbtn">Orders</Link><Link to="/warehouseorders" className="whinbkbtn">New Stock</Link></div>
       <button onClick={adjustStockAndClearDispatchedOrders} className="whinbkbtn">Adjust Stock Quantities</button>
       <div className="wareortable">
         <table className='Waresuportab'>
