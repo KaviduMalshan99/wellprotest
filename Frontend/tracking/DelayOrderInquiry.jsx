@@ -1,12 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './DelayOrderInquiry.css'; // CSS for popup styling
 import axios from 'axios';
+import { useAuthStore } from '../../src/store/useAuthStore.js';
 
-const DelayOrderInquiry = ({ onClose }) => {
+
+const DelayOrderInquiry = ({ UserId,orderId, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [editIndex, setEditIndex] = useState(null);
   const messageContainerRef = useRef(null);
+  const {user}=useAuthStore();
+
+  const userId =user?.UserId;
+  console.log("customerid :", userId)
 
   useEffect(() => {
     // Scroll to the bottom of the message container whenever messages change
@@ -26,7 +32,8 @@ const DelayOrderInquiry = ({ onClose }) => {
         try {
           await axios.put(`http://localhost:3001/api/updateMessage/${messages[editIndex]._id}`, {
             message: inputText,
-            sender: '12345' // Custom customer ID
+            sender: userId, // Use userId here
+            orderId: orderId
           });
           const newMessages = [...messages];
           newMessages[editIndex].message = inputText;
@@ -40,7 +47,8 @@ const DelayOrderInquiry = ({ onClose }) => {
         try {
           const response = await axios.post('http://localhost:3001/api/createMessage', {
             message: inputText,
-            sender: '12345' // Custom customer ID
+            sender: userId, // Use userId here
+            orderId: orderId
           });
           setMessages([...messages, response.data]);
         } catch (error) {
@@ -50,6 +58,7 @@ const DelayOrderInquiry = ({ onClose }) => {
       setInputText('');
     }
   };
+  
 
   const handleEditMessage = (index) => {
     setEditIndex(index);
@@ -93,12 +102,12 @@ const DelayOrderInquiry = ({ onClose }) => {
         <span className="close" onClick={onClose}>&times;</span>
         <div className="message-container" ref={messageContainerRef}>
           {messages.map((message, index) => (
-            <div key={message._id} className={`message ${message.sender === '12345' ? 'from-customer' : 'from-admin'}`}>
-              {message.sender !== '12345' && (
+            <div key={message._id} className={`message ${message.sender === UserId ? 'from-customer' : 'from-admin'}`}>
+              {message.sender !== UserId && (
                 <div className="well-worn-label">WellWorn</div>
               )}
               <div className="message-id">
-                {message.sender === '12345' && ( 
+                {message.sender === UserId && ( 
                   <div className="well-worn-label">{message.sender}</div>
                 )}
               </div>
@@ -114,10 +123,10 @@ const DelayOrderInquiry = ({ onClose }) => {
                   message.message
                 )}
               </div>
-              {message.sender === '12345' && (
+              {message.sender === UserId && (
                 <div className="message-actions">
                   {editIndex === index ? (
-                    <button className="massageEdit" onClick={handleCancelEdit}> </button>
+                    <button className="massageEdit" onClick={handleCancelEdit}></button>
                   ) : (
                     <button className="massageEdit" onClick={() => handleEditMessage(index)}></button>
                   )}
@@ -142,4 +151,3 @@ const DelayOrderInquiry = ({ onClose }) => {
 };
 
 export default DelayOrderInquiry;
-

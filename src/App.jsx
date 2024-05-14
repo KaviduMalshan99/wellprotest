@@ -54,7 +54,13 @@ import OrderDetails from '../admin/order/OrderDetails'
 import AdminDashboard from '../admin/order/AdminDashboard';
 import ShippingMethodManager from '../admin/order/ShippingMethodManager';
 
+import CustomerTracking from '../Frontend/tracking/CustomerTracking';
+import OrderTracking from '../admin/OrderTracking';
 
+import OrderCancellationList from '../admin/OrderCancellationList';
+
+import DelayOrderInquiry from '../Frontend/tracking/DelayOrderInquiry';
+import AdminPanel from '../admin/AdminChat';
 
 // User authentication components
 import ULog from '../Frontend/user/UserLog';  // Login page
@@ -151,6 +157,12 @@ function App() {
               <Route path='/womenbags' element={<WomenBags />} />
               <Route path='/womenshoes' element={<WomenShoes />} />
               <Route path='/homemen' element={<HomeMen />} />
+
+              <Route path='/tracking/:orderId' element={<CustomerTracking />} />
+              <Route path='/delayInquirypopup/:orderId' element={<DelayOrderInquiry />} />
+            
+
+
               
             </Route>
 
@@ -183,6 +195,11 @@ function App() {
               <Route path='OrderDetails/:orderId' element={<OrderDetails />} />
               <Route path='Shipping' element={<ShippingMethodManager />} />
 
+              <Route path='adminTracking' element={<OrderTracking />} />
+              <Route path='OrderCancellationList' element={<OrderCancellationList />} />
+              <Route path='AdminChat' element={<AdminPanel />} />
+              
+
             </Route>
 
             </Route>
@@ -198,6 +215,7 @@ function App() {
             <Route path='/refund' element={<Refund />} />
             <Route path='/refundedit' element={<RefundEdit />} />
             <Route path='/refundpolicy' element={<RefundPolicy />} />
+            <Route path='/tracking' element={<CustomerTracking />} />
 
             <Route path='/menbag' element={<MenBag />} />
             <Route path='/menshoes' element={<MenShoes />} />

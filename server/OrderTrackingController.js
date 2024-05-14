@@ -50,6 +50,8 @@ const updateTrackingStatus = async (req, res) => {
     // Update the appropriate date field based on status
     switch (status) {
       case 'Arrival in Custom':
+        trackingEntry.secondStateDate = currentDate;
+        trackingEntry.thirdStateDate = currentDate;
         trackingEntry.fourthStateDate = currentDate;
         break;
         case 'Courier Selected':

@@ -5,6 +5,22 @@ table {
     border-spacing: 2%;
   }
   
+.cancellationSerch{
+  padding-bottom: 20px;
+  margin-right: 15px;
+  margin-left: 65%;
+}
+
+.generateReportButton{
+  margin-left: 40%;
+}
+
+.cancellationSearch-button{
+  width: 50px;
+  border-radius: 5px;
+  background-color: #07223D;
+}
+
   .table th {
     background-color: #07223D;
     color: #fff;
@@ -47,5 +63,6 @@ table {
     padding: 3px 16px;
     border-radius: 10px;
     border: none;
+    min-width: 100px;
   
   }

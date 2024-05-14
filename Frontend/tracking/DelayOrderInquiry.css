@@ -27,7 +27,7 @@
   background-color: #d9d9d9;
   padding: 10px;
   border-radius: 10px;
-  min-height: 600px;
+  min-height: 550px;
 }
 
 .message {
@@ -36,7 +36,7 @@
 }
 
 .from-customer {
-  background-color: #f0f0f0;
+  background-color: #d9d9d9;
   border-radius: 8px;
   max-width: 70%;
 }
@@ -67,6 +67,7 @@
 .message-actions {
   display: flex;
   justify-content: center;
+  margin: 10px;
 }
 
 .message-actions button {
@@ -99,12 +100,14 @@ input[type="text"] {
 }
 
 .buttonDelayOrder {
-  padding: 10px 20px;
+  padding: 10px;
   background-color: #000000;
   color: #fff;
   border: none;
   cursor: pointer;
   border-radius: 10px;
+  max-width: 100px;
+  margin-left: 10px;
 }
 
 
@@ -158,5 +161,6 @@ input[type="text"] {
 
 }
     
-    
+
+
   
