@@ -31,22 +31,22 @@ const WarehouseSection = () => {
 
   const handleClick = () => {
     // Redirect to the Refund page when the button is clicked
-    navigate('/warehouseorders');
+    navigate('/admin/warehouseorders');
     
   };
   const handleOrdersTableClick = () => {
     // Redirect to the Refund page when the button is clicked
-    navigate('/orderstable');
+    navigate('admin/orderstable');
   };
 
   const handleWarehouseInvenClick = () => {
     // Redirect to the Refund page when the button is clicked
-    navigate('/current-stock');
+    navigate('admin/current-stock');
   };
 
   const handleWarehouseEditClick = () => {
     // Redirect to the Refund page when the button is clicked
-    navigate('/edit-warehouse/${warehouse.id}');
+    navigate('admin/edit-warehouse/${warehouse.id}');
   };
 
   return (

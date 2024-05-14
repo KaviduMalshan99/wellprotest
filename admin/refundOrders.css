@@ -18,7 +18,16 @@ button {
   cursor: pointer;
   width: 55%; /* Reduced width to accommodate gap */
 }
+.deletebtn{
+  margin-top: 10px;
+}
 
+.deletebtna{
+  margin-top: 10px;
+  background-color: red;
+  margin: 26px;
+  padding: 2px;
+}
 /* Add gap between buttons */
 .send-email-btn {
   background-color: #009322;
@@ -66,4 +75,23 @@ button {
   display: flex; /* Change to flex */
   justify-content: left; /* Center align horizontally */
   gap: 20px; /* Add gap between buttons */
+}
+
+.copy-email-btnrr {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 2px ;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 80px;
+}
+
+.copy-email-btnrr:hover {
+  background-color: #45a049; /* Darker Green */
 }

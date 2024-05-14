@@ -73,7 +73,7 @@ const Users = () => {
                 <td>{`${user.firstName} ${user.lastName}`}</td>
                 <td>{user.email}</td>
                 <td>
-                  <Link to={`/user/${user.UserId}`} className="view-more-button">
+                  <Link to={`/admin/users/${user.UserId}`} className="view-more-button">
                     View More
                   </Link>
                 </td>

@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const sendEmail = async (refundDetails) => {
   // Destructure order details
-  const { orderId, productId, customerName, customerEmail, reason, refundDate, imgUrls } = refundDetails;
+  const { orderId, id, customerName, customerEmail, reason, refundDate, imgUrls } = refundDetails;
 
 
   try {
@@ -26,7 +26,7 @@ const sendEmail = async (refundDetails) => {
         <p>Dear ${customerName} </p>
         <p>Thank you for choosing to shop with us. This email is to confirm that we have received your order with the following details:</p>
         <p><strong>Order ID:</strong> ${orderId}</p>
-        <p><strong>Product ID:</strong> ${productId}</p>
+        <p><strong>Product ID:</strong> ${id}</p>
         <p><strong>Reason for Refunding:</strong>  ${reason}<br>
         <p><strong>Date of refund request:</strong>  ${refundDate}<br>
 

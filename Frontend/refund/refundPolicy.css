@@ -28,3 +28,59 @@
 #transparent-buttonrr:hover {
   opacity: 0.7; /* Adjust opacity on hover as desired */
 }
+
+
+.refund-policy-content {
+  margin: 160px;
+  font-family: Arial, sans-serif;
+  line-height: 2;
+  padding-top: -8%;
+}
+
+.refund-policy-content h2 {
+  font-size: 1.5em;
+  margin-top: 30px;
+}
+
+.refund-policy-content ul {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+
+.refund-policy-content ul li {
+  margin-bottom: 10px;
+  line-height: 2;
+}
+
+
+.refund-policy-content h3 {
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+
+.refund-policy-content p {
+  margin-top: 10px;
+}
+
+.refund-policy-content ol {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.refund-policy-content ol li {
+  margin-top: 5px;
+}
+
+.refund-policy-content a {
+  color: blue;
+  text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+

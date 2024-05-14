@@ -6,6 +6,8 @@ import './refundOrders.css';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { Link, useNavigate } from 'react-router-dom'; // Importing useNavigate hook
+import Notification from './Notification';
+
 
 
 const RefundOrders = () => {
@@ -31,7 +33,7 @@ const RefundOrders = () => {
     // Filter refunds based on the search term
     const filtered = refunds.filter(refund => {
       const orderId = refund?.orderId || '';
-      const productId = refund?.id || '';
+      const id = refund?.id || '';
       const customerName = refund?.customerName || '';
       const refundDate = formatDate(refund?.refundDate); // Format refund date
 
@@ -120,10 +122,23 @@ const RefundOrders = () => {
     });
     doc.save('refund_report.pdf');
   };
+
+  const copyEmail = (email) => {
+    navigator.clipboard.writeText(email)
+        .then(() => {
+            toast.success('Email copied to clipboard!');
+        })
+        .catch(err => {
+            console.error('Error copying email:', err);
+            toast.error('Error copying email.');
+        });
+};
   
 
   return (
     <div className='mainContainer'>
+        <Notification/>
+
       <h1>Refund Section</h1>
       <div id="search-barr">
         <input
@@ -165,7 +180,9 @@ const RefundOrders = () => {
                 <td>{refund?.orderId}</td>
                 <td>{refund?.id}</td>
                 <td>{refund?.customerName}</td>
-                <td>{refund?.customerEmail}</td>
+                <td>{refund?.customerEmail}
+                <button className='copy-email-btnrr' onClick={() => copyEmail(refund?.customerEmail)}>Copy</button>
+</td>
                 <td>{refund?.reason}</td>
                 <td>{formatDate(refund?.refundDate)}</td>
                 <td>{refund.imgUrls && refund.imgUrls.length > 0 ? (
@@ -184,6 +201,7 @@ const RefundOrders = () => {
                 <button className='approvebtn' onClick={() => handleApprove(refund?.orderId)}>Approve</button>
                   <button className='deletebtn' onClick={() => handleDelete(refund?.orderId)}>Decline</button>
                   <button className='send-email-btn' onClick={() => navigate('/admin/refundemail')}>Send Email</button>
+
 
                 </td>
               </tr>

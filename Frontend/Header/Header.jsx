@@ -1,7 +1,5 @@
 import './Header.scss';
 import Logo from '../../src/assets/logo.png';
-
-import { Link } from 'react-router-dom';
 import { useCart } from '../CartContext';
 import Menbag from '../../src/assets/menbag.png'
 import MenShoe from '../../src/assets/Menshoe.png'
@@ -9,7 +7,6 @@ import WomenBag from '../../src/assets/womenbag.png'
 import WomenShoe from '../../src/assets/womenshoe.png'
 
 import { Link, useNavigate } from 'react-router-dom';
-import { useCart } from '../CartContext';
 import { useAuthStore } from '../../src/store/useAuthStore';
 
 const Header = () => {

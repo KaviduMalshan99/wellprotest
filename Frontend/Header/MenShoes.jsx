@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import '../Men.css';
+import './MenShoes.css';
 import Mint from '../../src/assets/int.png';
 import Koko from '../../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart,faStar } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header/Header';
-
-import Footer from '../Footer/Footer';
-import LOGOO from '../../src/assets/logoorange.png'
+import LOGOO from '../../src/assets/logoorange.png';
 import { PropagateLoader } from 'react-spinners'; 
+import MenBag from '../../src/assets/ms.jpg'
+import {  faStar } from '@fortawesome/free-solid-svg-icons';
+import Footer from '../Footer/Footer';
 
 const MenShoes = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [selectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [minPrice, setMinPrice] = useState('0');
   const [maxPrice, setMaxPrice] = useState('');
   const [sortOrder, setSortOrder] = useState('');
@@ -30,9 +30,9 @@ const MenShoes = () => {
         const response = await axios.get('http://localhost:3001/api/products');
         console.log('Response:', response.data); // Log response data to check structure
         
-        // Filter products with category names "Men" and "Bags"
+        // Filter products with category names "Men"
         const filteredData = response.data.response.filter(product =>
-          product.Categories.includes("Men") && product.Categories.includes("Shoes")
+          product.Categories.includes("Shoes")
         );
         console.log('Filtered Data:', filteredData); // Log filtered data
         
@@ -45,7 +45,6 @@ const MenShoes = () => {
   
     fetchProducts();
   }, []);
-
 
   // Apply filters whenever ratings selection changes
 useEffect(() => {
@@ -64,11 +63,13 @@ useEffect(() => {
       const minProductPrice = Math.min(...product.Variations.map(variation => variation.price));
       return minProductPrice >= parseFloat(minPrice) && minProductPrice <= parseFloat(maxPrice);
     });
+
   }
 
   // Apply ratings filter
   if (selectedRatings.length > 0) {
     filteredProducts = filteredProducts.filter(product => selectedRatings.includes(product.Rating.toString()));
+
   }
 
   if (sortOrder === 'minToMax') {
@@ -80,7 +81,11 @@ useEffect(() => {
   setFilteredData(filteredProducts);
 }, [data, selectedCategory, minPrice, maxPrice, selectedRatings, sortOrder]);
 
-
+  
+  const handleCategoryChange = (event) => {
+    const selected = event.target.value;
+    setSelectedCategory(prevCategory => prevCategory === selected ? '' : selected);
+  };
 
     // Function to handle minimum price change
     const handleMinPriceChange = (event) => {
@@ -109,7 +114,9 @@ useEffect(() => {
 
 
   return (
+
     <>
+    
     {loading && (
       <div className="loader-container">
         <div className="loader-overlay">
@@ -122,16 +129,46 @@ useEffect(() => {
       {!loading && (
     <div>
       <Header/>
-      <p className='menmain'>SHOP MENS SHOES</p>
+      <img src={MenBag} className='menbaglogo' />
+      <p className='menmainms'>SHOP MEN'S SHOES</p>
       <p className='menmain1'>
-        <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" /><Link to="/menshoes"> SHOES </Link><i className="fas fa-angle-right" />
+        <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" />
+
       </p>
 
       <div className="menmid">
         <div className="menfilter">
           <h2 className='menfiltertitle'>Filter Options</h2>
           
-          
+          <div className="CategoriesFilter">
+
+              <p className='fittertitles'>Categories:</p>
+              <div className='filcatdiv'>
+
+                <label>Bags</label>
+                <input
+                  type="checkbox"
+                  value="Bags"
+                  checked={selectedCategory === "Bags"}
+                  onChange={handleCategoryChange}
+                />
+
+              </div>
+              
+              <div className='filcatdiv'>
+
+                <label>Shoes</label>
+                <input
+                  className='shoeinput'
+                  type="checkbox"
+                  value="Shoes"
+                  checked={selectedCategory === "Shoes"}
+                  onChange={handleCategoryChange}
+                />
+
+              </div> 
+
+          </div>
            
           <div className="pricefilter">
 
@@ -155,6 +192,7 @@ useEffect(() => {
                 {/* Sorting */}
                 <p className='fittertitles'>Sort By:</p>
                 <div className='sortminmax'>
+
                   <button className='btnsortminmax' onClick={() => handleSortChange('maxToMin')}>Price: Low to High</button>
                   <button className='btnsortminmax' onClick={() => handleSortChange('minToMax')}>Price: High to Low</button>
                 </div>
@@ -162,80 +200,80 @@ useEffect(() => {
           </div>
 
           <div className="ratingsFilter">
-  <p className='fittertitles'>Ratings:</p>
-  <div className='ratingsOptions'>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={5}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={4}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={3}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={2}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-    <label>
-      <div className='startoption1'>
-        <input
-          type="checkbox"
-          value={1}
-          onChange={handleRatingChange}
-        />
-      </div>
-      <div className='startoption2'>
-        <FontAwesomeIcon icon={faStar} />
-      </div>
-    </label>
-  </div>
-</div>
+            <p className='fittertitles'>Ratings:</p>
+            <div className='ratingsOptions'>
+              <label>
+                <div className='startoption1'>
+                  <input
+                    type="checkbox"
+                    value={5}
+                    onChange={handleRatingChange}
+                  />
+                </div>
+                <div className='startoption2'>
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </label>
+              <label>
+                <div className='startoption1'>
+                  <input
+                    type="checkbox"
+                    value={4}
+                    onChange={handleRatingChange}
+                  />
+                </div>
+                <div className='startoption2'>
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </label>
+              <label>
+                <div className='startoption1'>
+                  <input
+                    type="checkbox"
+                    value={3}
+                    onChange={handleRatingChange}
+                  />
+                </div>
+                <div className='startoption2'>
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </label>
+              <label>
+                <div className='startoption1'>
+                  <input
+                    type="checkbox"
+                    value={2}
+                    onChange={handleRatingChange}
+                  />
+                </div>
+                <div className='startoption2'>
+                  <FontAwesomeIcon icon={faStar} />
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </label>
+              <label>
+                <div className='startoption1'>
+                  <input
+                    type="checkbox"
+                    value={1}
+                    onChange={handleRatingChange}
+                  />
+                </div>
+                <div className='startoption2'>
+                  <FontAwesomeIcon icon={faStar} />
+                </div>
+              </label>
+            </div>
+          </div>
 
 
         </div>
@@ -245,11 +283,11 @@ useEffect(() => {
             <div className="box" key={record.ProductId}>
               <div className="imgage">
                 <img src={record.ImgUrls[0]} alt="" />
-                <div className="overlay">
-                  <FontAwesomeIcon icon={faShoppingCart} className="cart-icon" />
+                <div className="overlay2ms">
+                  <img src={record.ImgUrls[1]} alt="" />
                 </div>
-                <div className="overlay2">
-                  <Link to={`/product/${record.ProductId}`}><p>VIEW MORE</p></Link>
+                <div className="overlay3ms">
+                <Link to={`/product/${record.ProductId}`}><p >VIEW MORE</p></Link>
                 </div>
               </div>
               <div className="informations">
@@ -262,6 +300,7 @@ useEffect(() => {
                     </div>
                     <div className='p02'>
                       or 3 X {((Math.min(...record.Variations.map(variation => variation.price))).toFixed(2) / 3.00).toFixed(2)} with<img src={Koko} className='kokopay' />
+
                     </div>
                   </div>
                 </div>
@@ -276,7 +315,7 @@ useEffect(() => {
       <Footer/>
     </div>
       )}
-      </>
+    </>
   );
 };
 

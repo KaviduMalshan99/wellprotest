@@ -59,7 +59,8 @@ const Dashboard = () => {
     const [orderData, setOrderData] = useState([]);
     const [salesData, setSalesData] = useState([]);
     const [loading, setLoading] = useState(true);
-    
+    const [chartDatas, setChartData] = useState([]);
+
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -234,34 +235,42 @@ const Dashboard = () => {
     }, []);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchWeeklyOrderData = async () => {
+            setLoading(true);
             try {
                 const response = await axios.get('http://localhost:3001/api/orders');
-                const ordersData = response.data.orders;
+                const orders = response.data.orders;
+                const endDate = new Date();
+                const startDate = moment(endDate).subtract(7, 'days').toDate();
 
-                if (ordersData && Array.isArray(ordersData)) {
-                    const orderCounts = {};
-                    ordersData.forEach(order => {
-                        const orderDate = moment(order.orderDate).format('YYYY-MM-DD');
-                        orderCounts[orderDate] = (orderCounts[orderDate] || 0) + 1;
-                    });
+                const filteredOrders = orders.filter(order => {
+                    const orderDate = new Date(order.orderDate);
+                    return orderDate >= startDate && orderDate <= endDate;
+                });
 
-                    const chartData = Object.keys(orderCounts).map(date => ({
-                        date,
-                        orders: orderCounts[date]
-                    }));
+                const dailyCounts = filteredOrders.reduce((acc, order) => {
+                    const dateKey = moment(order.orderDate).format('YYYY-MM-DD');
+                    if (!acc[dateKey]) {
+                        acc[dateKey] = 0;
+                    }
+                    acc[dateKey]++;
+                    return acc;
+                }, {});
 
-                    setChartData(chartData);
-                    setLoading(false);
-                } else {
-                    console.error('Invalid response data for orders:', ordersData);
-                }
+                const newChartData = Object.keys(dailyCounts).map(date => ({
+                    date: date,
+                    orders: dailyCounts[date]
+                }));
+
+                setChartData(newChartData);
+                setLoading(false);
             } catch (error) {
-                console.error('Error fetching orders:', error);
+                console.error('Error fetching weekly order data:', error);
+                setLoading(false);
             }
         };
 
-        fetchData();
+        fetchWeeklyOrderData();
     }, []);
 
 
@@ -367,7 +376,7 @@ const Dashboard = () => {
                     {loading ? (
                         <p>Loading chart data...</p>
                     ) : (
-                        <LineChart width={450} height={300} data={chartData}>
+                        <LineChart width={450} height={300} data={chartDatas}>
                             <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
                             <XAxis dataKey="date" />
                             <YAxis />
@@ -381,7 +390,7 @@ const Dashboard = () => {
 
               <div className='chart2'>
                   <p>Sales Visualization</p>
-                  <AreaChart width={450} height={300} data={salesData}>
+                  <AreaChart width={480} height={300} data={salesData} >
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
                       <YAxis />

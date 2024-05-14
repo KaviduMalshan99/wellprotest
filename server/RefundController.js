@@ -245,4 +245,18 @@ const approveRefund = async (req, res, next) => {
       });
   };
 
-module.exports = { getRefunds, getRefundById, addRefund, deleteRefund, updateRefund, approveRefund, getAcceptedRefunds };
+
+  const deleteAccRefund = ( req, res, next) => {
+    const orderId = req.params.id;
+
+    AcceptRefund.deleteOne({orderId: orderId })
+        .then(response => {
+            res.json({ response });
+        })
+        .catch(error => {
+            res.json({ error });
+        });
+};
+
+module.exports = { getRefunds, getRefundById, addRefund, deleteRefund, updateRefund, approveRefund, getAcceptedRefunds, deleteAccRefund };
+

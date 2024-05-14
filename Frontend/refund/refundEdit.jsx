@@ -13,16 +13,18 @@ const RefundEdit = () => {
   const { orderId } = useParams(); // Extract orderId from route parameters
   const [imagePreview, setImagePreview] = useState(null); // State to hold image preview URL
   const [showMessageBox, setShowMessageBox] = useState(false);
-
+  const [showConfirm, setShowConfirm] = useState(false); // Confirmation dialog state
+  const [refundToDelete, setRefundToDelete] = useState(null); // State variable to store refund to delete
+  const [refunds, setRefunds] = useState([]); // State variable to store all refunds
 
   const navigate = useNavigate();
-  const [name, setName] = useState('');
 
   useEffect(() => {
     const fetchRefund = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/api/refund/${orderId}`);
         setNewRefund(response.data.refund); // Set fetched refund data to newRefund state
+        setRefunds(response.data.refund); // Set fetched refunds data
       } catch (error) {
         console.error('Error fetching refund:', error);
       }
@@ -35,30 +37,36 @@ const RefundEdit = () => {
     return <p>Loading...</p>;
   }
 
-  const handleDelete = (orderId) => {
-    axios.delete(`http://localhost:3001/api/deleterefund/${orderId}`)
+  const handleDelete = (orderId, event) => {
+    event.preventDefault(); // Prevent default form submission
+    setRefundToDelete(orderId);
+    setShowConfirm(true); // Show confirmation dialog
+  };
+  
+
+  const confirmDelete = () => {
+    axios.delete(`http://localhost:3001/api/deleterefund/${refundToDelete}`)
       .then(res => {
-        console.log(res);
+        setRefunds(prevRefunds => prevRefunds.filter(refund => refund.orderId !== refundToDelete));
         toast.success('Refund deleted successfully!');
-        navigate('/men'); // Redirect to the refundPolicy page after successful deletion
+        setNewRefund(null); // Reset newRefund state
+        navigate(`/refund`); // Redirect to the refund page after successful update
+
       })
       .catch(err => {
         console.error('Error deleting refund:', err);
         toast.error('Error deleting refund.');
+      })
+      .finally(() => {
+        // Close the confirmation dialog
+        setShowConfirm(false);
       });
   };
   
   const handleUpdate = () => {
-    // alert("Details saved successfully! Click OK to go to the homepage.");
-
     axios.put(`http://localhost:3001/api/updaterefund/${orderId}`, newRefund)
       .then(res => {
-        console.log(res);
         toast.success('Refund updated successfully!');
-        console.log("Details saved successfully! Click OK to go to the homepage.");
-        setShowMessageBox(true);
-
-
         navigate(`/refundedit/${orderId}`); // Redirect to the current page after successful update
       })
       .catch(err => {
@@ -83,15 +91,6 @@ const RefundEdit = () => {
     }
   };
 
-  // const handleChangeImage = (event) => {
-  //   const imageFile = event.target.files[0];
-  //   const imageUrl = URL.createObjectURL(imageFile); // Generate URL for the selected image
-  //   setNewRefund((prevRefund) => ({
-  //     ...prevRefund,
-  //     imgUrls: [...prevRefund.imgUrls, imageUrl] // Update imgUrls with the new image URL
-  //   }));
-  // };
-  
   const handleChangeImage = (event) => {
     const imageFile = event.target.files[0]; // Get the first selected image
 
@@ -99,8 +98,6 @@ const RefundEdit = () => {
     reader.onload = () => {
         // Convert the selected image to a base64 string
         const base64String = reader.result;
-        console.log("Selected Image:", imageFile.name); // Log the image filename
-        console.log("Base64 Encoded Image:", base64String); // Log the base64 encoded image data (for debugging)
 
         // Update the newRefund state with the base64 string
         setNewRefund({
@@ -130,25 +127,24 @@ const RefundEdit = () => {
   };
 
   return (
-    <div>
-    <Header/>
+    <div id = 'refund-main'>
+      <Header/>
       <div className="rnmh">Refund</div>
       <div className="rnlp">Home &gt; Refund</div>
       <div className="rnmbtns">
-        <button id="transparent-buttonr" onClick={() => navigate('/refundPolicy')}>
-          Refund Policy
-        </button>
-        {" | "}
-        <button id="transparent-buttonr" onClick={() => navigate(`/`)}>
-          Refund Now
-        </button>
-      </div> 
+        <Link to='/refundpolicy'><button id="transparent-buttonr" >
+            Refund Policy
+        </button></Link>
+        <div className='ira'>{" | "}</div>
+        <Link to='/refund'><button id="transparent-buttonr" >
+            Refund Now
+        </button></Link>
+      </div>
       <center>
-        
-          <form>
+        <form>
           <div className="rnmcont">
             <table className="rnmcon">
-              <tbody>
+            <tbody>
                 <tr>
                   <td>
                     <div className="rnmcontit">Order ID</div>
@@ -228,26 +224,20 @@ const RefundEdit = () => {
             </table>
             <div className="rbutton-container">
               <button className="editbtn" onClick={handleUpdate}>Save Details</button>
-              <button className="dltbtn" onClick={() => handleDelete(newRefund?.orderId)}>Delete</button>
+              <button className="dltbtn" onClick={(event) => handleDelete(newRefund?.orderId, event)}>Delete</button>
             </div>
-            <div className='rsavebtncon'>
-            {/* <button className="save-details-button" >Save Details</button> */}
-
-            </div>
-            </div>
-          </form>
-          
-        
+          </div>
+        </form>
       </center>
       <Footer/>
       <ToastContainer />
-      {showMessageBox && (
-        <div className="message-box">
-          <p>Details saved successfully! Click OK to go to the homepage.</p>
-          <button onClick={() => {
-            setShowMessageBox(false);
-            handleUpdate();
-          }}>OK</button>
+      {showConfirm && (
+        <div className="confirm-dialog">
+          <p>Are you sure you want to delete this refund?</p>
+          <div>
+            <button onClick={confirmDelete}>Yes</button>
+            <button onClick={() => setShowConfirm(false)}>No</button>
+          </div>
         </div>
       )}
     </div>

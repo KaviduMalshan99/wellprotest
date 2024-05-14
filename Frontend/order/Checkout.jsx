@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'; // Add useEffect import
+import  { useState, useEffect } from 'react'; // Add useEffect import
 import { useLocation,useNavigate  } from 'react-router-dom';
 import './paymentscss.scss';
 import axios from 'axios';
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import cod from '../../src/assets/cod.png'
 import koko from '../../src/assets/koko.png'
 import Webxpay from '../../src/assets/Webxpay-logo.jpg'
 import {useAuthStore} from "../../src/store/useAuthStore"
@@ -13,6 +14,10 @@ import Letterhead from './Letterhead';
 import OrderConfirmationModal from './Modal';
 import {PropagateLoader} from 'react-spinners';
 import LOGOO from '../../src/assets/logoorange.png'
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -228,7 +233,35 @@ function Checkout() {
     'India': /^\d{10}$/
 };
 
-
+const countryCitiesAndPostalCodes = {
+  'Sri Lanka': {
+      'Colombo': /^\d{5}$/,
+      'Galle': /^\d{5}$/,
+      'Kandy': /^\d{5}$/,
+      'Jaffna': /^\d{5}$/,
+      'Anuradhapura': /^\d{5}$/,
+      'Trincomalee': /^\d{5}$/,
+      'Badulla': /^\d{5}$/
+  },
+  'USA': {
+      'New York': /^\d{5}(-\d{4})?$/,
+      'Los Angeles': /^\d{5}(-\d{4})?$/,
+      'Chicago': /^\d{5}(-\d{4})?$/,
+      'Houston': /^\d{5}(-\d{4})?$/,
+      'Phoenix': /^\d{5}(-\d{4})?$/,
+      'Philadelphia': /^\d{5}(-\d{4})?$/,
+      'San Antonio': /^\d{5}(-\d{4})?$/
+  },
+  'India': {
+      'Mumbai': /^\d{6}$/,
+      'Delhi': /^\d{6}$/,
+      'Bangalore': /^\d{6}$/,
+      'Hyderabad': /^\d{6}$/,
+      'Ahmedabad': /^\d{6}$/,
+      'Chennai': /^\d{6}$/,
+      'Kolkata': /^\d{6}$/
+  }
+};
 
 
 
@@ -236,86 +269,42 @@ function Checkout() {
 const handleProceedClick = async () => {
   setIsLoading(true); // Start loading
 
-  try {
-    // Place your order submission logic here
-    console.log("Processing order...");
-    // Simulate a delay for async operation
-    setTimeout(() => {
-      console.log("Order processed");
-      setOrderPlaced(true);
-      setIsLoading(false);
-    }, 2000);
-  } catch (error) {
-    console.error("Failed to process order:", error);
-    setIsLoading(false);
-  }
-
-
+  // Validate all fields first
   const newErrors = {};
   Object.keys(formData).forEach(key => {
-      validateField(key, formData[key]);  // This will update the error state
-      if (errors[key]) {
-          newErrors[key] = errors[key];
-      }
+    validateField(key, formData[key]);  // This will update the error state
+    if (errors[key]) {
+      newErrors[key] = errors[key];
+    }
   });
 
+  // Check for valid contact number
+  const isValidContactNumber = countryContactNumberRegex[formData.country]?.test(formData.contactNumber);
+  if (!isValidContactNumber) {
+    newErrors.contactNumber = `Please enter a valid contact number for ${formData.country}.`;
+  }
+
+  // Check for valid postal code
+  const isValidPostalCode = countryCitiesAndPostalCodes[formData.country]?.[formData.city]?.test(formData.postalCode);
+  if (!isValidPostalCode) {
+    newErrors.postalCode = `Please enter a valid postal code for ${formData.city}.`;
+  }
+
+  // Set any new errors found during this process
+  setErrors(newErrors);
+
+  // If there are any errors, do not proceed with order processing
   if (Object.keys(newErrors).length > 0) {
-    setErrors(newErrors);
-    alert('Please correct the errors before submitting.');
+    toast.error('Please correct the errors before submitting.');
     setIsLoading(false); // Stop loading if there are errors
     return;
   }
-  const isValidContactNumber = countryContactNumberRegex[formData.country]?.test(formData.contactNumber);
-  if (!isValidContactNumber) {
-      setErrors(errors => ({ ...errors, contactNumber: `Please enter a valid contact number for ${formData.country}.` }));
-      return;
-  }
 
-    // Assuming you also have similar definitions for postal codes
-    const countryCitiesAndPostalCodes = {
-      'Sri Lanka': {
-          'Colombo': /^\d{5}$/,
-          'Galle': /^\d{5}$/,
-          'Kandy': /^\d{5}$/,
-          'Jaffna': /^\d{5}$/,
-          'Anuradhapura': /^\d{5}$/,
-          'Trincomalee': /^\d{5}$/,
-          'Badulla': /^\d{5}$/
-      },
-      'USA': {
-          'New York': /^\d{5}(-\d{4})?$/,
-          'Los Angeles': /^\d{5}(-\d{4})?$/,
-          'Chicago': /^\d{5}(-\d{4})?$/,
-          'Houston': /^\d{5}(-\d{4})?$/,
-          'Phoenix': /^\d{5}(-\d{4})?$/,
-          'Philadelphia': /^\d{5}(-\d{4})?$/,
-          'San Antonio': /^\d{5}(-\d{4})?$/
-      },
-      'India': {
-          'Mumbai': /^\d{6}$/,
-          'Delhi': /^\d{6}$/,
-          'Bangalore': /^\d{6}$/,
-          'Hyderabad': /^\d{6}$/,
-          'Ahmedabad': /^\d{6}$/,
-          'Chennai': /^\d{6}$/,
-          'Kolkata': /^\d{6}$/
-      }
-  };
-  
-
-    const isValidPostalCode = countryCitiesAndPostalCodes[formData.country]?.[formData.city]?.test(formData.postalCode);
-    if (!isValidPostalCode) {
-        setValidationError(`Please enter a valid postal code for ${formData.city}.`);
-        return;
-    }
-
-
-    if (Object.keys(errors).every(key => !errors[key])) {
-
-        const orderData = {
-            ...formData,
-            // contactNumber: getCountryCode(formData.country) + formData.contactNumber,
-            customerId: user?.UserId,
+  // No errors, proceed with the order
+  try {
+    const orderData = {
+      ...formData,
+      customerId: user?.UserId,
       id: checkoutData.id,
       ProductName: checkoutData.ProductName,
       quantity: checkoutData.quantity,
@@ -326,33 +315,37 @@ const handleProceedClick = async () => {
       couponCode: couponCode,  // Include coupon code
       discount: discount,
       total: subtotal + (selectedShippingMethod ? selectedShippingMethod.price : 0) + discount
-        };
+    };
 
-        axios.post('http://localhost:3001/api/addOrder', orderData)
-        .then(async response => {
-          console.log("Order placed successfully", response.data);
-          setOrderPlaced(true);
-          generatePDF(orderData);  // Pass orderData to the PDF generation function
-          if (couponCode) {
-                try {
-                    const deactivationResponse = await axios.post('http://localhost:3001/api/deactivateCoupon', { code: couponCode });
-                    console.log('Coupon deactivation:', deactivationResponse.data);
-                } catch (deactivationError) {
-                    console.error('Failed to deactivate coupon:', deactivationError.response.data);
-                }
-            }
-            setValidationError('');
-            setOrderPlaced(true);
-        })
-        .catch(error => {
-            console.error('Error submitting order:', error.response.data);
-            setValidationError('Failed to submit order. Error: ' + error.response.data.error);
-        });
-    } else {
-        alert('Please correct the errors before submitting.');
-    }
-    setIsLoading(false); // Stop loading after order is processed or fails
+    // Simulating a network request with a delay
+    setTimeout(async () => {
+      try {
+        const response = await axios.post('http://localhost:3001/api/addOrder', orderData);
+        toast.success("Order placed successfully");
+        setOrderPlaced(true);
+        if (couponCode) {
+          try {
+            const deactivationResponse = await axios.post('http://localhost:3001/api/deactivateCoupon', { code: couponCode });
+            toast.info('Coupon deactivated');
+          } catch (deactivationError) {
+            toast.error('Failed to deactivate coupon');
+          }
+        }
+        // Optionally, generate a PDF after order confirmation
+        generatePDF(orderData);
+      } catch (error) {
+        // toast.error('Error submitting order: ' + (error.response ? error.response.data.error : error.message));
+      }
+      setIsLoading(false);
+    }, 2000);
+  } catch (error) {
+    toast.error("Failed to process order: " + error.message);
+    setIsLoading(false);
+  }
 };
+
+
+
 
 const validateOrderData = () => {
   const requiredFields = ['productName', 'productId', 'quantity', 'price', 'size', 'color'];
@@ -402,13 +395,14 @@ const handleShippingChange = (method) => {
             setTotal((prevTotal) => prevTotal - newDiscount);  // Correctly update the total
         }
     } catch (error) {
-        alert('Invalid or expired coupon');
+      toast.error('Invalid or expired coupon');
     }
   };
 
 
 return(
   <>
+  <Header/>
   {loading && (
     <div className="loader-container">
       <div className="loader-overlay">
@@ -419,7 +413,9 @@ return(
   )}
 
     {!loading && (
+      
   <div className="checkout-container">
+    
   <div className="form-section">
     <h2>Shipping Address</h2>
     <div className="form-group">
@@ -518,7 +514,7 @@ return(
           </div>
           <div className="expand-content">
             <img src={koko} alt="Product" />
-            <p>Upon selecting "Proceed," you will be directed to Koko: Buy Now Pay Later to securely finalize your purchase.</p>
+            <p>Upon selecting Proceed, you will be directed to Koko: Buy Now Pay Later to securely finalize your purchase.</p>
           </div>
         </div>
         <div className={`payment-method ${expandedPayment === 'webxpay' ? 'expanded' : ''}`} onClick={() => handleExpandPayment('webxpay')}>
@@ -529,7 +525,7 @@ return(
           </div>
           <div className="expand-content">
             <img src={Webxpay} alt="Product"  style={{height:'150px',width:'400px'}}/>
-            <p>Upon selecting "Proceed," you will be redirected to WEBXPAY for a secure completion of your purchase.</p>
+            <p>Upon selecting Proceed, you will be redirected to WEBXPAY for a secure completion of your purchase.</p>
           </div>
         </div>
         <div className={`payment-method ${expandedPayment === 'cod' ? 'expanded' : ''}`} onClick={() => handleExpandPayment('cod')}>
@@ -539,7 +535,7 @@ return(
             {errors.paymentMethod && <p className="error">{errors.paymentMethod}</p>}
           </div>
           <div className="expand-content">
-            <img  alt="Product" />
+          <img src={cod} alt="Product"  style={{height:'150px',width:'400px'}}/>
             <p>Pay with cash upon delivery of your order.</p>
           </div>
         </div>
@@ -584,7 +580,7 @@ return(
   <div className='error'>
           {validationError && <p style={{ color: 'red' }}>{validationError}</p>}
         </div>
-        <button onClick={handleProceedClick} disabled={isLoading || orderPlaced}>
+        <button className='proceed-btn' onClick={handleProceedClick} disabled={isLoading || orderPlaced}>
         {isLoading ? "Processing..." : "Proceed"}
       </button>
     </div>
@@ -596,6 +592,9 @@ return(
             )}
 </div>
   )}
+  <Footer/>
+  <ToastContainer/>
+
   </>
 )
 }

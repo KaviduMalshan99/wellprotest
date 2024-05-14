@@ -11,6 +11,10 @@
     font-size: 30px;
 }
 
+.menbaglogo{
+    margin-top: 4.5%;
+}
+
 .menmain1 {
     margin-left: 50%;
     font-size: 18px;
@@ -74,22 +78,22 @@
     color: black;
 }
 
-.overlay2 {
+.overlay2s {
     position: absolute;
     top: 38.2%;
-    left: 57%;
+    left: 62%;
     transform: translate(-50%, -50%);
     opacity: 0;
     cursor: pointer;
     transition: opacity 0.3s ease;
 }
 
-.overlay3 a {
+.overlay3s a {
     text-decoration: none;
     color: black;
 }
 
-.overlay3 p {
+.overlay3s p {
     position: absolute;
     top: 60%;
     left: 60%;
@@ -103,26 +107,26 @@
     text-align: center;
 }
 
-.overlay3 {
+.overlay3s {
     opacity: 0;
 }
 
-.box:hover .overlay3 {
+.box:hover .overlay3s {
     opacity: 1;
 }
 
-.box:hover .overlay2 {
+.box:hover .overlay2s {
     opacity: 1;
 }
 
-.overlay2 img {
+.overlay2s img {
     width: 252px;
     height: 302px;
     object-fit: cover;
     border-radius: 10px; 
 }
 
-.overlay3 p:hover {
+.overlay3s p:hover {
     background-color: black;
     color: #fff;
     display: block;

@@ -32,6 +32,9 @@ $background-color_2: red;
 	background-color: #010103;
 	color: $color_1;
 	height: 70px;
+	position: fixed;
+	width: 100%;
+	z-index: 3;
 
 	.hcenter-section {
 		ul {

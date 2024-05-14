@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import '../Men.css';
+import './MwnBag.css';
 import Mint from '../../src/assets/int.png';
 import Koko from '../../src/assets/koko.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +10,7 @@ import Header from '../Header/Header';
 import { PropagateLoader } from 'react-spinners'; 
 import Footer from '../Footer/Footer';
 import LOGOO from '../../src/assets/logoorange.png'
+import Menlogo from '../../src/assets/mb.jpg'
 import './MenBag.scss'
 
 const MenBag = () => {
@@ -129,7 +130,8 @@ useEffect(() => {
 
       
       <Header/>
-      <p className='menmain'>SHOP MENS</p>
+      <img src={Menlogo} className='menbaglogo' />
+      <p className='menmain'>SHOP MEN'S BAGS</p>
       <p className='menmain1'>
         <Link to='/'>HOME</Link> <i className="fas fa-angle-right" /> <Link to="/men">MEN </Link><i className="fas fa-angle-right" /><Link to="/menbag"> BAGS </Link><i className="fas fa-angle-right" />
       </p>
@@ -254,10 +256,10 @@ useEffect(() => {
             <div className="box" key={record.ProductId}>
               <div className="imgage">
                 <img src={record.ImgUrls[0]} alt="" />
-                <div className="overlay2">
+                <div className="overlay2s">
                   <img src={record.ImgUrls[1]} alt="" />
                 </div>
-                <div className="overlay3">
+                <div className="overlay3s">
                 <Link to={`/product/${record.ProductId}`}><p >VIEW MORE</p></Link>
                 </div>
               </div>

@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;600&family=Poppins:wght@400;500;700&display=swap');
+
+.menmainms {
+    font-size: 25px;
+    font-weight: 500;
+    margin-left: 2%;
+    margin-bottom: 3%;
+    font-weight: 800;
+    margin-top: -5%;
+    color: #fff;
+    font-size: 30px;
+}
+
+.menmain1 {
+    margin-left: 50%;
+    font-size: 18px;
+}
+
+.menmain1 a {
+    text-decoration: none;
+    color: black;
+}
+
+.menmid {
+    display: flex;
+    margin-top: 3%;
+}
+
+.menfilter {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 275px;
+    padding-left: 1%;
+}
+
+.men {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+/* Adjust the width and height of the box */
+/* Adjust the width and height of the box */
+.box {
+    position: relative;
+    flex: 0 0 calc(20% - 20px); 
+    margin-bottom: 40px;
+    margin-right: 55px; 
+    width: 200px;
+    height: 400px;
+}
+
+.box img {
+    border-radius: 10px;
+    width: 250px;
+    height: 300px;
+}
+
+.overlay i,
+.overlay svg {
+    font-size: 22px;
+    cursor: pointer;
+    padding: 13px;
+    border-radius: 60px;
+    background: #fff;
+}
+
+.overlay svg {
+    border: 1px solid white;
+    border-radius: 360px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: white;
+    color: black;
+}
+
+.overlay2ms {
+    position: absolute;
+    top: 38.2%;
+    left: 57%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.overlay3ms a {
+    text-decoration: none;
+    color: black;
+}
+
+.overlay3ms p {
+    position: absolute;
+    top: 60%;
+    left: 60%;
+    transform: translateX(-50%);
+    padding: 7px 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    font-weight: 500;
+    z-index: 1; 
+    width: 130px;
+    text-align: center;
+}
+
+.overlay3ms {
+    opacity: 0;
+}
+
+.box:hover .overlay3ms {
+    opacity: 1;
+}
+
+.box:hover .overlay2ms {
+    opacity: 1;
+}
+
+.overlay2ms img {
+    width: 252px;
+    height: 302px;
+    object-fit: cover;
+    border-radius: 10px; 
+}
+
+.overlay3ms p:hover {
+    background-color: black;
+    color: #fff;
+    display: block;
+}
+
+
+.paymentsimg {
+    text-align: left;
+}
+
+.paymentsimg div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.paymentsimg img {
+    height: 15px;
+    width: 45px;
+}
+
+.informations .title {
+    margin-top: 3px;
+    font-size: 15px;
+}
+
+.informations .price {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    margin-top: -3px;
+}
+
+
+.menfiltertitle{
+    font-size: 20px;
+    margin-bottom: 50px;
+}
+
+.fittertitles{
+    font-weight: 600;
+}
+
+.filcatdiv{
+    display: flex;
+    margin-left: 20px;
+    align-items: center;
+}
+
+.filcatdiv input{
+    height: 15px;
+    margin-top: 7px;
+}
+
+.shoeinput{
+    margin-left: -7px;
+}
+
+.menfilter .pricefilter{
+
+    margin-top: 30px;
+}
+
+.menfilter .pricefilter .minmaxdiv{
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    margin-left: 20px;
+    align-items: center;
+    font-size: 10px;
+}
+
+.menfilter .pricefilter .minmaxdiv input{
+    width: 80px;
+    text-align: center;
+}
+
+.menfilter .sortprice{
+
+    margin-top: 30px;
+}
+
+.menfilter .sortprice .sortminmax{
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.menfilter .sortprice .sortminmax .btnsortminmax{
+    width: 210px;
+    background-color: #fff;
+    color: black;
+    border: 1px solid black;
+}
+
+.ratingsFilter{
+    margin-top: 30px;
+}
+
+.ratingsOptions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px; 
+    flex-direction: column;
+    margin-top: 10px;
+  }
+  
+  .ratingsOptions label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    margin-left: 20px;
+    gap: 15px;
+    
+  }
+  
+  .ratingsOptions input[type="checkbox"] {
+    margin-right: 5px;
+    margin-top: -10px;
+    height: 15px;
+  }
+
+  .ratingsOptions .fa-star{
+    color: yellow;
+  }
+
+  .ratingsOptions .startoption2{
+    margin-top: -7px;
+  }
+
+
+  

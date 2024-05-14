@@ -1,5 +1,6 @@
 .whinsrch {
     width: 30%;
+    height: 5px;
 }
 
 .whinbkbtn {
@@ -52,7 +53,7 @@
 
 .whinorbtn{
     
-    padding: 12px;
+    width: 25%;
 }
 
 .whinorbtnn{
